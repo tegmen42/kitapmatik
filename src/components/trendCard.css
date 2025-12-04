@@ -1,0 +1,106 @@
+.trend-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.trend-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.trend-card-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trend-card-image-placeholder {
+  color: #999;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.trend-card-details {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fiyat butonu kesinlikle görünür olmalı */
+.trend-card-details .price-section {
+  display: block !important;
+  visibility: visible !important;
+  width: 100% !important;
+  margin: 1rem 0 !important;
+  opacity: 1 !important;
+  height: auto !important;
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.trend-card-details .price-btn {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  background: #249bff !important;
+  color: white !important;
+  padding: 10px 15px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+}
+
+.trend-card-details h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.trend-card-author {
+  margin: 0 0 0.75rem 0;
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.trend-card-summary {
+  margin: 1rem 0 0 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .trend-card-image {
+    height: 250px;
+  }
+
+  .trend-card-details {
+    padding: 1rem;
+  }
+}
+

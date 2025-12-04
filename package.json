@@ -1,0 +1,51 @@
+{
+  "name": "super-random-book-engine",
+  "version": "1.0.0",
+  "description": "Süper Rastgele Kitap Motoru - Çoklu API desteği ile rastgele kitap seçimi",
+  "main": "src/App.js",
+  "type": "module",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "clean": "rm -rf node_modules && rm -rf build",
+    "clean:win": "if exist node_modules rmdir /s /q node_modules && if exist build rmdir /s /q build",
+    "reinstall": "npm run clean:win && npm install",
+    "fresh": "npm run clean:win && npm install && npm start",
+    "scan": "python tools/deep_project_scan.py",
+    "scan:safe": "python tools/safe_deep_scan.py"
+  },
+  "keywords": [
+    "books",
+    "random",
+    "api",
+    "google-books",
+    "open-library"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.4",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

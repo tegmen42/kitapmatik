@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">KitapMatik</string>
+    <string name="title_activity_main">KitapMatik</string>
+    <string name="package_name">com.mustafa.KitapMatik</string>
+    <string name="custom_url_scheme">com.mustafa.KitapMatik</string>
+</resources>

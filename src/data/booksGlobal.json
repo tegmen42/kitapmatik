@@ -1,0 +1,180 @@
+[
+  {
+    "id": "k1",
+    "title_tr": "Simyacı",
+    "title_en": "The Alchemist",
+    "author": "Paulo Coelho",
+    "image": "https://covers.openlibrary.org/b/isbn/0061122416-L.jpg",
+    "summary_tr": "Santiago'nun kişisel menzilini aradığı umut verici yolculuk. Genç bir çobanın rüyalarını takip ederek kendi efsanesini bulma hikayesi.",
+    "summary_en": "A hopeful journey of Santiago searching for his personal legend. The story of a young shepherd following his dreams to find his own legend.",
+    "prices": {
+      "Trendyol": {
+        "price": "₺120",
+        "url": "https://www.trendyol.com/search?q=simyaci+paulo+coelho"
+      },
+      "D&R": {
+        "price": "₺135",
+        "url": "https://www.dr.com.tr/search?q=simyaci"
+      },
+      "Amazon": {
+        "price": "₺118",
+        "url": "https://www.amazon.com.tr/s?k=simyaci"
+      }
+    }
+  },
+  {
+    "id": "k2",
+    "title_tr": "Kürk Mantolu Madonna",
+    "title_en": "Madonna in a Fur Coat",
+    "author": "Sabahattin Ali",
+    "image": "https://covers.openlibrary.org/b/isbn/9753638029-L.jpg",
+    "summary_tr": "Berlin sokaklarında kaybolan Raif Efendi'nin unutulmaz aşkı. Türk edebiyatının en etkileyici aşk hikayelerinden biri.",
+    "summary_en": "Raif Efendi's unforgettable love story lost in the streets of Berlin. One of the most impressive love stories in Turkish literature.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=kurk+mantolu+madonna",
+        "dr": "https://www.dr.com.tr/search?q=kurk+mantolu+madonna",
+        "amazon": "https://www.amazon.com.tr/s?k=kurk+mantolu+madonna"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=madonna+in+a+fur+coat"
+      }
+    }
+  },
+  {
+    "id": "k3",
+    "title_tr": "1984",
+    "title_en": "1984",
+    "author": "George Orwell",
+    "image": "https://covers.openlibrary.org/b/isbn/0451524934-L.jpg",
+    "summary_tr": "Totaliter rejimlerin karanlık yüzünü gösteren distopik başyapıt. Büyük Birader'in gözetiminde yaşayan bir toplumun hikayesi.",
+    "summary_en": "A dystopian masterpiece showing the dark side of totalitarian regimes. The story of a society living under Big Brother's surveillance.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=1984+george+orwell",
+        "dr": "https://www.dr.com.tr/search?q=1984",
+        "amazon": "https://www.amazon.com.tr/s?k=1984"
+      },
+      "US": {
+        "amazon": "https://www.amazon.com/s?k=1984+george+orwell"
+      },
+      "DE": {
+        "amazon": "https://www.amazon.de/s?k=1984"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=1984"
+      }
+    }
+  },
+  {
+    "id": "k4",
+    "title_tr": "Dune",
+    "title_en": "Dune",
+    "author": "Frank Herbert",
+    "image": "https://covers.openlibrary.org/b/isbn/0441172717-L.jpg",
+    "summary_tr": "Çöl gezegeni Arrakis'te güç, ekoloji ve kader mücadelesi. Bilimkurgu edebiyatının en önemli eserlerinden biri.",
+    "summary_en": "A struggle for power, ecology and destiny on the desert planet Arrakis. One of the most important works of science fiction literature.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=dune+frank+herbert",
+        "dr": "https://www.dr.com.tr/search?q=dune",
+        "amazon": "https://www.amazon.com.tr/s?k=dune"
+      },
+      "US": {
+        "amazon": "https://www.amazon.com/s?k=dune+frank+herbert"
+      },
+      "DE": {
+        "amazon": "https://www.amazon.de/s?k=dune"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=dune"
+      }
+    }
+  },
+  {
+    "id": "k5",
+    "title_tr": "Yüzyıllık Yalnızlık",
+    "title_en": "One Hundred Years of Solitude",
+    "author": "Gabriel García Márquez",
+    "image": "https://covers.openlibrary.org/b/isbn/9789750738602-L.jpg",
+    "summary_tr": "Buendía ailesinin Macondo'daki büyülü gerçekçi destanı. Latin Amerika edebiyatının başyapıtı.",
+    "summary_en": "The magical realist epic of the Buendía family in Macondo. A masterpiece of Latin American literature.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=yuz+yillik+yalnizlik",
+        "dr": "https://www.dr.com.tr/search?q=yuz+yillik+yalnizlik",
+        "amazon": "https://www.amazon.com.tr/s?k=yuz+yillik+yalnizlik"
+      },
+      "US": {
+        "amazon": "https://www.amazon.com/s?k=one+hundred+years+of+solitude"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=one+hundred+years+of+solitude"
+      }
+    }
+  },
+  {
+    "id": "k6",
+    "title_tr": "Fahrenheit 451",
+    "title_en": "Fahrenheit 451",
+    "author": "Ray Bradbury",
+    "image": "https://covers.openlibrary.org/b/isbn/1451673310-L.jpg",
+    "summary_tr": "Kitapların yakıldığı karanlık gelecekte özgürlüğün hikâyesi. Distopik bir dünyada bilgi ve özgürlük mücadelesi.",
+    "summary_en": "The story of freedom in a dark future where books are burned. A struggle for knowledge and freedom in a dystopian world.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=fahrenheit+451",
+        "dr": "https://www.dr.com.tr/search?q=fahrenheit+451",
+        "amazon": "https://www.amazon.com.tr/s?k=fahrenheit+451"
+      },
+      "US": {
+        "amazon": "https://www.amazon.com/s?k=fahrenheit+451"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=fahrenheit+451"
+      }
+    }
+  },
+  {
+    "id": "k7",
+    "title_tr": "Saatleri Ayarlama Enstitüsü",
+    "title_en": "The Time Regulation Institute",
+    "author": "Ahmet Hamdi Tanpınar",
+    "image": "https://covers.openlibrary.org/b/isbn/9754700115-L.jpg",
+    "summary_tr": "Modernleşme sancılarını ironik bir dille anlatan klasik roman. Türk toplumunun değişim sürecini ele alır.",
+    "summary_en": "A classic novel that tells the pains of modernization with an ironic language. It deals with the transformation process of Turkish society.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=saatleri+ayarlama+enstitusu",
+        "dr": "https://www.dr.com.tr/search?q=saatleri+ayarlama+enstitusu",
+        "amazon": "https://www.amazon.com.tr/s?k=saatleri+ayarlama+enstitusu"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=time+regulation+institute"
+      }
+    }
+  },
+  {
+    "id": "k8",
+    "title_tr": "Suç ve Ceza",
+    "title_en": "Crime and Punishment",
+    "author": "Fyodor Dostoyevski",
+    "image": "https://covers.openlibrary.org/b/isbn/9754582905-L.jpg",
+    "summary_tr": "Raskolnikov'un vicdanıyla hesaplaşmasını izleyen psikolojik gerilim. Rus edebiyatının en önemli eserlerinden biri.",
+    "summary_en": "A psychological thriller following Raskolnikov's reckoning with his conscience. One of the most important works of Russian literature.",
+    "prices": {
+      "TR": {
+        "trendyol": "https://www.trendyol.com/search?q=suc+ve+ceza",
+        "dr": "https://www.dr.com.tr/search?q=suc+ve+ceza",
+        "amazon": "https://www.amazon.com.tr/s?k=suc+ve+ceza"
+      },
+      "US": {
+        "amazon": "https://www.amazon.com/s?k=crime+and+punishment"
+      },
+      "DEFAULT": {
+        "amazon": "https://www.amazon.com/s?k=crime+and+punishment"
+      }
+    }
+  }
+]
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Şeker Portakalı – Konusu, Özeti, İnceleme, Fiyat | KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>Şeker Portakalı – Konusu, Özeti, İnceleme, Fiyat</h1>
+<p>Jose Mauro de Vasconcelos'un unutulmaz eseri Şeker Portakalı hakkında detaylı bilgiler.</p>
+
+<h2>📘 Özet</h2>
+<p>Şeker Portakalı, küçük bir çocuğun hayal dünyasını ve hayatın acı gerçekleriyle yüzleşmesini anlatan dokunaklı bir hikayedir. Zeze'nin hayatı ve hayali arkadaşı olan şeker portakalı ağacı, okuyucuları duygusal bir yolculuğa çıkarır.</p>
+
+<h2>💬 Yorum</h2>
+<p>Bu kitap, hem çocuklar hem de yetişkinler için yazılmış bir başyapıttır. Yazar, çocukluk masumiyetini ve hayal gücünün gücünü etkileyici bir şekilde aktarıyor. Her yaştan okuyucuya hitap eden bu eser, edebiyat severlerin kitaplığında mutlaka bulunmalı.</p>
+
+<h2>💰 Fiyat Karşılaştırma</h2>
+<button onclick="fetchPrice('Şeker Portakalı')">💰 Fiyatları Göster</button>
+<div id="p"></div>
+
+<script>
+async function fetchPrice(n){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const d=await r.json()
+ const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
+ const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
+ const bkmPrice = typeof d.BKM === 'object' ? d.BKM?.price : d.BKM;
+ document.getElementById("p").innerHTML=`
+ <div class='priceBox'>
+   <div class='priceRow'>Trendyol <span>${trendyolPrice ?? '-'} TL</span></div>
+   <div class='priceRow'>Hepsiburada <span>${hepsiburadaPrice ?? '-'} TL</span></div>
+   <div class='priceRow min'>BKM Kitap <span>${bkmPrice ?? '-'} TL</span></div>
+ </div>`
+}
+</script>
+
+</body>
+</html>
+

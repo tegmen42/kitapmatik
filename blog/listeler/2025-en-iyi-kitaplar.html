@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>2025'te Okunacak 20 Kitap – KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>📌 2025'te Okunacak 20 Kitap</h1>
+<p>2025 yılı için en güncel kitap önerileri, trend kitaplar ve okuma listesi.</p>
+
+<h2>Roman & Kurgu</h2>
+<ul>
+<li><strong>Empati</strong> – Roman Polanski <button onclick="fetchPrice('Empati')">💰 Fiyatlar</button></li>
+<li><strong>Şeker Portakalı</strong> – Jose Mauro de Vasconcelos <button onclick="fetchPrice('Şeker Portakalı')">💰 Fiyatlar</button></li>
+<li><strong>Suç ve Ceza</strong> – Fyodor Dostoyevski <button onclick="fetchPrice('Suç ve Ceza')">💰 Fiyatlar</button></li>
+<li><strong>Olasılıksız</strong> – Adam Fawer <button onclick="fetchPrice('Olasılıksız')">💰 Fiyatlar</button></li>
+<li><strong>Simyacı</strong> – Paulo Coelho <button onclick="fetchPrice('Simyacı')">💰 Fiyatlar</button></li>
+</ul>
+
+<h2>Klasik Eserler</h2>
+<ul>
+<li><strong>Hayvan Çiftliği</strong> – George Orwell <button onclick="fetchPrice('Hayvan Çiftliği')">💰 Fiyatlar</button></li>
+<li><strong>1984</strong> – George Orwell <button onclick="fetchPrice('1984')">💰 Fiyatlar</button></li>
+</ul>
+
+<script>
+async function fetchPrice(name){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(name))
+ const d=await r.json()
+ alert(`
+${name}
+
+Trendyol: ${d.Trendyol?.price ?? d.Trendyol ?? '-'} TL
+Hepsiburada: ${d.Hepsiburada?.price ?? d.Hepsiburada ?? '-'} TL
+BKM: ${d.BKM?.price ?? d.BKM ?? '-'} TL
+`);
+}
+</script>
+
+</body>
+</html>
+

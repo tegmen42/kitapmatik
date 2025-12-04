@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Empati – Konusu, Özeti, İnceleme, Fiyat | KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>Empati – Konusu, Özeti, İnceleme, Fiyat</h1>
+<p>Empati kitabı hakkında detaylı bilgiler, özet, inceleme ve fiyat karşılaştırması.</p>
+
+<h2>📘 Özet</h2>
+<p>Empati, insanların birbirini anlama yeteneğini ve empati kurmanın önemini anlatan etkileyici bir eserdir. Kitap, farklı karakterler üzerinden empati kavramını derinlemesine inceler.</p>
+
+<h2>💬 Yorum</h2>
+<p>Empati kitabı, okuyuculara kendi duygusal zekalarını geliştirme konusunda değerli ipuçları sunuyor. Yazarın akıcı anlatımı ve gerçek hayat örnekleriyle zenginleştirilmiş içeriği, kitabı hem eğitici hem de okunabilir kılıyor.</p>
+
+<h2>💰 Fiyat Karşılaştırma</h2>
+<button onclick="fetchPrice('Empati')">💰 Fiyatları Göster</button>
+<div id="p"></div>
+
+<script>
+async function fetchPrice(n){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const d=await r.json()
+ const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
+ const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
+ const bkmPrice = typeof d.BKM === 'object' ? d.BKM?.price : d.BKM;
+ document.getElementById("p").innerHTML=`
+ <div class='priceBox'>
+   <div class='priceRow'>Trendyol <span>${trendyolPrice ?? '-'} TL</span></div>
+   <div class='priceRow'>Hepsiburada <span>${hepsiburadaPrice ?? '-'} TL</span></div>
+   <div class='priceRow min'>BKM Kitap <span>${bkmPrice ?? '-'} TL</span></div>
+ </div>`
+}
+</script>
+
+</body>
+</html>
+

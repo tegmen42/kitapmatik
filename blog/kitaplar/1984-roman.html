@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>1984 – Konusu, Özeti, İnceleme, Fiyat | KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>1984 – Konusu, Özeti, İnceleme, Fiyat</h1>
+<p>George Orwell'in distopya türündeki başyapıtı 1984 hakkında kapsamlı inceleme ve analiz.</p>
+
+<h2>📘 Özet</h2>
+<p>1984, totaliter bir rejimin hüküm sürdüğü distopik bir dünyada geçer. Winston Smith karakteri üzerinden, gözetim toplumu, düşünce kontrolü ve özgürlük kavramları derinlemesine incelenir. "Big Brother" kavramı bu eserle edebiyata girmiştir.</p>
+
+<h2>💬 Yorum</h2>
+<p>Orwell'in bu öngörülü eseri, günümüzdeki teknolojik gelişmeler ve toplumsal yapılar açısından daha da önem kazanmıştır. Gözetim, bilgi manipülasyonu ve bireysel özgürlük temaları, modern dünyada hala geçerliliğini korumaktadır. Her edebiyat severin mutlaka okuması gereken bir klasiktir.</p>
+
+<h2>💰 Fiyat Karşılaştırma</h2>
+<button onclick="fetchPrice('1984')">💰 Fiyatları Göster</button>
+<div id="p"></div>
+
+<script>
+async function fetchPrice(n){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const d=await r.json()
+ const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
+ const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
+ const bkmPrice = typeof d.BKM === 'object' ? d.BKM?.price : d.BKM;
+ document.getElementById("p").innerHTML=`
+ <div class='priceBox'>
+   <div class='priceRow'>Trendyol <span>${trendyolPrice ?? '-'} TL</span></div>
+   <div class='priceRow'>Hepsiburada <span>${hepsiburadaPrice ?? '-'} TL</span></div>
+   <div class='priceRow min'>BKM Kitap <span>${bkmPrice ?? '-'} TL</span></div>
+ </div>`
+}
+</script>
+
+</body>
+</html>
+

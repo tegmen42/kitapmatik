@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Suç ve Ceza – Konusu, Özeti, İnceleme, Fiyat | KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>Suç ve Ceza – Konusu, Özeti, İnceleme, Fiyat</h1>
+<p>Fyodor Dostoyevski'nin dünya edebiyatının en önemli eserlerinden biri olan Suç ve Ceza hakkında detaylı inceleme.</p>
+
+<h2>📘 Özet</h2>
+<p>Suç ve Ceza, genç bir öğrenci olan Raskolnikov'un işlediği cinayet ve sonrasında yaşadığı vicdan azabını konu alır. Dostoyevski, karakterin psikolojik derinliğini ve ahlaki sorgulamalarını ustaca anlatır.</p>
+
+<h2>💬 Yorum</h2>
+<p>Dostoyevski'nin bu başyapıtı, insan psikolojisinin en karanlık köşelerini aydınlatır. Raskolnikov karakterinin içsel çatışmaları ve toplumsal eleştiriler, modern edebiyatın temel taşlarını oluşturur. Her edebiyat severin okuması gereken bir klasiktir.</p>
+
+<h2>💰 Fiyat Karşılaştırma</h2>
+<button onclick="fetchPrice('Suç ve Ceza')">💰 Fiyatları Göster</button>
+<div id="p"></div>
+
+<script>
+async function fetchPrice(n){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const d=await r.json()
+ const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
+ const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
+ const bkmPrice = typeof d.BKM === 'object' ? d.BKM?.price : d.BKM;
+ document.getElementById("p").innerHTML=`
+ <div class='priceBox'>
+   <div class='priceRow'>Trendyol <span>${trendyolPrice ?? '-'} TL</span></div>
+   <div class='priceRow'>Hepsiburada <span>${hepsiburadaPrice ?? '-'} TL</span></div>
+   <div class='priceRow min'>BKM Kitap <span>${bkmPrice ?? '-'} TL</span></div>
+ </div>`
+}
+</script>
+
+</body>
+</html>
+

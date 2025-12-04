@@ -1,0 +1,72 @@
+[
+  {
+    "title": "Kürk Mantolu Madonna",
+    "author": "Sabahattin Ali",
+    "description": "Berlin sokaklarında kaybolan Raif Efendi'nin unutulmaz aşkı.",
+    "image": "https://covers.openlibrary.org/b/isbn/9753638029-L.jpg",
+    "category": "Edebiyat"
+  },
+  {
+    "title": "Saatleri Ayarlama Enstitüsü",
+    "author": "Ahmet Hamdi Tanpınar",
+    "description": "Modernleşme sancılarını ironik bir dille anlatan klasik roman.",
+    "image": "https://covers.openlibrary.org/b/isbn/9754700115-L.jpg",
+    "category": "Roman"
+  },
+  {
+    "title": "Suç ve Ceza",
+    "author": "Fyodor Dostoyevski",
+    "description": "Raskolnikov'un vicdanıyla hesaplaşmasını izleyen psikolojik gerilim.",
+    "image": "https://covers.openlibrary.org/b/isbn/9754582905-L.jpg",
+    "category": "Klasik"
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "description": "Totaliter rejimlerin karanlık yüzünü gösteren distopik başyapıt.",
+    "image": "https://covers.openlibrary.org/b/isbn/0451524934-L.jpg",
+    "category": "Distopya"
+  },
+  {
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "description": "Çöl gezegeni Arrakis'te güç, ekoloji ve kader mücadelesi.",
+    "image": "https://covers.openlibrary.org/b/isbn/0441172717-L.jpg",
+    "category": "Bilimkurgu"
+  },
+  {
+    "title": "Yüzyıllık Yalnızlık",
+    "author": "Gabriel García Márquez",
+    "description": "Buendía ailesinin Macondo'daki büyülü gerçekçi destanı.",
+    "image": "https://covers.openlibrary.org/b/isbn/9789750738602-L.jpg",
+    "category": "Büyülü Gerçekçilik"
+  },
+  {
+    "title": "Fahrenheit 451",
+    "author": "Ray Bradbury",
+    "description": "Kitapların yakıldığı karanlık gelecekte özgürlüğün hikâyesi.",
+    "image": "https://covers.openlibrary.org/b/isbn/1451673310-L.jpg",
+    "category": "Bilimkurgu"
+  },
+  {
+    "title": "Bir Bilim Adamının Romanı",
+    "author": "Oğuz Atay",
+    "description": "Prof. Mustafa İnan'ın yaşamından ilham alan biyografik roman.",
+    "image": "https://covers.openlibrary.org/b/isbn/9754700069-L.jpg",
+    "category": "Biyografi"
+  },
+  {
+    "title": "Simyacı",
+    "author": "Paulo Coelho",
+    "description": "Santiago'nun kişisel menzilini aradığı umut verici yolculuk.",
+    "image": "https://covers.openlibrary.org/b/isbn/0061122416-L.jpg",
+    "category": "Felsefi"
+  },
+  {
+    "title": "Hayvan Çiftliği",
+    "author": "George Orwell",
+    "description": "Güç ve yozlaşmayı alegorik bir çiftlikte anlatan siyasi masal.",
+    "image": "https://covers.openlibrary.org/b/isbn/0451526341-L.jpg",
+    "category": "Siyasi Alegori"
+  }
+]

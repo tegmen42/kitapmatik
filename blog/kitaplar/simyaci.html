@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Simyacı – Konusu, Özeti, İnceleme, Fiyat | KitapMatik Blog</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>Simyacı – Konusu, Özeti, İnceleme, Fiyat</h1>
+<p>Paulo Coelho'nun dünya çapında milyonlarca satan felsefi romanı Simyacı hakkında kapsamlı inceleme.</p>
+
+<h2>📘 Özet</h2>
+<p>Simyacı, bir çoban olan Santiago'nun kişisel efsanesini arayış yolculuğunu anlatır. Kitap, hayallerimizin peşinden gitmenin önemini ve yaşamın anlamını sorgulatan felsefi bir yolculuktur.</p>
+
+<h2>💬 Yorum</h2>
+<p>Coelho'nun bu başyapıtı, hem genç hem de yetişkin okuyuculara ilham veren bir eserdir. Basit görünen ama derin anlamlar barındıran hikaye, okuyucuları kendi kişisel yolculuklarını düşünmeye teşvik eder. Herkesin hayatında bir kez okuması gereken bir kitap.</p>
+
+<h2>💰 Fiyat Karşılaştırma</h2>
+<button onclick="fetchPrice('Simyacı')">💰 Fiyatları Göster</button>
+<div id="p"></div>
+
+<script>
+async function fetchPrice(n){
+ const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const d=await r.json()
+ const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
+ const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
+ const bkmPrice = typeof d.BKM === 'object' ? d.BKM?.price : d.BKM;
+ document.getElementById("p").innerHTML=`
+ <div class='priceBox'>
+   <div class='priceRow'>Trendyol <span>${trendyolPrice ?? '-'} TL</span></div>
+   <div class='priceRow'>Hepsiburada <span>${hepsiburadaPrice ?? '-'} TL</span></div>
+   <div class='priceRow min'>BKM Kitap <span>${bkmPrice ?? '-'} TL</span></div>
+ </div>`
+}
+</script>
+
+</body>
+</html>
+

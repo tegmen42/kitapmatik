@@ -1,0 +1,58 @@
+.trend-raf {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trend-raf-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.trend-raf-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.trend-raf-header p {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+}
+
+.trend-raf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.trend-raf-ad {
+  grid-column: 1 / -1;
+  margin: 2rem 0;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .trend-raf {
+    padding: 1rem 0.5rem;
+  }
+
+  .trend-raf-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .trend-raf-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
