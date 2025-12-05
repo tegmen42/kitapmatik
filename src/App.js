@@ -2,55 +2,63 @@ import React, { useState, useEffect } from 'react';
 import SurpriseCard from './components/SurpriseCard.js';
 import TrendRaf from './components/TrendRaf.jsx';
 import { getRandomBook } from './modules/surprise.js';
-import { detectCountry } from './utils/detectCountry.js';
+import { initI18n, t, changeLanguage, getCurrentLanguage, getSupportedLanguages } from './i18n.js';
 import './styles/surprise.css';
 
 function App() {
   const [selectedBook, setSelectedBook] = useState(null);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [error, setError] = useState(null);
-  const [country, setCountry] = useState("TR"); // Varsayılan TR
-  const [lang, setLang] = useState("tr"); // Varsayılan tr
+  const [lang, setLang] = useState("en"); // Varsayılan en (i18n otomatik belirleyecek)
+  const [translations, setTranslations] = useState({});
+  const [isI18nReady, setIsI18nReady] = useState(false);
+  const [showLangMenu, setShowLangMenu] = useState(false);
 
-  // IP algılama ve dil belirleme
+  // i18n başlatma ve dil değişikliklerini dinleme
   useEffect(() => {
-    async function initCountry() {
-      // localStorage'dan dil kontrolü (öncelikli)
-      const savedLang = localStorage.getItem("kitap_lang");
-      if (savedLang === "tr" || savedLang === "en") {
-        setLang(savedLang);
-        if (savedLang === "tr") {
-          setCountry("TR");
-        } else {
-          setCountry("DEFAULT");
-        }
-        return;
-      }
-
-      // IP'den ülke algılama
+    async function init() {
       try {
-        const detectedCountry = await detectCountry();
+        const i18n = await initI18n();
+        setLang(i18n.language);
+        setTranslations(i18n.translations);
+        setIsI18nReady(true);
         
-        // Ülke kodunu normalize et (TR, tr, Turkey gibi farklı formatlar olabilir)
-        const normalizedCountry = detectedCountry?.toUpperCase() || "TR";
-        setCountry(normalizedCountry);
-
-        // Ülkeye göre dil belirleme
-        if (normalizedCountry === "TR" || normalizedCountry === "TURKEY") {
-          setLang("tr");
-          setCountry("TR");
-        } else {
-          setLang("en");
-        }
+        // Document title'ı güncelle
+        document.title = i18n.translations.title || 'KitapMatik';
       } catch (error) {
-        // Hata durumunda varsayılan olarak TR/tr kullan
-        setCountry("TR");
-        setLang("tr");
+        console.error('i18n init error:', error);
+        setIsI18nReady(true); // Hata olsa bile devam et
       }
     }
 
-    initCountry();
+    init();
+
+    // Dil değişikliği event'ini dinle
+    const handleLanguageChange = (event) => {
+      setLang(event.detail.language);
+      loadTranslations(event.detail.language);
+    };
+
+    window.addEventListener('languageChanged', handleLanguageChange);
+    return () => window.removeEventListener('languageChanged', handleLanguageChange);
   }, []);
+
+  // Dil değiştiğinde çevirileri yükle
+  const loadTranslations = async (language) => {
+    try {
+      const translationsModule = await import(`./locales/${language}.json`);
+      setTranslations(translationsModule.default || translationsModule);
+      document.title = (translationsModule.default || translationsModule).title || 'KitapMatik';
+    } catch (error) {
+      console.error('Failed to load translations:', error);
+    }
+  };
+
+  // Dil değiştirme handler
+  const handleLanguageChange = async (newLang) => {
+    await changeLanguage(newLang);
+    setShowLangMenu(false);
+  };
 
   const loadBook = () => {
     try {
@@ -61,7 +69,7 @@ function App() {
         setIsCardOpen(true);
       }
     } catch (err) {
-      setError('Beni \u015ea\u015f\u0131rt listesi y\u00fcklenemedi. L\u00fctfen daha sonra tekrar deneyin.');
+      setError(translations.error || 'An error occurred');
     }
   };
 
@@ -79,31 +87,99 @@ function App() {
     setIsCardOpen(false);
   };
 
+  // Dil menüsü
+  const languageNames = {
+    tr: '🇹🇷 Türkçe',
+    en: '🇬🇧 English',
+    de: '🇩🇪 Deutsch',
+    fr: '🇫🇷 Français',
+    es: '🇪🇸 Español'
+  };
+
+  if (!isI18nReady) {
+    return (
+      <div className="App">
+        <div style={{ textAlign: 'center', padding: '50px' }}>
+          <p>{translations.loading || 'Loading...'}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
+      {/* Dil Seçici */}
+      <div style={{ position: 'fixed', top: '10px', right: '10px', zIndex: 1000 }}>
+        <button
+          onClick={() => setShowLangMenu(!showLangMenu)}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          🌐 {languageNames[lang] || lang.toUpperCase()}
+        </button>
+        {showLangMenu && (
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            right: 0,
+            marginTop: '5px',
+            backgroundColor: 'white',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            minWidth: '150px'
+          }}>
+            {getSupportedLanguages().map(language => (
+              <button
+                key={language}
+                onClick={() => handleLanguageChange(language)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '10px 15px',
+                  textAlign: 'left',
+                  border: 'none',
+                  backgroundColor: lang === language ? '#f0f0f0' : 'white',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                {languageNames[language]}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
       <header className="App-header">
-        <p className="eyebrow">G\u00fcn\u00fcn \u00d6nerisi</p>
-        <h1>Beni {"\u015ea\u015f\u0131rt"}</h1>
-        <p>Tek dokunu\u015fla yeni kitaplar ke\u015ffet, raflarda gizlenen hik\u00e2yelere kap\u0131 a\u00e7.</p>
+        <p className="eyebrow">{translations.trendRaf || 'Trend Shelf'}</p>
+        <h1>{translations.title || 'KitapMatik'}</h1>
+        <p>{translations.searchPlaceholder || 'Search books...'}</p>
       </header>
 
       <main className="App-main">
         <button
           className="cta-button"
           onClick={handleSurpriseClick}
-          aria-label={lang === "tr" ? "Beni şaşırt" : "Surprise me"}
+          aria-label={translations.surprise || 'Surprise me'}
         >
-          {lang === "tr" ? "Beni Şaşırt" : "Surprise Me"}
+          {translations.surprise || 'Surprise Me'}
         </button>
 
         {error && <p className="surprise-error">{error}</p>}
       </main>
 
       {/* Trend Raf - Aktif kalacak */}
-      <TrendRaf country={country} lang={lang} />
+      <TrendRaf country={lang === 'tr' ? 'TR' : 'DEFAULT'} lang={lang} />
 
       <footer className="App-footer">
-        <p>{'\u00a9 '}{new Date().getFullYear()} Kitap Ke\u015ffet</p>
+        <p>{'\u00a9 '}{new Date().getFullYear()} {translations.title || 'KitapMatik'}</p>
       </footer>
 
       {isCardOpen && selectedBook && (

@@ -1,0 +1,129 @@
+{
+  "title": "TrouveLivre",
+  "searchPlaceholder": "Rechercher des livres...",
+  "compare": "Comparer les prix",
+  "loading": "Récupération des prix...",
+  "search": "Rechercher",
+  "favorites": "Mes favoris",
+  "trendRaf": "Étagère tendance",
+  "blog": "Blog",
+  "surprise": "Surprenez-moi",
+  "close": "Fermer",
+  "addToCart": "Ajouter au panier",
+  "priceComparison": "Comparaison de prix",
+  "stores": "Magasins",
+  "noPriceFound": "Prix non trouvé",
+  "error": "Une erreur s'est produite",
+  "tryAgain": "Réessayer",
+  "header": {
+    "selectLanguage": "Choisir la langue",
+    "changeTheme": "Changer le thème",
+    "themeTooltip": "Basculer entre thème sombre/clair",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "badges": "Badges"
+  },
+  "splash": {
+    "title": "TrouveLivre",
+    "subtitle": "Rechercher • Trouver • Acheter",
+    "loading": "Chargement..."
+  },
+  "search": {
+    "sortLabel": "Trier:",
+    "sortRelevance": "Pertinence",
+    "sortNewest": "Plus récent",
+    "sortPopular": "Populaire",
+    "inputPlaceholder": "Rechercher par titre, auteur, éditeur ou livre de test...",
+    "inputAriaLabel": "Zone de recherche",
+    "button": "Rechercher",
+    "buttonAriaLabel": "Rechercher",
+    "filterAll": "Tous",
+    "filterAllAria": "Filtre tous (sélectionné)",
+    "filterBook": "Titre",
+    "filterBookAria": "Filtre titre",
+    "filterAuthor": "Auteur",
+    "filterAuthorAria": "Filtre auteur",
+    "filterPublisher": "Éditeur",
+    "filterPublisherAria": "Filtre éditeur",
+    "filterTest": "Livre de test",
+    "filterTestAria": "Filtre livre de test",
+    "historyAria": "Historique de recherche",
+    "resultsAria": "Résultats de recherche"
+  },
+  "favorites": {
+    "title": "Mes favoris",
+    "backButton": "← Retour à la page de recherche",
+    "containerAria": "Livres favoris",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris"
+  },
+  "price": {
+    "compareButton": "Comparer les prix",
+    "modalTitle": "Comparaison de prix",
+    "loadingSearching": "Recherche des prix...",
+    "loadingScanning": "Scan des magasins...",
+    "loadingFinding": "Recherche des meilleurs prix...",
+    "loadingAlmostReady": "Presque prêt...",
+    "statusSearching": "Recherche",
+    "statusSearchingDot": "Recherche...",
+    "statusFound": "Trouvé ✓",
+    "statusNotFound": "Non trouvé",
+    "statusError": "Erreur ✗",
+    "errorMessage": "Les prix n'ont pas pu être chargés. Veuillez réessayer plus tard.",
+    "storeName": {
+      "Amazon": "Amazon",
+      "Kitapyurdu": "Kitapyurdu",
+      "DR": "D&R",
+      "Trendyol": "Trendyol",
+      "Hepsiburada": "Hepsiburada",
+      "BKM": "BKM"
+    }
+  },
+  "book": {
+    "authorLabel": "Auteur:",
+    "yearLabel": "Année de publication:",
+    "publisherLabel": "Éditeur:",
+    "popularBadge": "Populaire",
+    "popularBadgeTooltip": "Populaire dans les magasins",
+    "purchaseAria": "Liens d'achat",
+    "drAria": "Acheter {title} chez D&R",
+    "bkmAria": "Acheter {title} chez BKM Kitap",
+    "kitapyurduAria": "Acheter {title} chez Kitapyurdu",
+    "hepsiburadaAria": "Acheter {title} chez Hepsiburada",
+    "trendyolAria": "Acheter {title} chez Trendyol",
+    "amazonAria": "Acheter {title} chez Amazon",
+    "cardAria": "Livre: {title}, Auteur: {author}"
+  },
+  "trend": {
+    "title": "Étagère tendance",
+    "ariaLabel": "Livres tendance"
+  },
+  "modal": {
+    "close": "Fermer",
+    "closeX": "✕ Fermer"
+  },
+  "badges": {
+    "title": "Mes badges",
+    "close": "Fermer"
+  },
+  "userTitle": {
+    "label": "Titre:",
+    "default": "—"
+  },
+  "quote": {
+    "ariaLabel": "Citation du jour"
+  },
+  "privacy": {
+    "icon": "🔒",
+    "title": "Confidentialité et sécurité des données:",
+    "description": "L'application n'envoie pas de données utilisateur aux serveurs. Les favoris, la sélection du thème et l'historique de recherche sont stockés uniquement localement sur l'appareil.",
+    "ariaLabel": "Avis de confidentialité"
+  },
+  "languages": {
+    "tr": "🇹🇷 Turc",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "fr": "🇫🇷 Français",
+    "es": "🇪🇸 Español"
+  }
+}

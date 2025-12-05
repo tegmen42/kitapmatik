@@ -7,7 +7,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 puppeteer.use(StealthPlugin());
 
 const app = express();
-const PORT = 3002;
+const PORT = 3003;
 
 // CORS middleware
 app.use((req, res, next) => {
@@ -23,7 +23,7 @@ let browser = null;
 async function getBrowser() {
     if (!browser) {
         browser = await puppeteer.launch({
-            headless: true,
+            headless: "new",
             args: [
                 "--no-sandbox",
                 "--disable-setuid-sandbox",
@@ -190,23 +190,32 @@ async function puPrice(url, selectors) {
         const browser = await getBrowser();
         page = await browser.newPage();
         
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36");
         await page.setViewport({ width: 1920, height: 1080 });
         
         await page.goto(url, {
             waitUntil: "domcontentloaded",
-            timeout: 40000
+            timeout: 25000
         });
         
-        await page.waitForTimeout(2500);
+        await new Promise(r => setTimeout(r, 1000));
         
-        for (let s of selectors) {
+        // Fallback selector'lar
+        const fallbackSelectors = [
+            ".prc-box-price", ".prc-box", ".product-price", 
+            "[itemprop='price']", ".value", ".price", ".sale-price"
+        ];
+        
+        const allSelectors = Array.isArray(selectors) ? [...selectors, ...fallbackSelectors] : [selectors, ...fallbackSelectors];
+        
+        let price = null;
+        for (let s of allSelectors) {
             try {
                 const el = await page.$(s);
                 if (el) {
-                    const p = await page.evaluate(el => el.innerText.trim(), el);
-                    if (p && p.length > 1) {
-                        const cleaned = cleanPrice(p);
+                    price = await page.evaluate(el => el.innerText.trim(), el);
+                    if (price && price.length > 1) {
+                        const cleaned = cleanPrice(price);
                         if (cleaned) {
                             await page.close();
                             return cleaned;
@@ -247,525 +256,12 @@ async function autoScroll(p) {
     });
 }
 
-// Ürün linki getiren fonksiyon - arama sayfasından (Puppeteer ile JavaScript yükleme)
-async function getFirstProductLink(url, linkSelectors, storeName) {
-    let page = null;
-    try {
-        const browser = await getBrowser();
-        page = await browser.newPage();
-        
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-        await page.setViewport({ width: 1920, height: 1080 });
-        
-        console.log(`🔍 ${storeName} - Arama sayfası açılıyor: ${url.substring(0, 60)}...`);
-        
-        await page.goto(url, {
-            waitUntil: "networkidle0",
-            timeout: 60000
-        });
-        
-        // JavaScript içeriğinin tam yüklenmesini bekle - daha uzun süre
-        await page.waitForTimeout(5000);
-        
-        // Popup kapatma ve cookie izin atlama - daha fazla selector
-        const popupSelectors = [
-            "button[id*='onetrust']",
-            "button[class*='accept']",
-            "#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll",
-            "button[id*='cookie']",
-            "button[class*='cookie']",
-            "[id*='accept']",
-            "[class*='accept-all']",
-            "[id*='cookie-accept']",
-            "[class*='cookie-accept']",
-            ".cookie-accept",
-            "#accept-cookies",
-            "[onclick*='accept']",
-            "[onclick*='cookie']"
-        ];
-        
-        for (const selector of popupSelectors) {
-            try {
-                await page.click(selector, { timeout: 2000 });
-                console.log(`✅ ${storeName} - Popup kapatıldı (${selector})`);
-                await page.waitForTimeout(1000);
-                break;
-            } catch (e) {
-                // Bu selector çalışmadı, diğerini dene
-            }
-        }
-        
-        // Lazy load tetikleme → ürünlerin DOM'a düşmesi için agresif scroll
-        console.log(`🔄 ${storeName} - Lazy load tetikleniyor (scroll)...`);
-        await page.evaluate(async () => {
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            
-            // Daha agresif scroll - daha fazla yukarı aşağı hareket
-            for (let i = 0; i < 3; i++) {
-                // Aşağı scroll
-                for (let y = 200; y < 5000; y += 300) {
-                    window.scrollTo(0, y);
-                    await delay(400);
-                }
-                // Yukarı scroll
-                for (let y = 5000; y > 0; y -= 300) {
-                    window.scrollTo(0, y);
-                    await delay(300);
-                }
-                // Başa dön
-                window.scrollTo(0, 0);
-                await delay(500);
-            }
-        });
-        
-        // Ek bekleme - sayfanın tam yüklenmesi için
-        await page.waitForTimeout(3000);
-        
-        // Ürünlerin gerçekten yüklenip yüklenmediğini kontrol logu
-        const domCheck = await page.evaluate(() => document.body.innerText.slice(0, 400));
-        console.log(`🧩 ${storeName} - DOM yüklendi ön izleme: ${domCheck.substring(0, 100)}...`);
-        
-        // Infinite scroll - daha stabil ürün yükleme (opsiyonel ama güçlü upgrade)
-        await autoScroll(page);
-        
-        // Ek bekleme - ürünlerin tam yüklenmesi için
-        await page.waitForTimeout(2000);
-        
-        // Debug: Sayfa durumu kontrolü - çok detaylı
-        const pageInfo = await page.evaluate(() => {
-            return {
-                title: document.title,
-                url: window.location.href,
-                bodyText: document.body.innerText.slice(0, 500),
-                linkCount: document.querySelectorAll('a[href]').length,
-                divCount: document.querySelectorAll('div').length,
-                hasContent: document.body.innerText.length > 100,
-                allLinks: Array.from(document.querySelectorAll('a[href]')).slice(0, 20).map(a => ({
-                    href: a.href || a.getAttribute('href'),
-                    text: a.textContent.trim().substring(0, 50),
-                    className: a.className
-                }))
-            };
-        });
-        
-        console.log(`\n📄 ${storeName} - SAYFA BİLGİLERİ:`);
-        console.log(`   URL: ${pageInfo.url}`);
-        console.log(`   Başlık: ${pageInfo.title}`);
-        console.log(`   Link Sayısı: ${pageInfo.linkCount}`);
-        console.log(`   Div Sayısı: ${pageInfo.divCount}`);
-        console.log(`   İçerik Var mı: ${pageInfo.hasContent ? '✅' : '❌'}`);
-        console.log(`   İlk 10 Link Örneği:`);
-        pageInfo.allLinks.slice(0, 10).forEach((link, idx) => {
-            if (link.href) {
-                console.log(`      ${idx + 1}. ${link.href.substring(0, 80)}`);
-            }
-        });
-        
-        // Debug: Sayfa screenshot'ı al
-        try {
-            await page.screenshot({ path: `debug_${storeName.toLowerCase().replace(/\s+/g, '_')}.png`, fullPage: true });
-            console.log(`📸 ${storeName} - Screenshot kaydedildi: debug_${storeName.toLowerCase().replace(/\s+/g, '_')}.png`);
-        } catch (e) {
-            console.log(`⚠️  Screenshot hatası: ${e.message}`);
-        }
-        
-        // Eğer sayfada hiç link yoksa veya içerik yoksa uyar
-        if (pageInfo.linkCount === 0) {
-            console.log(`⚠️  ${storeName} - SAYFADA HİÇ LİNK YOK! Muhtemelen bot algılandı veya sayfa yüklenmedi.`);
-            console.log(`   Sayfa içeriği: ${pageInfo.bodyText.substring(0, 200)}...`);
-        }
-        
-        // Selector'larla link ara - daha agresif strateji
-        for (let sel of linkSelectors) {
-            try {
-                // Önce ilk elementi bul
-                const link = await page.evaluate((selector) => {
-                    const element = document.querySelector(selector);
-                    if (element) {
-                        return element.href || element.getAttribute('href');
-                    }
-                    return null;
-                }, sel);
-                
-                if (link && link.length > 10) {
-                    let fullLink = link;
-                    if (!link.startsWith("http")) {
-                        const baseUrl = url.split("/").slice(0, 3).join("/");
-                        fullLink = link.startsWith("/") ? baseUrl + link : baseUrl + "/" + link;
-                    }
-                    console.log(`✅ ${storeName} - Ürün linki bulundu (${sel}): ${fullLink.substring(0, 70)}...`);
-                    await page.close();
-                    return fullLink;
-                }
-            } catch (e) {
-                // Selector bulunamadı, devam et
-            }
-        }
-        
-        // Eğer selector'lar çalışmadıysa, daha geniş arama yap
-        console.log(`⚠️  ${storeName} - Selector'lar çalışmadı, geniş arama yapılıyor...`);
-        
-        // Trendyol için özel geniş arama
-        if (url.includes("trendyol.com")) {
-            const trendyolLink = await page.evaluate(() => {
-                // Tüm linkleri al
-                const links = Array.from(document.querySelectorAll('a[href]'));
-                for (const link of links) {
-                    const href = link.href || link.getAttribute('href');
-                    if (href && (
-                        href.includes('/urun/') ||
-                        href.includes('/p-') ||
-                        (href.includes('trendyol.com') && (href.match(/\/(urun|p-)/)))
-                    )) {
-                        return href;
-                    }
-                }
-                return null;
-            });
-            
-            if (trendyolLink) {
-                console.log(`✅ ${storeName} - Trendyol geniş arama ile link bulundu: ${trendyolLink.substring(0, 70)}...`);
-                await page.close();
-                return trendyolLink;
-            }
-        }
-        
-        // Hepsiburada için özel geniş arama
-        if (url.includes("hepsiburada.com")) {
-            const hepsiburadaLink = await page.evaluate(() => {
-                const links = Array.from(document.querySelectorAll('a[href]'));
-                for (const link of links) {
-                    const href = link.href || link.getAttribute('href');
-                    if (href && (
-                        href.includes('-p-') ||
-                        href.includes('/urun/') ||
-                        (href.includes('hepsiburada.com') && href.includes('/p'))
-                    )) {
-                        return href;
-                    }
-                }
-                return null;
-            });
-            
-            if (hepsiburadaLink) {
-                console.log(`✅ ${storeName} - Hepsiburada geniş arama ile link bulundu: ${hepsiburadaLink.substring(0, 70)}...`);
-                await page.close();
-                return hepsiburadaLink;
-            }
-        }
-        
-        // BKM için özel geniş arama
-        if (url.includes("bkmkitap.com")) {
-            const bkmLink = await page.evaluate(() => {
-                const links = Array.from(document.querySelectorAll('a[href]'));
-                for (const link of links) {
-                    const href = link.href || link.getAttribute('href');
-                    if (href && (
-                        href.includes('urun') ||
-                        href.includes('product') ||
-                        href.includes('kitap') ||
-                        (href.includes('bkmkitap.com') && (href.includes('/urun/') || href.includes('/kitap/')))
-                    )) {
-                        return href;
-                    }
-                }
-                return null;
-            });
-            
-            if (bkmLink) {
-                console.log(`✅ ${storeName} - BKM geniş arama ile link bulundu: ${bkmLink.substring(0, 70)}...`);
-                await page.close();
-                return bkmLink;
-            }
-        }
-        
-        // Link bulunamazsa sayfadaki tüm linkleri daha agresif tara - Geliştirilmiş versiyon
-        const allLinks = await page.evaluate(() => {
-            const links = Array.from(document.querySelectorAll('a[href], div[onclick], [data-href], [href], link'));
-            const result = [];
-            
-            // İlk 100 linki al (daha fazla kapsama için)
-            links.slice(0, 100).forEach(link => {
-                let href = link.href || link.getAttribute('href') || link.getAttribute('data-href');
-                
-                // Data attribute'lerden link çek
-                if (!href) {
-                    href = link.getAttribute('data-url') || 
-                           link.getAttribute('data-link') ||
-                           link.getAttribute('data-href');
-                }
-                
-                // Onclick handler'dan link çek
-                if (!href && link.onclick) {
-                    const onclick = link.getAttribute('onclick') || '';
-                    const match = onclick.match(/(?:href|url|link)["']?[:=]\s*["']?([^"'\s]+)/i);
-                    if (match) href = match[1];
-                }
-                
-                if (href && href.length > 5) {
-                    result.push({
-                        href: href,
-                        text: link.textContent ? link.textContent.trim().substring(0, 50) : '',
-                        className: link.className || '',
-                        id: link.id || '',
-                        parentClass: link.parentElement ? (link.parentElement.className || '') : ''
-                    });
-                }
-            });
-            
-            return result;
-        });
-        
-        console.log(`🔍 ${storeName} - ${allLinks.length} link bulundu, taranıyor...`);
-        
-        // Gelişmiş link arama - mağaza bazlı özel kontroller
-        console.log(`🔍 ${storeName} - ${allLinks.length} link bulundu, analiz ediliyor...`);
-        
-        // Trendyol için gelişmiş kontrol
-        if (url.includes("trendyol.com")) {
-            for (const linkItem of allLinks) {
-                const href = linkItem.href || '';
-                const text = (linkItem.text || '').toLowerCase();
-                const className = (linkItem.className || '').toLowerCase();
-                
-                // Trendyol ürün linki pattern'leri
-                if (href && (
-                    href.includes("/urun/") || 
-                    href.includes("/p-") ||
-                    href.includes("/brand/") && href.includes("/urun/") ||
-                    (href.includes("trendyol.com") && (href.match(/\/p-|\/urun\//)))
-                )) {
-                    // Ürün linki olmayan linkleri filtrele
-                    if (href.includes("/kampanya/") || href.includes("/kategori/") || href.includes("/marka/")) {
-                        continue;
-                    }
-                    
-                    let fullLink = href;
-                    if (!href.startsWith("http")) {
-                        const baseUrl = url.split("/").slice(0, 3).join("/");
-                        fullLink = href.startsWith("/") ? baseUrl + href : baseUrl + "/" + href;
-                    }
-                    console.log(`✅ ${storeName} - Trendyol link bulundu: ${fullLink.substring(0, 70)}...`);
-                    await page.close();
-                    return fullLink;
-                }
-            }
-        }
-        
-        // Hepsiburada için gelişmiş kontrol
-        if (url.includes("hepsiburada.com")) {
-            for (const linkItem of allLinks) {
-                const href = linkItem.href || '';
-                const text = (linkItem.text || '').toLowerCase();
-                
-                // Hepsiburada ürün linki pattern'leri
-                if (href && (
-                    href.includes("-p-") ||
-                    href.includes("/urun/") ||
-                    (href.includes("hepsiburada.com") && href.match(/-p-|\/p\/|\/urun\//)) ||
-                    (href.includes("hepsiburada.com") && !href.includes("/ara") && !href.includes("/kampanya"))
-                )) {
-                    // Ürün linki olmayan linkleri filtrele
-                    if (href.includes("/kampanya/") || href.includes("/kategori/") || href.includes("/marka/")) {
-                        continue;
-                    }
-                    
-                    let fullLink = href;
-                    if (!href.startsWith("http")) {
-                        const baseUrl = url.split("/").slice(0, 3).join("/");
-                        fullLink = href.startsWith("/") ? baseUrl + href : baseUrl + "/" + href;
-                    }
-                    console.log(`✅ ${storeName} - Hepsiburada link bulundu: ${fullLink.substring(0, 70)}...`);
-                    await page.close();
-                    return fullLink;
-                }
-            }
-        }
-        
-        // BKM için gelişmiş kontrol
-        if (url.includes("bkmkitap.com")) {
-            for (const linkItem of allLinks) {
-                const href = linkItem.href || '';
-                const text = (linkItem.text || '').toLowerCase();
-                
-                // BKM ürün linki pattern'leri
-                if (href && (
-                    href.includes("/urun/") ||
-                    href.includes("/kitap/") ||
-                    (href.includes("bkmkitap.com") && (href.includes("/urun/") || href.includes("/kitap/"))) ||
-                    (href.includes("bkmkitap.com") && !href.includes("/arama") && !href.includes("/kategori"))
-                )) {
-                    let fullLink = href;
-                    if (!href.startsWith("http")) {
-                        const baseUrl = url.split("/").slice(0, 3).join("/");
-                        fullLink = href.startsWith("/") ? baseUrl + href : baseUrl + "/" + href;
-                    }
-                    console.log(`✅ ${storeName} - BKM link bulundu: ${fullLink.substring(0, 70)}...`);
-                    await page.close();
-                    return fullLink;
-                }
-            }
-        }
-        
-        // Genel kontrol - herhangi bir ürün linki pattern'i
-        for (const linkItem of allLinks) {
-            const href = linkItem.href || '';
-            if (href && (
-                href.match(/\/urun\/|\/product\/|\/p\//) ||
-                href.includes("-p-") ||
-                (href.match(/\/p-\d+/))
-            )) {
-                // Ürün linki olmayan linkleri filtrele
-                if (href.includes("/kampanya/") || href.includes("/kategori/") || href.includes("/marka/") || 
-                    href.includes("/arama") || href.includes("/search")) {
-                    continue;
-                }
-                
-                let fullLink = href;
-                if (!href.startsWith("http")) {
-                    const baseUrl = url.split("/").slice(0, 3).join("/");
-                    fullLink = href.startsWith("/") ? baseUrl + href : baseUrl + "/" + href;
-                }
-                console.log(`✅ ${storeName} - Genel pattern ile link bulundu: ${fullLink.substring(0, 70)}...`);
-                await page.close();
-                return fullLink;
-            }
-        }
-        
-        // Debug: İlk 10 linki göster (daha detaylı)
-        if (allLinks.length > 0) {
-            console.log(`🔍 ${storeName} - İlk 10 link örneği:`);
-            allLinks.slice(0, 10).forEach((link, idx) => {
-                console.log(`   ${idx + 1}. ${link.href.substring(0, 100)} (class: ${link.className.substring(0, 30)})`);
-            });
-        }
-        
-        await page.close();
-        console.log(`⚠️  ${storeName} - Ürün linki bulunamadı`);
-        return null;
-    } catch (error) {
-        if (page) {
-            try {
-                await page.close();
-            } catch (e) {}
-        }
-        console.log(`❌ ${storeName} - Ürün linki hatası: ${error.message.substring(0, 50)}`);
-        return null;
-    }
-}
-
-// Ürün sayfasından fiyat alan fonksiyon
-async function productPrice(url, selectors, storeName) {
-    let page = null;
-    try {
-        const browser = await getBrowser();
-        page = await browser.newPage();
-        
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-        await page.setViewport({ width: 1920, height: 1080 });
-        
-        await page.goto(url, {
-            waitUntil: "domcontentloaded",
-            timeout: 45000
-        });
-        
-        await page.waitForTimeout(2500);
-        
-        for (let sel of selectors) {
-            try {
-                const el = await page.$(sel);
-                if (el) {
-                    const price = await page.evaluate(el => el.innerText.trim(), el);
-                    if (price && price.length > 1) {
-                        const cleaned = cleanPrice(price);
-                        if (cleaned) {
-                            console.log(`✅ ${storeName} - Fiyat bulundu: ${cleaned} TL (selector: ${sel})`);
-                            await page.close();
-                            return cleaned;
-                        }
-                    }
-                }
-            } catch (e) {
-                // Selector bulunamadı, devam et
-            }
-        }
-        
-        // Selector'larla bulunamazsa sayfadaki tüm metni tara
-        const pageText = await page.evaluate(() => document.body.innerText);
-        const pricePatterns = [
-            /(\d{1,4}[.,]\d{2})\s*(?:TL|₺)/gi,
-            /(?:₺|TL)\s*(\d{1,4}[.,]?\d{0,2})/gi
-        ];
-        
-        for (const pattern of pricePatterns) {
-            const matches = pageText.match(pattern);
-            if (matches) {
-                for (const match of matches.slice(0, 5)) {
-                    const cleaned = cleanPrice(match);
-                    if (cleaned) {
-                        console.log(`✅ ${storeName} - Fiyat bulundu (pattern): ${cleaned} TL`);
-                        await page.close();
-                        return cleaned;
-                    }
-                }
-            }
-        }
-        
-        await page.close();
-        console.log(`❌ ${storeName} - Ürün sayfasında fiyat bulunamadı`);
-        return "-";
-    } catch (error) {
-        if (page) {
-            try {
-                await page.close();
-            } catch (e) {}
-        }
-        console.log(`❌ ${storeName} - Ürün sayfası hatası: ${error.message.substring(0, 50)}`);
-        return "-";
-    }
-}
 
 // Sepete ekleme URL'i oluşturma fonksiyonu
 function createCartLink(url, store) {
     if (!url) return null;
-    
-    if (store === "Trendyol") {
-        // Trendyol sepete ekleme: Ürün sayfasına yönlendir (sepete ekleme butonu sayfada)
-        // Veya direkt sepete ekleme URL'i oluştur
-        const idMatch = url.match(/p-(\d+)/);
-        if (idMatch) {
-            // Sepete ekleme için ürün sayfasına yönlendir
-            return url;
-        }
-        return url;
-    }
-    
-    if (store === "Hepsiburada") {
-        // Hepsiburada sepete ekleme: Ürün sayfasına yönlendir
-        return url;
-    }
-    
-    if (store === "BKM") {
-        // BKM sepete ekleme: Ürün sayfasına yönlendir
-        return url;
-    }
-    
-    if (store === "Amazon") {
-        // Amazon sepete ekleme: Ürün sayfasına yönlendir
-        return url;
-    }
-    
-    if (store === "Kitapyurdu") {
-        // Kitapyurdu sepete ekleme: Ürün sayfasına yönlendir
-        return url;
-    }
-    
-    if (store === "DR") {
-        // D&R sepete ekleme: Ürün sayfasına yönlendir
-        return url;
-    }
-    
-    return url;
+    // Basit yaklaşım: URL'e sepete ekleme parametresi ekle
+    return url + (url.includes('?') ? '&' : '?') + 'add-to-cart=1';
 }
 
 // Deeplink oluşturma fonksiyonu
@@ -795,28 +291,590 @@ function createDeepLink(url, store) {
     return url;
 }
 
-// Mağaza fiyatı (yeni) - tam scraping süreci - link ve deeplink ile
-async function fullScrape(query, store) {
-    const searchUrl = store.search(query);
+// Generic: İlk ürün linkini bul
+async function getFirstProductLink(page, selectors, domain, query) {
+    const queryLower = query.toLowerCase();
     
-    // 1) Arama sayfası → ürün linki bul
-    const product = await getFirstProductLink(searchUrl, store.links, store.name);
-    if (!product) {
-        return { price: "-", link: null, deeplink: null, cartLink: null };
+    // 1) selector bazlı arama
+    for (const selector of selectors) {
+        try {
+            await page.waitForSelector(selector, { timeout: 4000 });
+            let links = await page.$$eval(selector, els => els.map(a => a.href || a.getAttribute("href")));
+
+            // Önce query içeren linkleri filtrele (öncelik)
+            let queryLinks = links.filter(l => l && l.toLowerCase().includes(queryLower));
+            
+            // Query içeren link varsa onu kullan
+            if (queryLinks.length > 0) {
+                let link = queryLinks[0];
+                if (link.startsWith("/")) link = domain + link;
+                return link;
+            }
+            
+            // Query yoksa "kitap", "emp", "oz" içeren linklere bak (ama "cocuk", "boya", "duvar" içermesin)
+            let fallbackLinks = links.filter(l => {
+                if (!l) return false;
+                const lLower = l.toLowerCase();
+                const hasKitap = lLower.includes("kitap") || lLower.includes("emp") || lLower.includes("oz");
+                const hasExcluded = lLower.includes("cocuk") || lLower.includes("boya") || lLower.includes("duvar") || lLower.includes("klasik");
+                return hasKitap && !hasExcluded;
+            });
+            
+            if (fallbackLinks.length > 0) {
+                let link = fallbackLinks[0];
+                if (link.startsWith("/")) link = domain + link;
+                return link;
+            }
+        } catch {}
     }
-    
-    // 2) Ürün sayfası → fiyat çek
-    const price = await productPrice(product, store.prices, store.name);
-    
-    return {
-        price: price || "-",
-        link: product,
-        deeplink: createDeepLink(product, store.name),
-        cartLink: createCartLink(product, store.name)
-    };
+
+    // 2) fallback → tüm linkleri tara, önce query içerenleri
+    const fallback = await page.evaluate((q) => {
+        const allLinks = [...document.querySelectorAll("a")]
+            .map(a => a.href)
+            .filter(h => h);
+        
+        // Önce query içeren linkleri bul
+        const queryLinks = allLinks.filter(h => h.toLowerCase().includes(q.toLowerCase()));
+        if (queryLinks.length > 0) return queryLinks;
+        
+        // Query yoksa "kitap" içeren linklere bak (ama "cocuk", "boya", "duvar" içermesin)
+        const kitapLinks = allLinks.filter(h => {
+            const hLower = h.toLowerCase();
+            return hLower.includes("kitap") && 
+                   !hLower.includes("cocuk") && 
+                   !hLower.includes("boya") && 
+                   !hLower.includes("duvar") && 
+                   !hLower.includes("klasik");
+        });
+        return kitapLinks;
+    }, query);
+
+    if (fallback[0]) {
+        let link = fallback[0];
+        if (link.startsWith("/")) link = domain + link;
+        return link;
+    }
+
+                return null;
 }
 
-// Mağaza yapılandırması - Güncel ve genişletilmiş selector'lar
+// Generic: Fiyat çek
+async function getPrice(page, selectors, bookName = null) {
+    // H1/title kontrolü (eğer bookName verilmişse)
+    if (bookName) {
+        const productTitle = await page.$eval("h1", el => el.innerText.toLowerCase()).catch(() => "");
+        if (productTitle && !productTitle.includes(bookName.toLowerCase())) {
+            console.log("❌ Başlık eşleşmedi → yanlış ürün");
+                return null;
+        }
+    }
+    
+    const priceSelectors = [
+        ".prc-box-dscntd",
+        ".prc-box",
+        ".sale-price",
+        ".price",
+        ".product-price",
+        ".value",
+        "[data-testid='price-current-price']",
+        "span[class*='Price_']",
+        "[itemprop='price']",
+        ".discount-price",
+        ".selling-price",
+        ".urunFiyat"
+    ];
+    
+    const allSelectors = selectors && selectors.length > 0 ? [...selectors, ...priceSelectors] : priceSelectors;
+    
+    // 2 saniyelik bekleme
+    await new Promise(r => setTimeout(r, 2000));
+    
+    for (const sel of allSelectors) {
+        try {
+            const priceText = await page.$eval(sel, el => {
+                const txt = el.innerText || el.textContent || '';
+                return txt.replace(/[^0-9.,]/g,"").trim();
+            });
+            if (priceText && priceText.length > 1) {
+                const cleaned = cleanPrice(priceText);
+                if (cleaned) {
+                    return cleaned;
+                }
+            }
+        } catch (e) {
+            // Selector bulunamadı, devam et
+        }
+    }
+    
+    // Fallback 1: querySelectorAll ile tüm DOM'u tara
+    try {
+        const allElements = await page.$$eval('*', elements => {
+            return elements.map(el => {
+                const txt = el.innerText || el.textContent || '';
+                if (txt && (txt.includes('₺') || txt.includes('TL'))) {
+                    return txt.replace(/[^0-9.,]/g,"").trim();
+                }
+                return null;
+            }).filter(t => t && t.length > 1);
+        });
+        
+        if (allElements && allElements.length > 0) {
+            for (const priceText of allElements) {
+                const cleaned = cleanPrice(priceText);
+                if (cleaned) {
+                    return cleaned;
+                }
+            }
+        }
+    } catch (e) {
+        // Fallback 1 başarısız, devam et
+    }
+    
+    // Fallback 2: TL veya ₺ içeren textNode bul
+    try {
+        const fallbackPrice = await page.evaluate(() => {
+            const txt = [...document.body.querySelectorAll("*")]
+                .map(e => e.innerText || e.textContent || '')
+                .find(t => t && (t.includes("TL") || t.includes("₺")));
+            return txt ? txt.replace(/[^0-9.,]/g,"") : null;
+        });
+        
+        if (fallbackPrice && fallbackPrice.length > 1) {
+            const cleaned = cleanPrice(fallbackPrice);
+            if (cleaned) {
+                return cleaned;
+            }
+        }
+    } catch (e) {
+        // Fallback 2 başarısız
+    }
+    
+        return null;
+}
+
+// Mağaza fiyatı (yeni) - basit ve etkili scraping
+async function fullScrape(query, store) {
+    let page = null;
+    try {
+        const browser = await getBrowser();
+        page = await browser.newPage();
+        
+        await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36");
+        await page.setViewport({ width: 1920, height: 1080 });
+        
+        const searchUrl = store.search(query);
+        const domain = new URL(searchUrl).origin;
+        console.log(`🔍 ${store.name} - Arama: ${searchUrl.substring(0, 60)}...`);
+        
+        // 1) Arama sayfasına git
+        await page.goto(searchUrl, {
+            waitUntil: "domcontentloaded",
+            timeout: 25000
+        });
+        await new Promise(r => setTimeout(r, 2000));
+        
+        // 2) Cookie popup bypass - text içeren butonları da dene
+        const cookieSelectors = [
+            "button#onetrust-accept-btn-handler",
+            "button[aria-label='Kabul et']",
+            ".cookie-policy-accept",
+            "button[class*='accept']"
+        ];
+        
+        for (const sel of cookieSelectors) {
+            try {
+                const btn = await page.$(sel);
+                if (btn) {
+                    await page.click(sel).catch(() => {});
+                    console.log(`✅ ${store.name} - Cookie popup kapatıldı (${sel})`);
+                    await new Promise(r => setTimeout(r, 500));
+                    break;
+                }
+            } catch (e) {
+                // Cookie butonu bulunamadı, devam et
+            }
+        }
+        
+        // Text içeren butonları da dene
+        try {
+            const textButtons = await page.$$eval('button', buttons => 
+                buttons
+                    .filter(btn => {
+                        const text = (btn.innerText || btn.textContent || '').toLowerCase();
+                        return text.includes('kabul') || text.includes('accept');
+                    })
+                    .map(btn => {
+                        const id = btn.id;
+                        const classes = btn.className;
+                        return id ? `button#${id}` : classes ? `button.${classes.split(' ')[0]}` : null;
+                    })
+                    .filter(Boolean)
+            );
+            
+            for (const btnSel of textButtons.slice(0, 3)) {
+                try {
+                    await page.click(btnSel).catch(() => {});
+                    console.log(`✅ ${store.name} - Cookie popup kapatıldı (text match)`);
+                    await new Promise(r => setTimeout(r, 500));
+                    break;
+            } catch (e) {}
+        }
+        } catch (e) {
+            // Text match başarısız, devam et
+        }
+        
+        // 3) Ürün grid'i için bekle
+        await page.waitForSelector("a[href*='/p-'], a[href*='/urun'], .product-card, .p-card-chldrn-cntnr", {timeout: 8000}).catch(() => null);
+        
+        // 4) Anti-bot delay - her mağaza için 2-2.5 sn rastgele bekleme
+        const delay = 2000 + Math.random() * 500; // 2000-2500ms arası
+        await new Promise(r => setTimeout(r, delay));
+        
+        // 5) İlk ürün linkini bul
+        const link = await getFirstProductLink(page, store.links, domain, query);
+        if (!link) {
+            console.log(`⚠️  ${store.name} - Ürün linki bulunamadı`);
+            await page.close();
+            return { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+        
+        // Link encoding temizle (özellikle Trendyol için)
+        if (link) {
+            try {
+                // Boşlukları ve encoding sorunlarını temizle
+                link = encodeURI(decodeURIComponent(link.trim().replace(/\s+/g, ' ')));
+            } catch (e) {
+                // Encoding hatası varsa orijinal link'i kullan
+            }
+        }
+        
+        console.log(`✅ ${store.name} - Link bulundu: ${link ? link.substring(0, 70) : 'null'}...`);
+        
+        // 6) Ürün sayfasına git
+        await page.goto(link, {
+            waitUntil: "networkidle2",
+            timeout: 25000
+        });
+        await new Promise(r => setTimeout(r, 2000));
+        
+        // 6.5) H1/title kontrolü - yanlış ürün kontrolü
+        const productTitle = await page.$eval("h1", el => el.innerText.toLowerCase()).catch(() => "");
+        if (productTitle && !productTitle.includes(query.toLowerCase())) {
+            console.log("❌ Başlık eşleşmedi → yanlış ürün");
+            await page.close();
+            return { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+        
+        // 7) Fiyatı çek
+        const price = await getPrice(page, store.prices, query);
+        
+        // 📌 HEADLINE & BOOK VALIDATION EKLE
+        // Ürün başlığı kontrolü
+        const pageTitle = await page.title();
+        const lowered = pageTitle.toLowerCase();
+        const q = query.toLowerCase();
+
+        if (!lowered.includes(q) && !lowered.match(new RegExp(q.split(" ")[0], "i"))) {
+            console.log("❌ Ürün yanlış eşleşti → " + pageTitle);
+            await page.close();
+            return { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+
+        // Kategori filtrele (yanlış sonuç elemeleri)
+        if (lowered.includes("boya") || lowered.includes("duvar") || lowered.includes("klasik") || lowered.includes("çocuk")) {
+            console.log("⚠ Uygun olmayan kategori → " + pageTitle);
+            await page.close();
+            return { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+
+        // Fiyat yoksa Google Books API fallback
+        if (!price || price === "-" || price === null) {
+            console.log("⚠ Fiyat yok → Google Books API'ye fallback yapılıyor");
+            await page.close();
+            
+            try {
+                const googleRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`);
+                const data = await googleRes.json();
+                const googleLink = data.items?.[0]?.volumeInfo?.infoLink ?? null;
+                const result = {
+                    store: "Google Books",
+                    price: data.items?.[0]?.saleInfo?.listPrice?.amount ?? "-",
+                    link: googleLink,
+                    deeplink: null,
+                    cartLink: createCartLink(googleLink, "Google Books")
+                };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            } catch (googleError) {
+                console.log(`⚠ Google Books API hatası: ${googleError.message}`);
+                const result = { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            }
+        }
+        
+        await page.close();
+        
+        // Link tamamlayıcı: NULL ise arama linkini kullan (özellikle D&R için)
+        let finalLink = link;
+        if (!finalLink && store.name === "D&R") {
+            finalLink = store.search(query);
+            console.log(`⚠️ ${store.name} - Ürün linki yok, arama linki kullanılıyor`);
+        }
+        
+        // Deeplink oluştur
+        const deeplink = finalLink ? createDeepLink(finalLink, store.name) : null;
+        
+        // CartLink oluştur - standardize edilmiş mantık
+        const cartLink = createCartLink(finalLink, store.name);
+        
+        // Sonuç objesi oluştur
+        const result = {
+            store: store.name,
+            price: price || "-",
+            link: finalLink,
+            deeplink: deeplink,
+            cartLink: cartLink
+        };
+        
+        console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+        
+        return result;
+    } catch (error) {
+        if (page) {
+            try {
+                await page.close();
+            } catch (e) {}
+        }
+        // Kidega 404 veya diğer hatalar için
+        if (error.message && (error.message.includes('404') || error.message.includes('not found'))) {
+            // Google Books API fallback
+            try {
+                const googleRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`);
+                const data = await googleRes.json();
+                const googleLink = data.items?.[0]?.volumeInfo?.infoLink ?? null;
+                const result = {
+                    store: "Google Books",
+                    price: data.items?.[0]?.saleInfo?.listPrice?.amount ?? "-",
+                    link: googleLink,
+                    deeplink: null,
+                    cartLink: createCartLink(googleLink, "Google Books")
+                };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            } catch (googleError) {
+                const result = { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            }
+        }
+        console.log(`❌ ${store.name} - fullScrape hatası: ${error.message.substring(0, 50)}`);
+        
+        // Google Books API fallback
+        try {
+            const googleRes = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}`);
+            const data = await googleRes.json();
+            const googleLink = data.items?.[0]?.volumeInfo?.infoLink ?? null;
+            const result = {
+                store: "Google Books",
+                price: data.items?.[0]?.saleInfo?.listPrice?.amount ?? "-",
+                link: googleLink,
+                deeplink: null,
+                cartLink: createCartLink(googleLink, "Google Books")
+            };
+            console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+            return result;
+        } catch (googleError) {
+            const result = { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+            console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+            return result;
+        }
+    }
+}
+
+// IP'den ülke kodu belirleme (Express için)
+async function detectCountryFromIP(req) {
+    try {
+        const clientIP = req.headers['x-forwarded-for']?.split(',')[0] || 
+                        req.headers['x-real-ip'] || 
+                        req.connection?.remoteAddress ||
+                        req.socket?.remoteAddress ||
+                        req.ip;
+        
+        if (clientIP && clientIP !== '::1' && !clientIP.startsWith('127.')) {
+            const response = await axios.get(`https://ipapi.co/${clientIP}/json/`, {
+                timeout: 5000
+            });
+            return response.data?.country_code?.toUpperCase() || 'TR';
+        }
+        
+        const response = await axios.get('https://ipapi.co/json/', {
+            timeout: 5000
+        });
+        return response.data?.country_code?.toUpperCase() || 'TR';
+    } catch (error) {
+        console.error('IP detection error:', error.message);
+        return 'TR';
+    }
+}
+
+// Mağaza yapılandırması - Ülke bazlı gruplar (api/price.js ile aynı)
+const STORES_BY_COUNTRY = {
+    TR: [
+        { name: "Trendyol", search: q => `https://www.trendyol.com/sr?q=${q}`, links: ["a[href*='/p-']", "a[href*='sr?']", "a[href*='urun']", ".p-card-chldrn-cntnr a", "a[class*='product']", "a[href*='kitap']"], prices: [".prc-box-dscntd", ".prc-box-sllng", ".pr-bx-price", "[data-testid='price-current-price']", "[class*='price']", "span[class*='prc']", "div[class*='price']"], method: "puppeteer" },
+        { name: "Hepsiburada", search: q => `https://www.hepsiburada.com/ara?q=${q}`, links: ["a[href*='/p-']", "a[href*='/urun']", "a[class*='product']", "a[href*='kitap']"], prices: ["[itemprop='price']", ".product-price", ".extra-discount-price", "span[class*='Price_']", "span[class*='price']", ".price", ".price-tag"], method: "puppeteer" },
+        { name: "D&R", search: q => `https://www.dr.com.tr/search?q=${q}`, links: ["a.prd-link"], prices: [".prd-prc", ".price"], method: "axios" },
+        { name: "BKM", search: q => `https://www.bkmkitap.com/index.php?p=search&search=${q}`, links: ["a[href*='/kitap']", ".productItem a", "a[href*='emp']"], prices: [".discount-price", ".selling-price", ".price", ".urunFiyat", "[itemprop='price']"], method: "puppeteer" },
+        { name: "Kitapyurdu", search: q => `https://www.kitapyurdu.com/index.php?route=product/search?filter_name=${q}`, links: ["a[href*='/kitap']", ".product-item a", "a[href*='empati']"], prices: [".price-new", ".price .price-new"], method: "axios" },
+        { name: "Kidega", search: q => `https://www.kidega.com/arama?q=${q}`, links: ["a.product-item-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    US: [
+        { name: "Amazon US", search: q => `https://www.amazon.com/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "Barnes&Noble", search: q => `https://www.barnesandnoble.com/s/${q}`, links: ["a.prouct-info-title-link"], prices: [".price-current", ".price"], method: "axios" },
+        { name: "Books-A-Million", search: q => `https://www.booksamillion.com/search?query=${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Walmart Books", search: q => `https://www.walmart.com/search?q=${q}`, links: ["a.product-title-link"], prices: [".price", "[itemprop='price']"], method: "axios" }
+    ],
+    UK: [
+        { name: "Amazon UK", search: q => `https://www.amazon.co.uk/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "Waterstones", search: q => `https://www.waterstones.com/books/search/term/${q}`, links: ["a.book-title-link"], prices: [".price", ".book-price"], method: "axios" },
+        { name: "Blackwell's", search: q => `https://blackwells.co.uk/bookshop/search/${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "WHSmith", search: q => `https://www.whsmith.co.uk/search/go?w=${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    DE: [
+        { name: "Amazon DE", search: q => `https://www.amazon.de/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "Thalia", search: q => `https://www.thalia.de/suche?sq=${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Hugendubel", search: q => `https://www.hugendubel.de/de/suche/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Weltbild", search: q => `https://www.weltbild.de/suche/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    FR: [
+        { name: "Amazon FR", search: q => `https://www.amazon.fr/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "FNAC", search: q => `https://www.fnac.com/SearchResult/ResultList.aspx?SCat=0&Search=${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Decitre", search: q => `https://www.decitre.fr/recherche/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Cultura", search: q => `https://www.cultura.com/recherche/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    ES: [
+        { name: "Amazon ES", search: q => `https://www.amazon.es/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "CasaDelLibro", search: q => `https://www.casadellibro.com/busqueda/libros/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "El Corte Inglés", search: q => `https://www.elcorteingles.es/libros/buscar/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "FNAC ES", search: q => `https://www.fnac.es/SearchResult/ResultList.aspx?SCat=0&Search=${q}`, links: ["a.product-title-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    IT: [
+        { name: "Amazon IT", search: q => `https://www.amazon.it/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "IBS", search: q => `https://www.ibs.it/cerca/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Feltrinelli", search: q => `https://www.lafeltrinelli.it/cerca?q=${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" },
+        { name: "Mondadori", search: q => `https://www.mondadoristore.it/cerca/${q}`, links: ["a.product-link"], prices: [".price", ".product-price"], method: "axios" }
+    ],
+    IN: [
+        { name: "Amazon IN", search: q => `https://www.amazon.in/s?k=${q}`, links: ["h2 a.a-link-normal"], prices: [".a-price-whole", ".a-price .a-offscreen"], method: "axios" },
+        { name: "Flipkart Books", search: q => `https://www.flipkart.com/search?q=${q}`, links: ["a._2UzuFa"], prices: ["._30jeq3", "[class*='price']"], method: "axios" }
+    ],
+    GLOBAL: [
+        { name: "AbeBooks", search: q => `https://www.abebooks.com/servlet/SearchResults?kn=${q}`, links: ["a.item-link"], prices: [".item-price", ".price"], method: "axios" },
+        { name: "Google Books", search: q => null, links: [], prices: [], method: "api" }
+    ]
+};
+
+// Mağaza scraping helper - method'a göre doğru scraper'ı çağır
+async function scrapeStore(storeConfig, query) {
+    try {
+        // Kidega için özel 404 catch
+        if (storeConfig.name === "Kidega") {
+    try {
+        if (storeConfig.method === "axios") {
+            const searchUrl = storeConfig.search(query);
+            if (!searchUrl) {
+                const result = { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            }
+            const price = await axPrice(searchUrl, storeConfig.prices, storeConfig.name, storeConfig.links?.[0] || null);
+            let link = storeConfig.links?.[0] ? await axGetProductLink(searchUrl, storeConfig.links[0]) : null;
+            
+            // D&R için link yoksa arama linki fallback
+            if (!link && storeConfig.name === "D&R") {
+                link = searchUrl;
+                console.log(`⚠️ ${storeConfig.name} - Ürün linki yok, arama linki kullanılıyor`);
+            }
+            
+            // Link encoding temizle
+            if (link) {
+                try {
+                    link = encodeURI(decodeURIComponent(link.trim().replace(/\s+/g, ' ')));
+                } catch (e) {}
+            }
+            
+            const result = { 
+                store: storeConfig.name, 
+                price: price || "-", 
+                link: link, 
+                deeplink: createDeepLink(link, storeConfig.name), 
+                cartLink: createCartLink(link, storeConfig.name) 
+            };
+            console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+            return result;
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 404) {
+                    return { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+                }
+                throw error;
+            }
+        }
+        
+        if (storeConfig.method === "axios") {
+            const searchUrl = storeConfig.search(query);
+            if (!searchUrl) {
+                const result = { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+                console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+                return result;
+            }
+            const price = await axPrice(searchUrl, storeConfig.prices, storeConfig.name, storeConfig.links?.[0] || null);
+            let link = storeConfig.links?.[0] ? await axGetProductLink(searchUrl, storeConfig.links[0]) : null;
+            
+            // D&R için link yoksa arama linki fallback
+            if (!link && storeConfig.name === "D&R") {
+                link = searchUrl;
+                console.log(`⚠️ ${storeConfig.name} - Ürün linki yok, arama linki kullanılıyor`);
+            }
+            
+            // Link encoding temizle
+            if (link) {
+                try {
+                    link = encodeURI(decodeURIComponent(link.trim().replace(/\s+/g, ' ')));
+                } catch (e) {}
+            }
+            
+            const result = { 
+                store: storeConfig.name, 
+                price: price || "-", 
+                link: link, 
+                deeplink: createDeepLink(link, storeConfig.name), 
+                cartLink: createCartLink(link, storeConfig.name) 
+            };
+            console.log("🔗 Link fix result:", JSON.stringify(result, null, 2));
+            return result;
+        } else if (storeConfig.method === "puppeteer") {
+            const storeObj = { name: storeConfig.name, search: storeConfig.search, links: storeConfig.links, prices: storeConfig.prices };
+            return await fullScrape(query, storeObj);
+        } else if (storeConfig.method === "api") {
+            try {
+                const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`, { timeout: 5000 });
+                const item = response.data?.items?.[0];
+                if (item?.saleInfo?.listPrice) {
+                    return { store: storeConfig.name, price: item.saleInfo.listPrice.amount?.toString() || "-", link: item.volumeInfo.infoLink || null, deeplink: null, cartLink: item.volumeInfo.infoLink || null };
+                }
+            } catch (e) {}
+            return { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+    } catch (error) {
+        console.error(`Error scraping ${storeConfig.name}:`, error.message);
+        return { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+    }
+    return { store: storeConfig.name, price: "-", link: null, deeplink: null, cartLink: null };
+}
+
+// Mağaza yapılandırması - Güncel ve genişletilmiş selector'lar (geriye dönük uyumluluk)
 const STORES = {
     Trendyol: {
         name: "Trendyol",
@@ -896,7 +954,7 @@ const STORES = {
     }
 };
 
-// API endpoint
+// API endpoint - Ülke bazlı global fiyat motoru
 app.get("/api/price", async (req, res) => {
     const name = req.query.name;
     
@@ -908,77 +966,80 @@ app.get("/api/price", async (req, res) => {
     const startTime = Date.now();
 
     const q = encodeURIComponent(name);
-
-    // Çalışan 3 mağaza (Axios - hızlı) ve yeni 3 mağaza (Puppeteer - yavaş)
-    // Önce hızlı olanları çek, sonra Puppeteer ile olanları
     
-    // Hızlı mağazalar - Axios ile (çalışan)
-    const [amazonPrice, kitapyurduPrice, drPrice] = await Promise.all([
-        axPrice(
-            `https://www.amazon.com.tr/s?k=${q}`,
-            [".a-price-whole", ".a-price .a-offscreen", "[data-a-color='price'] .a-offscreen", ".a-price-range .a-price-whole", "span[data-a-color='price']"],
-            "Amazon",
-            "h2 a.a-link-normal"
-        ),
-        axPrice(
-            `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${q}`,
-            [".price-new", ".price .price-new", "[class*='price']", ".price-value", ".price"],
-            "Kitapyurdu"
-        ),
-        axPrice(
-            `https://www.dr.com.tr/search?q=${q}`,
-            [".prd-prc", ".price", "[class*='price']", ".product-price", ".prd-price"],
-            "D&R",
-            "a.prd-link"
-        )
-    ]);
+    // IP'den ülke kodu belirle
+    let countryCode = 'TR'; // Default
+    try {
+        countryCode = await detectCountryFromIP(req);
+        console.log(`🌍 Country detected: ${countryCode}`);
+    } catch (error) {
+        console.error('Country detection failed, using default TR:', error.message);
+    }
     
-    // Puppeteer mağazalar - daha yavaş
-    const [trendyolPrice, hepsiburadaPrice, bkmPrice] = await Promise.all([
-        fullScrape(q, STORES.Trendyol),
-        fullScrape(q, STORES.Hepsiburada),
-        fullScrape(q, STORES.BKM)
-    ]);
-
-    // Çalışan 3 mağaza için link ve deeplink hazırla (Axios ile hızlı)
-    const [amazonLink, drLink] = await Promise.all([
-        axGetProductLink(`https://www.amazon.com.tr/s?k=${q}`, "h2 a.a-link-normal"),
-        axGetProductLink(`https://www.dr.com.tr/search?q=${q}`, "a.prd-link")
-    ]);
+    // Ülkeye göre mağaza grubunu seç
+    let storesToScrape = STORES_BY_COUNTRY[countryCode] || STORES_BY_COUNTRY.TR;
     
-    // Response formatı: { price, link, deeplink, cartLink }
-    const prices = {
-        Amazon: {
-            price: amazonPrice || "-",
-            link: amazonLink || null,
-            deeplink: amazonLink || null, // Amazon deeplink yok
-            cartLink: createCartLink(amazonLink, "Amazon")
-        },
-        Kitapyurdu: {
-            price: kitapyurduPrice || "-",
-            link: null, // Kitapyurdu için link eklenebilir
-            deeplink: null,
-            cartLink: null
-        },
-        DR: {
-            price: drPrice || "-",
-            link: drLink || null,
-            deeplink: drLink || null, // D&R deeplink yok
-            cartLink: createCartLink(drLink, "DR")
-        },
-        Trendyol: trendyolPrice || { price: "-", link: null, deeplink: null, cartLink: null },
-        Hepsiburada: hepsiburadaPrice || { price: "-", link: null, deeplink: null, cartLink: null },
-        BKM: bkmPrice || { price: "-", link: null, deeplink: null, cartLink: null }
-    };
-
+    console.log(`🔍 Query: ${name}`);
+    console.log(`🏪 Using ${storesToScrape.length} stores for ${countryCode}`);
+    
+    // Tüm mağazaları paralel scrape et
+    const storePromises = storesToScrape.map(store => scrapeStore(store, q));
+    const results = await Promise.allSettled(storePromises);
+    
+    // Sonuçları formatla
+    const prices = {};
+    storesToScrape.forEach((store, index) => {
+        const result = results[index];
+        if (result.status === 'fulfilled') {
+            prices[store.name] = result.value || { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+            if (prices[store.name].price && prices[store.name].price !== "-" && prices[store.name].price !== null) {
+                console.log(`🛒 ${store.name} → Price scraped: ${prices[store.name].price} TL`);
+            }
+        } else {
+            prices[store.name] = { store: store.name, price: "-", link: null, deeplink: null, cartLink: null };
+        }
+    });
+    
+    // Eğer ülke mağazalarından yeterli sonuç yoksa, global fallback mağazaları dene
+    const validResults = Object.values(prices).filter(p => p.price && p.price !== "-" && p.price !== null).length;
+    if (validResults < 2 && STORES_BY_COUNTRY.GLOBAL) {
+        console.log(`📦 Only ${validResults} valid results, trying global fallback stores...`);
+        const globalPromises = STORES_BY_COUNTRY.GLOBAL.map(store => scrapeStore(store, q));
+        const globalResults = await Promise.allSettled(globalPromises);
+        
+        STORES_BY_COUNTRY.GLOBAL.forEach((store, index) => {
+            const result = globalResults[index];
+            if (result.status === 'fulfilled' && result.value && result.value.price && result.value.price !== "-") {
+                prices[store.name] = result.value;
+                console.log(`🌍 ${store.name} → Price scraped: ${result.value.price} TL`);
+            }
+        });
+    }
+    
+    // İstatistikleri logla
+    const activeStores = Object.values(prices).filter(p => p.price && p.price !== "-" && p.price !== null).length;
+    const storeDistribution = {};
+    Object.keys(prices).forEach(storeName => {
+        const country = Object.keys(STORES_BY_COUNTRY).find(c => 
+            STORES_BY_COUNTRY[c].some(s => s.name === storeName)
+        ) || 'GLOBAL';
+        if (!storeDistribution[country]) storeDistribution[country] = 0;
+        if (prices[storeName].price && prices[storeName].price !== "-" && prices[storeName].price !== null) storeDistribution[country]++;
+    });
+    
     const duration = ((Date.now() - startTime) / 1000).toFixed(2);
     console.log(`⏱️  Toplam süre: ${duration} saniye`);
-    console.log(`📊 Sonuçlar: Trendyol=${trendyolPrice}, Hepsiburada=${hepsiburadaPrice}, BKM=${bkmPrice}\n`);
+    console.log(`✅ Active stores: ${activeStores}`);
+    console.log(`📊 Store distribution:`, JSON.stringify(storeDistribution));
+    console.log(`🔥 Global fiyat motoru aktif\n`);
 
     res.json(prices);
 });
 
-app.listen(PORT, () => console.log(`🚀 Hybrid Scraper Çalışıyor → http://localhost:${PORT}`));
+app.listen(PORT, () => {
+    console.log("🌍 Global Price Server running on port 3003");
+    console.log("🔥 Global fiyat motoru aktif!");
+});
 
 // Graceful shutdown - browser'ı kapat
 process.on('SIGINT', async () => {

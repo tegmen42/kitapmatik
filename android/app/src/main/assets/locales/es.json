@@ -1,0 +1,129 @@
+{
+  "title": "BuscadorLibros",
+  "searchPlaceholder": "Buscar libros...",
+  "compare": "Comparar precio",
+  "loading": "Obteniendo precios...",
+  "search": "Buscar",
+  "favorites": "Mis favoritos",
+  "trendRaf": "Estante de tendencias",
+  "blog": "Blog",
+  "surprise": "Sorpréndeme",
+  "close": "Cerrar",
+  "addToCart": "Añadir al carrito",
+  "priceComparison": "Comparación de precios",
+  "stores": "Tiendas",
+  "noPriceFound": "Precio no encontrado",
+  "error": "Ocurrió un error",
+  "tryAgain": "Intentar de nuevo",
+  "header": {
+    "selectLanguage": "Seleccionar idioma",
+    "changeTheme": "Cambiar tema",
+    "themeTooltip": "Alternar tema oscuro/claro",
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro",
+    "badges": "Insignias"
+  },
+  "splash": {
+    "title": "BuscadorLibros",
+    "subtitle": "Buscar • Encontrar • Comprar",
+    "loading": "Cargando..."
+  },
+  "search": {
+    "sortLabel": "Ordenar:",
+    "sortRelevance": "Relevancia",
+    "sortNewest": "Más reciente",
+    "sortPopular": "Popular",
+    "inputPlaceholder": "Buscar por título, autor, editorial o libro de prueba...",
+    "inputAriaLabel": "Caja de búsqueda",
+    "button": "Buscar",
+    "buttonAriaLabel": "Buscar",
+    "filterAll": "Todos",
+    "filterAllAria": "Filtro todos (seleccionado)",
+    "filterBook": "Título",
+    "filterBookAria": "Filtro título",
+    "filterAuthor": "Autor",
+    "filterAuthorAria": "Filtro autor",
+    "filterPublisher": "Editorial",
+    "filterPublisherAria": "Filtro editorial",
+    "filterTest": "Libro de prueba",
+    "filterTestAria": "Filtro libro de prueba",
+    "historyAria": "Historial de búsqueda",
+    "resultsAria": "Resultados de búsqueda"
+  },
+  "favorites": {
+    "title": "Mis favoritos",
+    "backButton": "← Volver a la página de búsqueda",
+    "containerAria": "Libros favoritos",
+    "add": "Añadir a favoritos",
+    "remove": "Quitar de favoritos"
+  },
+  "price": {
+    "compareButton": "Comparar precio",
+    "modalTitle": "Comparación de precios",
+    "loadingSearching": "Buscando precios...",
+    "loadingScanning": "Escaneando tiendas...",
+    "loadingFinding": "Encontrando mejores precios...",
+    "loadingAlmostReady": "Casi listo...",
+    "statusSearching": "Buscando",
+    "statusSearchingDot": "Buscando...",
+    "statusFound": "Encontrado ✓",
+    "statusNotFound": "No encontrado",
+    "statusError": "Error ✗",
+    "errorMessage": "No se pudieron cargar los precios. Por favor, inténtelo de nuevo más tarde.",
+    "storeName": {
+      "Amazon": "Amazon",
+      "Kitapyurdu": "Kitapyurdu",
+      "DR": "D&R",
+      "Trendyol": "Trendyol",
+      "Hepsiburada": "Hepsiburada",
+      "BKM": "BKM"
+    }
+  },
+  "book": {
+    "authorLabel": "Autor:",
+    "yearLabel": "Año de publicación:",
+    "publisherLabel": "Editorial:",
+    "popularBadge": "Popular",
+    "popularBadgeTooltip": "Popular en tiendas",
+    "purchaseAria": "Enlaces de compra",
+    "drAria": "Comprar {title} en D&R",
+    "bkmAria": "Comprar {title} en BKM Kitap",
+    "kitapyurduAria": "Comprar {title} en Kitapyurdu",
+    "hepsiburadaAria": "Comprar {title} en Hepsiburada",
+    "trendyolAria": "Comprar {title} en Trendyol",
+    "amazonAria": "Comprar {title} en Amazon",
+    "cardAria": "Libro: {title}, Autor: {author}"
+  },
+  "trend": {
+    "title": "Estante de tendencias",
+    "ariaLabel": "Libros de tendencia"
+  },
+  "modal": {
+    "close": "Cerrar",
+    "closeX": "✕ Cerrar"
+  },
+  "badges": {
+    "title": "Mis insignias",
+    "close": "Cerrar"
+  },
+  "userTitle": {
+    "label": "Título:",
+    "default": "—"
+  },
+  "quote": {
+    "ariaLabel": "Cita del día"
+  },
+  "privacy": {
+    "icon": "🔒",
+    "title": "Privacidad y seguridad de datos:",
+    "description": "La aplicación no envía datos de usuario a los servidores. Los favoritos, la selección de tema y el historial de búsqueda se almacenan solo localmente en el dispositivo.",
+    "ariaLabel": "Aviso de privacidad"
+  },
+  "languages": {
+    "tr": "🇹🇷 Turco",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "fr": "🇫🇷 Français",
+    "es": "🇪🇸 Español"
+  }
+}

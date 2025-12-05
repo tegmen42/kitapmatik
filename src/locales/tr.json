@@ -1,0 +1,129 @@
+{
+  "title": "KitapMatik",
+  "searchPlaceholder": "Kitap ara...",
+  "compare": "Fiyat karşılaştır",
+  "loading": "Fiyatlar yükleniyor...",
+  "search": "Ara",
+  "favorites": "Favorilerim",
+  "trendRaf": "Trend Rafı",
+  "blog": "Blog",
+  "surprise": "Beni Şaşırt",
+  "close": "Kapat",
+  "addToCart": "Sepete Ekle",
+  "priceComparison": "Fiyat Karşılaştırma",
+  "stores": "Mağazalar",
+  "noPriceFound": "Fiyat bulunamadı",
+  "error": "Bir hata oluştu",
+  "tryAgain": "Tekrar Dene",
+  "header": {
+    "selectLanguage": "Dil seç",
+    "changeTheme": "Tema değiştir",
+    "themeTooltip": "Koyu/Açık tema değiştir",
+    "darkMode": "Koyu Mod",
+    "lightMode": "Açık Mod",
+    "badges": "Rozetler"
+  },
+  "splash": {
+    "title": "KitapMatik",
+    "subtitle": "Ara • Bul • Al",
+    "loading": "Yükleniyor..."
+  },
+  "search": {
+    "sortLabel": "Sıralama:",
+    "sortRelevance": "İlgililik",
+    "sortNewest": "En Yeni",
+    "sortPopular": "Popüler",
+    "inputPlaceholder": "Adı, yazar, yayınevi veya test kitabı arayın...",
+    "inputAriaLabel": "Arama kutusu",
+    "button": "Ara",
+    "buttonAriaLabel": "Ara",
+    "filterAll": "Tümü",
+    "filterAllAria": "Tümü filtresi (seçili)",
+    "filterBook": "Adı",
+    "filterBookAria": "Adı filtresi",
+    "filterAuthor": "Yazar",
+    "filterAuthorAria": "Yazar filtresi",
+    "filterPublisher": "Yayınevi",
+    "filterPublisherAria": "Yayınevi filtresi",
+    "filterTest": "Test Kitabı",
+    "filterTestAria": "Test Kitabı filtresi",
+    "historyAria": "Arama geçmişi",
+    "resultsAria": "Arama sonuçları"
+  },
+  "favorites": {
+    "title": "Favorilerim",
+    "backButton": "← Arama Sayfasına Dön",
+    "containerAria": "Favori kitaplar",
+    "add": "Favorilere ekle",
+    "remove": "Favorilerden çıkar"
+  },
+  "price": {
+    "compareButton": "Fiyat Karşılaştır",
+    "modalTitle": "Fiyat Karşılaştırma",
+    "loadingSearching": "Fiyatlar aranıyor...",
+    "loadingScanning": "Mağazalar taranıyor...",
+    "loadingFinding": "En iyi fiyatlar bulunuyor...",
+    "loadingAlmostReady": "Neredeyse hazır...",
+    "statusSearching": "Aranıyor",
+    "statusSearchingDot": "Aranıyor...",
+    "statusFound": "Bulundu ✓",
+    "statusNotFound": "Bulunamadı",
+    "statusError": "Hata ✗",
+    "errorMessage": "Fiyatlar yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+    "storeName": {
+      "Amazon": "Amazon",
+      "Kitapyurdu": "Kitapyurdu",
+      "DR": "D&R",
+      "Trendyol": "Trendyol",
+      "Hepsiburada": "Hepsiburada",
+      "BKM": "BKM"
+    }
+  },
+  "book": {
+    "authorLabel": "Yazar:",
+    "yearLabel": "Basım Yılı:",
+    "publisherLabel": "Yayınevi:",
+    "popularBadge": "Popüler",
+    "popularBadgeTooltip": "Mağazalarda popüler",
+    "purchaseAria": "Satın alma linkleri",
+    "drAria": "D&R'da {title} kitabını satın al",
+    "bkmAria": "BKM Kitap'ta {title} kitabını satın al",
+    "kitapyurduAria": "Kitapyurdu'nda {title} kitabını satın al",
+    "hepsiburadaAria": "Hepsiburada'da {title} kitabını satın al",
+    "trendyolAria": "Trendyol'da {title} kitabını satın al",
+    "amazonAria": "Amazon'da {title} kitabını satın al",
+    "cardAria": "Kitap: {title}, Yazar: {author}"
+  },
+  "trend": {
+    "title": "Trend Rafı",
+    "ariaLabel": "Trend kitaplar"
+  },
+  "modal": {
+    "close": "Kapat",
+    "closeX": "✕ Kapat"
+  },
+  "badges": {
+    "title": "Rozetlerim",
+    "close": "Kapat"
+  },
+  "userTitle": {
+    "label": "Ünvan:",
+    "default": "—"
+  },
+  "quote": {
+    "ariaLabel": "Günün sözü"
+  },
+  "privacy": {
+    "icon": "🔒",
+    "title": "Gizlilik ve Veri Güvenliği:",
+    "description": "Uygulama kullanıcı verilerini sunuculara göndermez. Favoriler, tema seçimi ve arama geçmişi yalnızca cihazda yerel olarak saklanır.",
+    "ariaLabel": "Gizlilik açıklaması"
+  },
+  "languages": {
+    "tr": "🇹🇷 Türkçe",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "fr": "🇫🇷 Français",
+    "es": "🇪🇸 Español"
+  }
+}

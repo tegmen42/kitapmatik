@@ -1,0 +1,129 @@
+{
+  "title": "BookFinder",
+  "searchPlaceholder": "Search books...",
+  "compare": "Compare Price",
+  "loading": "Fetching prices...",
+  "search": "Search",
+  "favorites": "My Favorites",
+  "trendRaf": "Trend Shelf",
+  "blog": "Blog",
+  "surprise": "Surprise Me",
+  "close": "Close",
+  "addToCart": "Add to Cart",
+  "priceComparison": "Price Comparison",
+  "stores": "Stores",
+  "noPriceFound": "Price not found",
+  "error": "An error occurred",
+  "tryAgain": "Try Again",
+  "header": {
+    "selectLanguage": "Select language",
+    "changeTheme": "Change theme",
+    "themeTooltip": "Toggle dark/light theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "badges": "Badges"
+  },
+  "splash": {
+    "title": "BookFinder",
+    "subtitle": "Search • Find • Buy",
+    "loading": "Loading..."
+  },
+  "search": {
+    "sortLabel": "Sort:",
+    "sortRelevance": "Relevance",
+    "sortNewest": "Newest",
+    "sortPopular": "Popular",
+    "inputPlaceholder": "Search by title, author, publisher or test book...",
+    "inputAriaLabel": "Search box",
+    "button": "Search",
+    "buttonAriaLabel": "Search",
+    "filterAll": "All",
+    "filterAllAria": "All filter (selected)",
+    "filterBook": "Title",
+    "filterBookAria": "Title filter",
+    "filterAuthor": "Author",
+    "filterAuthorAria": "Author filter",
+    "filterPublisher": "Publisher",
+    "filterPublisherAria": "Publisher filter",
+    "filterTest": "Test Book",
+    "filterTestAria": "Test book filter",
+    "historyAria": "Search history",
+    "resultsAria": "Search results"
+  },
+  "favorites": {
+    "title": "My Favorites",
+    "backButton": "← Back to Search Page",
+    "containerAria": "Favorite books",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites"
+  },
+  "price": {
+    "compareButton": "Compare Price",
+    "modalTitle": "Price Comparison",
+    "loadingSearching": "Searching prices...",
+    "loadingScanning": "Scanning stores...",
+    "loadingFinding": "Finding best prices...",
+    "loadingAlmostReady": "Almost ready...",
+    "statusSearching": "Searching",
+    "statusSearchingDot": "Searching...",
+    "statusFound": "Found ✓",
+    "statusNotFound": "Not Found",
+    "statusError": "Error ✗",
+    "errorMessage": "Prices could not be loaded. Please try again later.",
+    "storeName": {
+      "Amazon": "Amazon",
+      "Kitapyurdu": "Kitapyurdu",
+      "DR": "D&R",
+      "Trendyol": "Trendyol",
+      "Hepsiburada": "Hepsiburada",
+      "BKM": "BKM"
+    }
+  },
+  "book": {
+    "authorLabel": "Author:",
+    "yearLabel": "Publication Year:",
+    "publisherLabel": "Publisher:",
+    "popularBadge": "Popular",
+    "popularBadgeTooltip": "Popular in stores",
+    "purchaseAria": "Purchase links",
+    "drAria": "Buy {title} at D&R",
+    "bkmAria": "Buy {title} at BKM Kitap",
+    "kitapyurduAria": "Buy {title} at Kitapyurdu",
+    "hepsiburadaAria": "Buy {title} at Hepsiburada",
+    "trendyolAria": "Buy {title} at Trendyol",
+    "amazonAria": "Buy {title} at Amazon",
+    "cardAria": "Book: {title}, Author: {author}"
+  },
+  "trend": {
+    "title": "Trend Shelf",
+    "ariaLabel": "Trend books"
+  },
+  "modal": {
+    "close": "Close",
+    "closeX": "✕ Close"
+  },
+  "badges": {
+    "title": "My Badges",
+    "close": "Close"
+  },
+  "userTitle": {
+    "label": "Title:",
+    "default": "—"
+  },
+  "quote": {
+    "ariaLabel": "Quote of the day"
+  },
+  "privacy": {
+    "icon": "🔒",
+    "title": "Privacy and Data Security:",
+    "description": "The application does not send user data to servers. Favorites, theme selection and search history are stored only locally on the device.",
+    "ariaLabel": "Privacy notice"
+  },
+  "languages": {
+    "tr": "🇹🇷 Turkish",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "fr": "🇫🇷 Français",
+    "es": "🇪🇸 Español"
+  }
+}

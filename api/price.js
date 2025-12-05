@@ -397,62 +397,372 @@ async function fullScrape(query, store) {
     };
 }
 
-// Mağaza yapılandırması
+// IP'den ülke kodu belirleme
+async function detectCountryFromIP(req) {
+    try {
+        // Client IP'yi al
+        const clientIP = req.headers['x-forwarded-for']?.split(',')[0] || 
+                        req.headers['x-real-ip'] || 
+                        req.connection?.remoteAddress ||
+                        req.socket?.remoteAddress;
+        
+        if (clientIP && clientIP !== '::1' && !clientIP.startsWith('127.')) {
+            const response = await axios.get(`https://ipapi.co/${clientIP}/json/`, {
+                timeout: 5000
+            });
+            return response.data?.country_code?.toUpperCase() || 'TR';
+        }
+        
+        // Fallback - ipapi.co/json kullan
+        const response = await axios.get('https://ipapi.co/json/', {
+            timeout: 5000
+        });
+        return response.data?.country_code?.toUpperCase() || 'TR';
+    } catch (error) {
+        console.error('IP detection error:', error.message);
+        return 'TR'; // Default Türkiye
+    }
+}
+
+// Mağaza yapılandırması - Ülke bazlı gruplar
+const STORES_BY_COUNTRY = {
+    TR: [
+        {
+            name: "Trendyol",
+            search: q => `https://www.trendyol.com/sr?q=${q}`,
+            links: ["div.p-card-wrppr a[href*='/urun/']", "div.p-card-chldrn a[href*='/urun/']", "a[href*='/urun/']"],
+            prices: [".prc-dscntd", ".pr-new-br", ".prc-box-dscntd", ".product-price"],
+            method: "puppeteer"
+        },
+        {
+            name: "Hepsiburada",
+            search: q => `https://www.hepsiburada.com/ara?q=${q}`,
+            links: ["li[data-test-id='product-item'] a[href*='-p-']", "a[href*='-p-']"],
+            prices: ["[data-test-id='price-current-price']", ".price-value", "[itemprop='price']"],
+            method: "puppeteer"
+        },
+        {
+            name: "D&R",
+            search: q => `https://www.dr.com.tr/search?q=${q}`,
+            links: ["a.prd-link"],
+            prices: [".prd-prc", ".price"],
+            method: "axios"
+        },
+        {
+            name: "BKM",
+            search: q => `https://www.bkmkitap.com/index.php?p=search&search=${q}`,
+            links: ["a[href*='/urun/']", "a[href*='/kitap/']"],
+            prices: [".new-price", ".sale-price", ".price"],
+            method: "puppeteer"
+        },
+        {
+            name: "Kitapyurdu",
+            search: q => `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${q}`,
+            links: ["a.product-link"],
+            prices: [".price-new", ".price .price-new"],
+            method: "axios"
+        },
+        {
+            name: "Kidega",
+            search: q => `https://www.kidega.com/arama?q=${q}`,
+            links: ["a.product-item-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    US: [
+        {
+            name: "Amazon US",
+            search: q => `https://www.amazon.com/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "Barnes&Noble",
+            search: q => `https://www.barnesandnoble.com/s/${q}`,
+            links: ["a.prouct-info-title-link"],
+            prices: [".price-current", ".price"],
+            method: "axios"
+        },
+        {
+            name: "Books-A-Million",
+            search: q => `https://www.booksamillion.com/search?query=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Walmart Books",
+            search: q => `https://www.walmart.com/search?q=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", "[itemprop='price']"],
+            method: "axios"
+        }
+    ],
+    UK: [
+        {
+            name: "Amazon UK",
+            search: q => `https://www.amazon.co.uk/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "Waterstones",
+            search: q => `https://www.waterstones.com/books/search/term/${q}`,
+            links: ["a.book-title-link"],
+            prices: [".price", ".book-price"],
+            method: "axios"
+        },
+        {
+            name: "Blackwell's",
+            search: q => `https://blackwells.co.uk/bookshop/search/${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "WHSmith",
+            search: q => `https://www.whsmith.co.uk/search/go?w=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    DE: [
+        {
+            name: "Amazon DE",
+            search: q => `https://www.amazon.de/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "Thalia",
+            search: q => `https://www.thalia.de/suche?sq=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Hugendubel",
+            search: q => `https://www.hugendubel.de/de/suche/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Weltbild",
+            search: q => `https://www.weltbild.de/suche/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    FR: [
+        {
+            name: "Amazon FR",
+            search: q => `https://www.amazon.fr/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "FNAC",
+            search: q => `https://www.fnac.com/SearchResult/ResultList.aspx?SCat=0&Search=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Decitre",
+            search: q => `https://www.decitre.fr/recherche/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Cultura",
+            search: q => `https://www.cultura.com/recherche/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    ES: [
+        {
+            name: "Amazon ES",
+            search: q => `https://www.amazon.es/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "CasaDelLibro",
+            search: q => `https://www.casadellibro.com/busqueda/libros/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "El Corte Inglés",
+            search: q => `https://www.elcorteingles.es/libros/buscar/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "FNAC ES",
+            search: q => `https://www.fnac.es/SearchResult/ResultList.aspx?SCat=0&Search=${q}`,
+            links: ["a.product-title-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    IT: [
+        {
+            name: "Amazon IT",
+            search: q => `https://www.amazon.it/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "IBS",
+            search: q => `https://www.ibs.it/cerca/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Feltrinelli",
+            search: q => `https://www.lafeltrinelli.it/cerca?q=${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        },
+        {
+            name: "Mondadori",
+            search: q => `https://www.mondadoristore.it/cerca/${q}`,
+            links: ["a.product-link"],
+            prices: [".price", ".product-price"],
+            method: "axios"
+        }
+    ],
+    IN: [
+        {
+            name: "Amazon IN",
+            search: q => `https://www.amazon.in/s?k=${q}`,
+            links: ["h2 a.a-link-normal"],
+            prices: [".a-price-whole", ".a-price .a-offscreen"],
+            method: "axios"
+        },
+        {
+            name: "Flipkart Books",
+            search: q => `https://www.flipkart.com/search?q=${q}`,
+            links: ["a._2UzuFa"],
+            prices: ["._30jeq3", "[class*='price']"],
+            method: "axios"
+        }
+    ],
+    GLOBAL: [
+        {
+            name: "AbeBooks",
+            search: q => `https://www.abebooks.com/servlet/SearchResults?kn=${q}`,
+            links: ["a.item-link"],
+            prices: [".item-price", ".price"],
+            method: "axios"
+        },
+        {
+            name: "Google Books",
+            search: q => null, // API kullanılacak
+            links: [],
+            prices: [],
+            method: "api"
+        }
+    ]
+};
+
+// Eski STORES yapısı (geriye dönük uyumluluk)
 const STORES = {
     Trendyol: {
         name: "Trendyol",
         search: q => `https://www.trendyol.com/sr?q=${q}`,
-        links: [
-            "div.p-card-wrppr a[href*='/urun/']",
-            "div.p-card-chldrn a[href*='/urun/']",
-            "a[href*='/urun/'][href*='trendyol.com']",
-            "a[href*='/p-']",
-            "div.product-item a",
-            "a[href*='/urun/']"
-        ],
-        prices: [
-            ".prc-dscntd",
-            ".pr-new-br",
-            ".prc-box-dscntd",
-            ".product-price",
-            "[class*='prc-dscntd']",
-            "[data-price]"
-        ]
+        links: ["div.p-card-wrppr a[href*='/urun/']", "div.p-card-chldrn a[href*='/urun/']", "a[href*='/urun/']"],
+        prices: [".prc-dscntd", ".pr-new-br", ".prc-box-dscntd", ".product-price"]
     },
     Hepsiburada: {
         name: "Hepsiburada",
         search: q => `https://www.hepsiburada.com/ara?q=${q}`,
-        links: [
-            "li[data-test-id='product-item'] a[href*='-p-']",
-            "a[data-test-id='product-image-link']",
-            "a[href*='-p-'][href*='hepsiburada.com']",
-            "a[href*='-p-']"
-        ],
-        prices: [
-            "[data-test-id='price-current-price']",
-            ".price-value",
-            ".product-price",
-            "[class*='price-current']",
-            "[itemprop='price']"
-        ]
+        links: ["li[data-test-id='product-item'] a[href*='-p-']", "a[href*='-p-']"],
+        prices: ["[data-test-id='price-current-price']", ".price-value", "[itemprop='price']"]
     },
     BKM: {
         name: "BKM",
         search: q => `https://www.bkmkitap.com/index.php?p=search&search=${q}`,
-        links: [
-            "a[href*='/urun/']",
-            "a[href*='/kitap/']",
-            "div.product-item a",
-            "a[href*='bkmkitap.com'][href*='urun']"
-        ],
-        prices: [
-            ".new-price",
-            ".sale-price",
-            ".price",
-            "[class*='new-price']"
-        ]
+        links: ["a[href*='/urun/']", "a[href*='/kitap/']"],
+        prices: [".new-price", ".sale-price", ".price"]
     }
 };
+
+// Mağaza scraping helper - method'a göre doğru scraper'ı çağır
+async function scrapeStore(storeConfig, query) {
+    try {
+        if (storeConfig.method === "axios") {
+            const searchUrl = storeConfig.search(query);
+            if (!searchUrl) return { price: "-", link: null, deeplink: null, cartLink: null };
+            
+            const price = await axPrice(
+                searchUrl,
+                storeConfig.prices,
+                storeConfig.name,
+                storeConfig.links?.[0] || null
+            );
+            
+            const link = storeConfig.links?.[0] 
+                ? await axGetProductLink(searchUrl, storeConfig.links[0])
+                : null;
+            
+            return {
+                price: price || "-",
+                link: link,
+                deeplink: createDeepLink(link, storeConfig.name),
+                cartLink: createCartLink(link, storeConfig.name)
+            };
+        } else if (storeConfig.method === "puppeteer") {
+            const storeObj = {
+                name: storeConfig.name,
+                search: storeConfig.search,
+                links: storeConfig.links,
+                prices: storeConfig.prices
+            };
+            return await fullScrape(query, storeObj);
+        } else if (storeConfig.method === "api") {
+            // Google Books API (fallback)
+            try {
+                const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`, {
+                    timeout: 5000
+                });
+                const item = response.data?.items?.[0];
+                if (item?.saleInfo?.listPrice) {
+                    return {
+                        price: item.saleInfo.listPrice.amount?.toString() || "-",
+                        link: item.volumeInfo.infoLink || null,
+                        deeplink: null,
+                        cartLink: item.volumeInfo.infoLink || null
+                    };
+                }
+            } catch (e) {}
+            return { price: "-", link: null, deeplink: null, cartLink: null };
+        }
+    } catch (error) {
+        console.error(`Error scraping ${storeConfig.name}:`, error.message);
+        return { price: "-", link: null, deeplink: null, cartLink: null };
+    }
+    
+    return { price: "-", link: null, deeplink: null, cartLink: null };
+}
 
 // Vercel serverless function handler
 export default async function handler(req, res) {
@@ -472,66 +782,64 @@ export default async function handler(req, res) {
     }
 
     const q = encodeURIComponent(name);
-
-    // Hızlı mağazalar - Axios ile
-    const [amazonPrice, kitapyurduPrice, drPrice] = await Promise.all([
-        axPrice(
-            `https://www.amazon.com.tr/s?k=${q}`,
-            [".a-price-whole", ".a-price .a-offscreen", "[data-a-color='price'] .a-offscreen"],
-            "Amazon",
-            "h2 a.a-link-normal"
-        ),
-        axPrice(
-            `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${q}`,
-            [".price-new", ".price .price-new", "[class*='price']"],
-            "Kitapyurdu"
-        ),
-        axPrice(
-            `https://www.dr.com.tr/search?q=${q}`,
-            [".prd-prc", ".price", "[class*='price']"],
-            "D&R",
-            "a.prd-link"
-        )
-    ]);
     
-    // Puppeteer mağazalar
-    const [trendyolResult, hepsiburadaResult, bkmResult] = await Promise.all([
-        fullScrape(q, STORES.Trendyol),
-        fullScrape(q, STORES.Hepsiburada),
-        fullScrape(q, STORES.BKM)
-    ]);
-
-    // Link'leri al
-    const [amazonLink, drLink] = await Promise.all([
-        axGetProductLink(`https://www.amazon.com.tr/s?k=${q}`, "h2 a.a-link-normal"),
-        axGetProductLink(`https://www.dr.com.tr/search?q=${q}`, "a.prd-link")
-    ]);
+    // IP'den ülke kodu belirle
+    let countryCode = 'TR'; // Default
+    try {
+        countryCode = await detectCountryFromIP(req);
+    } catch (error) {
+        console.error('Country detection failed, using default TR:', error.message);
+    }
     
-    // Response formatı
-    const prices = {
-        Amazon: {
-            price: amazonPrice || "-",
-            link: amazonLink || null,
-            deeplink: amazonLink || null,
-            cartLink: createCartLink(amazonLink, "Amazon")
-        },
-        Kitapyurdu: {
-            price: kitapyurduPrice || "-",
-            link: null,
-            deeplink: null,
-            cartLink: null
-        },
-        DR: {
-            price: drPrice || "-",
-            link: drLink || null,
-            deeplink: drLink || null,
-            cartLink: createCartLink(drLink, "DR")
-        },
-        Trendyol: trendyolResult || { price: "-", link: null, deeplink: null, cartLink: null },
-        Hepsiburada: hepsiburadaResult || { price: "-", link: null, deeplink: null, cartLink: null },
-        BKM: bkmResult || { price: "-", link: null, deeplink: null, cartLink: null }
-    };
-
+    // Ülkeye göre mağaza grubunu seç
+    let storesToScrape = STORES_BY_COUNTRY[countryCode] || STORES_BY_COUNTRY.TR;
+    
+    console.log(`🌍 Detected country: ${countryCode}, Using ${storesToScrape.length} stores`);
+    
+    // Tüm mağazaları paralel scrape et
+    const storePromises = storesToScrape.map(store => scrapeStore(store, q));
+    const results = await Promise.allSettled(storePromises);
+    
+    // Sonuçları formatla
+    const prices = {};
+    storesToScrape.forEach((store, index) => {
+        const result = results[index];
+        if (result.status === 'fulfilled') {
+            prices[store.name] = result.value || { price: "-", link: null, deeplink: null, cartLink: null };
+        } else {
+            prices[store.name] = { price: "-", link: null, deeplink: null, cartLink: null };
+        }
+    });
+    
+    // Eğer ülke mağazalarından yeterli sonuç yoksa, global fallback mağazaları dene
+    const validResults = Object.values(prices).filter(p => p.price !== "-" && p.price !== null).length;
+    if (validResults < 2 && STORES_BY_COUNTRY.GLOBAL) {
+        console.log(`📦 Only ${validResults} valid results, trying global fallback stores...`);
+        const globalPromises = STORES_BY_COUNTRY.GLOBAL.map(store => scrapeStore(store, q));
+        const globalResults = await Promise.allSettled(globalPromises);
+        
+        STORES_BY_COUNTRY.GLOBAL.forEach((store, index) => {
+            const result = globalResults[index];
+            if (result.status === 'fulfilled' && result.value && result.value.price !== "-") {
+                prices[store.name] = result.value;
+            }
+        });
+    }
+    
+    // İstatistikleri logla
+    const activeStores = Object.values(prices).filter(p => p.price !== "-" && p.price !== null).length;
+    const storeDistribution = {};
+    Object.keys(prices).forEach(storeName => {
+        const country = Object.keys(STORES_BY_COUNTRY).find(c => 
+            STORES_BY_COUNTRY[c].some(s => s.name === storeName)
+        ) || 'GLOBAL';
+        if (!storeDistribution[country]) storeDistribution[country] = 0;
+        if (prices[storeName].price !== "-") storeDistribution[country]++;
+    });
+    
+    console.log(`✅ Active stores: ${activeStores}`);
+    console.log(`📊 Store distribution:`, storeDistribution);
+    
     return res.status(200).json(prices);
 }
 

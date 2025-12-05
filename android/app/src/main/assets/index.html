@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 GÜVENLİK NOTU: Bu uygulama bir web sunucusu üzerinden çalıştırılacaksa,
 aşağıdaki HTTP response header'larının sunucu tarafında ayarlanması önerilir:
@@ -16,9 +16,12 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 <html lang="tr">
     <head>
         <meta charset="UTF-8">
+        <meta name="google-site-verification" content="71BV-5hmgGKA50aZUcpz3ESUpO30q9id2KsjXlpw8Ck" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <title>Arama Uygulaması</title>
         <link rel="stylesheet" href="./styles/badges.css?v=2.0.0">
+        <!-- Google AdSense -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxx" crossorigin="anonymous"></script>
     <style>
         * {
             margin: 0;
@@ -2177,6 +2180,15 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                                                                                                                     </div>
                                                                                                                 </div>
 
+                                                                                                                <!-- AdSense Banner - Arama Alanı Altı -->
+                                                                                                                <div class="ad-container ad-banner-top" data-ad-slot="banner-top">
+                                                                                                                    <ins class="adsbygoogle"
+                                                                                                                         style="display:block"
+                                                                                                                         data-ad-client="ca-pub-xxxxxxxxxx"
+                                                                                                                         data-ad-slot="YYYYYYYY"
+                                                                                                                         data-ad-format="auto"
+                                                                                                                         data-full-width-responsive="true"></ins>
+                                                                                                                </div>
 
                                                                                                                 <!-- Sonuç Bölümleri -->
                                                                                                                 <div id="results-normal" class="results-container" role="list" aria-label="Arama sonuçları" style="display: none;"></div>
@@ -2215,6 +2227,20 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                                                                                                                                                         <div class="modal-header">
                                                                                                                                                             <h2>💰 Fiyat Karşılaştırma</h2>
                                                                                                                                                                 <button class="close-modal-btn" onclick="closeSingleBookPriceModal()">✕ Kapat</button>
+                                                                                                                                                                </div>
+                                                                                                                                                                <!-- AdSense Modal Ad -->
+                                                                                                                                                                <div class="ad-container ad-modal-top" data-ad-slot="modal-ad-top">
+                                                                                                                                                                    <ins class="adsbygoogle"
+                                                                                                                                                                         style="display:block"
+                                                                                                                                                                         data-ad-client="ca-pub-xxxxxxxxxx"
+                                                                                                                                                                         data-ad-slot="YYYYYYYY"
+                                                                                                                                                                         data-ad-format="auto"
+                                                                                                                                                                         data-full-width-responsive="true"></ins>
+                                                                                                                                                                </div>
+                                                                                                                                                                <!-- Sponsor Box -->
+                                                                                                                                                                <div class="sponsor-box">
+                                                                                                                                                                    🔥 <b>Uygun fiyat önerisi:</b><br>
+                                                                                                                                                                    <a href="https://google.com" target="_blank">📦 Kitap indirimlerini karşılaştır →</a>
                                                                                                                                                                 </div>
                                                                                                                                                                 <div id="singleBookPriceContent"></div>
                                                                                                                                                                 </div>
@@ -5666,8 +5692,8 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             });
 
             try {
-                // API'den fiyatları çek (Port 3002 - Hybrid scraper)
-                const response = await fetch(`http://localhost:3002/api/price?name=${encodeURIComponent(book.title)}`);
+                // API'den fiyatları çek (Port 3003 - Hybrid scraper)
+                const response = await fetch(`http://localhost:3003/api/price?name=${encodeURIComponent(book.title)}`);
                 const prices = await response.json();
                 
                 // Yükleme mesajını durdur
@@ -7982,6 +8008,234 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 
     </script>
     <script src="./scripts/badges.js?v=2.0.0"></script>
+    
+    <!-- AdSense Footer Ad -->
+    <div class="ad-container ad-footer" data-ad-slot="footer-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-xxxxxxxxxx"
+             data-ad-slot="YYYYYYYY"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+    
     <div id="banner-space"></div>
+    
+    <!-- AdSense Lazyload & Optimization Script -->
+    <script>
+        // AdSense yükleme optimizasyonu
+        let activeAdCount = 0;
+        const MAX_ACTIVE_ADS = 3;
+        const adQueue = [];
+        
+        // Ad container CSS
+        const adStyle = document.createElement('style');
+        adStyle.textContent = `
+            .ad-container {
+                margin: 20px auto;
+                text-align: center;
+                min-height: 100px;
+                max-width: 100%;
+                overflow: hidden;
+            }
+            .ad-banner-top {
+                margin: 20px 0;
+                padding: 10px 0;
+            }
+            .ad-footer {
+                margin-top: 30px;
+                margin-bottom: 10px;
+            }
+            .ad-inline {
+                margin: 20px 0;
+            }
+            @media (max-width: 768px) {
+                .ad-container {
+                    margin: 15px 10px;
+                    min-height: 50px;
+                }
+            }
+            
+            /* Sponsor Box */
+            .sponsor-box {
+                background: rgba(255, 255, 255, 0.07);
+                padding: 10px 14px;
+                border-radius: 8px;
+                margin: 15px 0;
+                border-left: 4px solid #00ff9d;
+                font-size: 14px;
+            }
+            body.dark-mode .sponsor-box {
+                background: rgba(0, 0, 0, 0.35);
+            }
+            .sponsor-box a {
+                color: #00ffa2;
+                font-weight: 600;
+                text-decoration: none;
+            }
+            .sponsor-box a:hover {
+                text-decoration: underline;
+            }
+            
+            /* Dark Mode Reklam Paleti */
+            body.dark-mode .adsbygoogle iframe {
+                filter: brightness(0.82) contrast(1.05);
+                border-radius: 8px;
+            }
+            body.light-mode .adsbygoogle iframe {
+                filter: brightness(1) contrast(1);
+            }
+            @media (prefers-color-scheme: dark) {
+                body:not(.light-mode):not(.dark-mode) .adsbygoogle iframe {
+                    filter: brightness(0.82) contrast(1.05);
+                    border-radius: 8px;
+                }
+            }
+            
+            /* Native Ad Card */
+            .native-ad-card {
+                margin: 20px auto;
+                padding: 15px;
+                background: var(--card-bg, white);
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                position: relative;
+                max-width: 100%;
+            }
+            body.dark-mode .native-ad-card {
+                background: var(--card-bg, #2d2d2d);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            }
+            .ad-label {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                font-size: 10px;
+                color: #999;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            body.dark-mode .ad-label {
+                color: #666;
+            }
+        `;
+        document.head.appendChild(adStyle);
+        
+        // Lazyload için Intersection Observer
+        const adObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && activeAdCount < MAX_ACTIVE_ADS) {
+                    const adContainer = entry.target;
+                    const adSlot = adContainer.getAttribute('data-ad-slot');
+                    if (adSlot && !adContainer.classList.contains('ad-loaded')) {
+                        loadAd(adContainer);
+                    }
+                }
+            });
+        }, { rootMargin: '50px' });
+        
+        // Ad yükleme fonksiyonu
+        function loadAd(container) {
+            if (activeAdCount >= MAX_ACTIVE_ADS) {
+                adQueue.push(container);
+                return;
+            }
+            
+            activeAdCount++;
+            container.classList.add('ad-loaded');
+            
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error('AdSense error:', e);
+            }
+        }
+        
+        // Sayfa yüklendiğinde görünür reklamları gözlemle
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.ad-container').forEach(ad => {
+                adObserver.observe(ad);
+            });
+        });
+        
+        // Aktif reklam sayısı azaldığında kuyruktan yükle
+        setInterval(() => {
+            if (activeAdCount < MAX_ACTIVE_ADS && adQueue.length > 0) {
+                const nextAd = adQueue.shift();
+                loadAd(nextAd);
+            }
+        }, 1000);
+        
+        // Kitap kartları arasına 4. karttan sonra ad ekleme fonksiyonu
+        function insertAdAfterCard(container, cardIndex) {
+            if (cardIndex === 4) {
+                const adDiv = document.createElement('div');
+                adDiv.className = 'ad-container ad-inline';
+                adDiv.setAttribute('data-ad-slot', 'inline-ad-' + Date.now());
+                adDiv.innerHTML = `
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-xxxxxxxxxx"
+                         data-ad-slot="YYYYYYYY"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                `;
+                const cards = container.querySelectorAll('.book-card');
+                if (cards[3]) {
+                    cards[3].insertAdjacentElement('afterend', adDiv);
+                    adObserver.observe(adDiv);
+                }
+            }
+        }
+        
+        // Mevcut searchBooks fonksiyonunu bulup güncelle (eğer varsa)
+        const originalSearchBooks = window.searchBooks;
+        if (originalSearchBooks) {
+            window.searchBooks = function(...args) {
+                const result = originalSearchBooks.apply(this, args);
+                setTimeout(() => {
+                    const resultsContainer = document.getElementById('results-normal');
+                    if (resultsContainer) {
+                        insertAdAfterCard(resultsContainer, 4);
+                    }
+                }, 500);
+                return result;
+            };
+        }
+        
+        // Scroll Sonrası Reklam Tekrarı
+        let adsLoaded = 0;
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > window.innerHeight * 1.7 && adsLoaded < 1) {
+                loadExtraAd();
+                adsLoaded++;
+            }
+        });
+        
+        function loadExtraAd() {
+            const contentArea = document.querySelector("#results-normal") || document.querySelector(".results-container") || document.querySelector(".container");
+            if (!contentArea) return;
+            
+            const ad = document.createElement("div");
+            ad.className = "native-ad-card";
+            ad.innerHTML = `
+                <div class="ad-label">Sponsorlu</div>
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-xxxxxxxxxx"
+                    data-ad-slot="33333333"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+            `;
+            contentArea.appendChild(ad);
+            
+            // AdSense'i yükle
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error('AdSense scroll ad error:', e);
+            }
+        }
+    </script>
 </body>
 </html>

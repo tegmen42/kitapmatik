@@ -1,0 +1,129 @@
+{
+  "title": "BuchFinder",
+  "searchPlaceholder": "Bücher suchen...",
+  "compare": "Preis vergleichen",
+  "loading": "Preise werden abgerufen...",
+  "search": "Suchen",
+  "favorites": "Meine Favoriten",
+  "trendRaf": "Trend Regal",
+  "blog": "Blog",
+  "surprise": "Überrasche mich",
+  "close": "Schließen",
+  "addToCart": "In den Warenkorb",
+  "priceComparison": "Preisvergleich",
+  "stores": "Geschäfte",
+  "noPriceFound": "Preis nicht gefunden",
+  "error": "Ein Fehler ist aufgetreten",
+  "tryAgain": "Erneut versuchen",
+  "header": {
+    "selectLanguage": "Sprache wählen",
+    "changeTheme": "Design ändern",
+    "themeTooltip": "Dunkles/Helles Design umschalten",
+    "darkMode": "Dunkelmodus",
+    "lightMode": "Hellmodus",
+    "badges": "Abzeichen"
+  },
+  "splash": {
+    "title": "BuchFinder",
+    "subtitle": "Suchen • Finden • Kaufen",
+    "loading": "Lädt..."
+  },
+  "search": {
+    "sortLabel": "Sortieren:",
+    "sortRelevance": "Relevanz",
+    "sortNewest": "Neueste",
+    "sortPopular": "Beliebt",
+    "inputPlaceholder": "Nach Titel, Autor, Verlag oder Testbuch suchen...",
+    "inputAriaLabel": "Suchfeld",
+    "button": "Suchen",
+    "buttonAriaLabel": "Suchen",
+    "filterAll": "Alle",
+    "filterAllAria": "Alle Filter (ausgewählt)",
+    "filterBook": "Titel",
+    "filterBookAria": "Titel Filter",
+    "filterAuthor": "Autor",
+    "filterAuthorAria": "Autor Filter",
+    "filterPublisher": "Verlag",
+    "filterPublisherAria": "Verlag Filter",
+    "filterTest": "Testbuch",
+    "filterTestAria": "Testbuch Filter",
+    "historyAria": "Suchverlauf",
+    "resultsAria": "Suchergebnisse"
+  },
+  "favorites": {
+    "title": "Meine Favoriten",
+    "backButton": "← Zurück zur Suchseite",
+    "containerAria": "Lieblingsbücher",
+    "add": "Zu Favoriten hinzufügen",
+    "remove": "Aus Favoriten entfernen"
+  },
+  "price": {
+    "compareButton": "Preis vergleichen",
+    "modalTitle": "Preisvergleich",
+    "loadingSearching": "Preise werden gesucht...",
+    "loadingScanning": "Geschäfte werden durchsucht...",
+    "loadingFinding": "Beste Preise werden gefunden...",
+    "loadingAlmostReady": "Fast fertig...",
+    "statusSearching": "Suche",
+    "statusSearchingDot": "Suche...",
+    "statusFound": "Gefunden ✓",
+    "statusNotFound": "Nicht gefunden",
+    "statusError": "Fehler ✗",
+    "errorMessage": "Preise konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "storeName": {
+      "Amazon": "Amazon",
+      "Kitapyurdu": "Kitapyurdu",
+      "DR": "D&R",
+      "Trendyol": "Trendyol",
+      "Hepsiburada": "Hepsiburada",
+      "BKM": "BKM"
+    }
+  },
+  "book": {
+    "authorLabel": "Autor:",
+    "yearLabel": "Erscheinungsjahr:",
+    "publisherLabel": "Verlag:",
+    "popularBadge": "Beliebt",
+    "popularBadgeTooltip": "Beliebt in Geschäften",
+    "purchaseAria": "Kauf-Links",
+    "drAria": "Kaufen Sie {title} bei D&R",
+    "bkmAria": "Kaufen Sie {title} bei BKM Kitap",
+    "kitapyurduAria": "Kaufen Sie {title} bei Kitapyurdu",
+    "hepsiburadaAria": "Kaufen Sie {title} bei Hepsiburada",
+    "trendyolAria": "Kaufen Sie {title} bei Trendyol",
+    "amazonAria": "Kaufen Sie {title} bei Amazon",
+    "cardAria": "Buch: {title}, Autor: {author}"
+  },
+  "trend": {
+    "title": "Trend Regal",
+    "ariaLabel": "Trend-Bücher"
+  },
+  "modal": {
+    "close": "Schließen",
+    "closeX": "✕ Schließen"
+  },
+  "badges": {
+    "title": "Meine Abzeichen",
+    "close": "Schließen"
+  },
+  "userTitle": {
+    "label": "Titel:",
+    "default": "—"
+  },
+  "quote": {
+    "ariaLabel": "Zitat des Tages"
+  },
+  "privacy": {
+    "icon": "🔒",
+    "title": "Datenschutz und Datensicherheit:",
+    "description": "Die Anwendung sendet keine Benutzerdaten an Server. Favoriten, Design-Auswahl und Suchverlauf werden nur lokal auf dem Gerät gespeichert.",
+    "ariaLabel": "Datenschutzhinweis"
+  },
+  "languages": {
+    "tr": "🇹🇷 Türkisch",
+    "en": "🇬🇧 English",
+    "de": "🇩🇪 Deutsch",
+    "fr": "🇫🇷 Français",
+    "es": "🇪🇸 Español"
+  }
+}

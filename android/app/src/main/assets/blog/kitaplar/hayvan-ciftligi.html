@@ -22,7 +22,7 @@
 
 <script>
 async function fetchPrice(n){
- const r=await fetch("http://localhost:3002/api/price?name="+encodeURIComponent(n))
+ const r=await fetch("http://localhost:3003/api/price?name="+encodeURIComponent(n))
  const d=await r.json()
  const trendyolPrice = typeof d.Trendyol === 'object' ? d.Trendyol?.price : d.Trendyol;
  const hepsiburadaPrice = typeof d.Hepsiburada === 'object' ? d.Hepsiburada?.price : d.Hepsiburada;
