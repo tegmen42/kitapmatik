@@ -1,5 +1,5 @@
 # GitHub API ile Repository Oluşturma ve Push
-$token = "YOUR_GITHUB_TOKEN_HERE"
+$token = "ghp_cwz4HAGOQZnqDuuzSYrKRQEMM638Bd1vLexu"
 
 Write-Host "`n═══════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host "🚀 GITHUB API İLE REPOSITORY OLUŞTURMA" -ForegroundColor Yellow
