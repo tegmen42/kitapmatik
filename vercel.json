@@ -1,12 +1,9 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/price.js", "use": "@vercel/node" },
-    { "src": "android/app/src/main/assets/index.html", "use": "@vercel/static" }
-  ],
   "routes": [
-    { "src": "/api/price", "dest": "/api/price.js" },
-    { "src": "/(.*)", "dest": "/android/app/src/main/assets/index.html" }
+    {
+      "src": "/google468aa68dc000a604.html",
+      "dest": "/google468aa68dc000a604.html",
+      "headers": { "Content-Type": "text/plain" }
+    }
   ]
 }
-
