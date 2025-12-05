@@ -58,3 +58,6 @@ puppeteer_cache/
 temp/
 tmp/
 
+# Token içeren dosyalar
+API_ILE_REPO_OLUSTUR.ps1
+
