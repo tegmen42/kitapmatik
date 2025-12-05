@@ -1,2 +1,2 @@
-# AdSense ads.txt - kod geldiğinde buraya eklenecek
-
+# Google AdSense kullanılacaksa publisher ID buraya eklenecek
+# google.com, pub-XXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
