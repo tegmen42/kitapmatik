@@ -1,0 +1,18 @@
+{
+  "siteUrl": "https://kitapmatik.vercel.app",
+  "urls": [
+    "/",
+    "/blog",
+    "/iletisim",
+    "/hakkinda"
+  ],
+  "ads": {
+    "enabled": true,
+    "publisherId": "pub-xxxxxxxxxxxx"
+  },
+  "robots": {
+    "allowAll": true,
+    "disallow": ["/admin", "/test"]
+  }
+}
+
