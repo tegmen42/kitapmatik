@@ -1,6 +1,9 @@
 {
   "version": 2,
+  "buildCommand": "",
+  "outputDirectory": "android/app/src/main/assets",
   "rewrites": [
+    { "source": "/google468aa68dc000a604.html", "destination": "/google468aa68dc000a604.html" },
     { "source": "/sitemap.xml", "destination": "/android/app/src/main/assets/sitemap.xml" },
     { "source": "/robots.txt", "destination": "/android/app/src/main/assets/robots.txt" },
     { "source": "/ads.txt", "destination": "/android/app/src/main/assets/ads.txt" }
