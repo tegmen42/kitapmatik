@@ -1,5 +1,4 @@
 {
-  "static": { "directory": "." },
   "routes": [
     { "src": "/google468aa68dc000a604.html", "dest": "/google468aa68dc000a604.html" },
     { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
