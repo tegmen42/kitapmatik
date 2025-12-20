@@ -1,2 +1,1 @@
-# Google AdSense kullanılacaksa publisher ID buraya eklenecek
-# google.com, pub-XXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-3650439797347512, DIRECT, f08c47fec0942fa0

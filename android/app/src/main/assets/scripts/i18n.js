@@ -1,7 +1,10 @@
 // Global Detection ve Internationalization (i18n) Sistemi - HTML Version
+// SADECE TR DESTEĞİ - Çoklu dil/ülke kaldırıldı, yapı korundu
 
-let currentLanguage = 'en'; // Varsayılan dil
-let translations = {}; // Mevcut çeviriler
+let currentLanguage = 'tr'; // SABİT: Her zaman Türkçe
+let translations = {}; // Mevcut çeviriler (TR)
+let currentCountry = 'TR'; // SABİT: Her zaman Türkiye
+let countryUpdateCallbacks = []; // Ülke güncellendiğinde çağrılacak callback'ler (kullanılmıyor ama yapı korundu)
 
 /**
  * Check if running as file:// protocol
@@ -44,203 +47,108 @@ function showFileProtocolWarning() {
   }
 }
 
-// Desteklenen diller
+// SABİT DEĞERLER - Çoklu dil/ülke desteği kaldırıldı
 const SUPPORTED_LANGUAGES = {
-  tr: 'tr',
-  en: 'en',
-  de: 'de',
-  fr: 'fr',
-  es: 'es'
-};
-
-// Ülke koduna göre dil eşleştirmesi
-const COUNTRY_TO_LANGUAGE = {
-  'TR': 'tr',
-  'US': 'en',
-  'UK': 'en',
-  'GB': 'en', // UK için alternatif kod
-  'CA': 'en',
-  'AU': 'en', // Avustralya da İngilizce
-  'DE': 'de',
-  'FR': 'fr',
-  'ES': 'es'
+  tr: 'tr' // Sadece Türkçe
 };
 
 /**
- * IP'den ülke kodu belirle
- * @returns {Promise<string>} Ülke kodu (örn: "TR", "US", "DE")
- */
-async function detectCountryFromIP() {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    if (!response.ok) {
-      throw new Error('IP detection failed');
-    }
-    const data = await response.json();
-    const countryCode = data.country_code || data.country || null;
-    return countryCode ? countryCode.toUpperCase() : null;
-  } catch (error) {
-    console.error('Country detection error:', error);
-    return null;
-  }
-}
-
-/**
- * Ülke koduna göre dil belirle
- * @param {string} countryCode - Ülke kodu (örn: "TR", "US")
- * @returns {string} Dil kodu (tr, en, de, fr, es)
+ * Ülke koduna göre dil belirle (STUB - her zaman 'tr' döner)
+ * @param {string} countryCode - Ülke kodu (kullanılmıyor)
+ * @returns {string} Dil kodu (her zaman 'tr')
  */
 function getLanguageFromCountry(countryCode) {
-  if (!countryCode) {
-    return 'en'; // Varsayılan İngilizce
-  }
-
-  const upperCode = countryCode.toUpperCase();
-  
-  // Direkt eşleşme kontrolü
-  if (COUNTRY_TO_LANGUAGE[upperCode]) {
-    return COUNTRY_TO_LANGUAGE[upperCode];
-  }
-
-  // Varsayılan İngilizce
-  return 'en';
+  return 'tr'; // SABİT: Her zaman Türkçe
 }
 
 /**
- * Dil dosyasını yükle
- * @param {string} lang - Dil kodu (tr, en, de, fr, es)
+ * Dil dosyasını yükle (SADECE TR)
+ * @param {string} lang - Dil kodu (her zaman 'tr')
  * @returns {Promise<Object>} Çeviri objesi
  */
 async function loadTranslations(lang) {
+  // Sadece 'tr' yükle, diğer dilleri yoksay
+  const targetLang = 'tr';
+  
   try {
     // localStorage'dan önce kontrol et
-    const cached = localStorage.getItem(`translations_${lang}`);
+    const cached = localStorage.getItem(`translations_${targetLang}`);
     if (cached) {
       return JSON.parse(cached);
     }
 
-    // file:// protocol kontrolü - sadece http/https üzerinden yükle
+    // file:// protocol kontrolü
     if (isFileProtocol()) {
       console.warn('Running as file:// protocol. Translations can only be loaded over http/https.');
-      console.warn('Using cached translations if available, otherwise returning empty object.');
-      // file:// durumunda sadece cache'den yükle, fetch yapma
       return {};
     }
 
-    // Dil dosyasını fetch ile yükle (sadece http/https üzerinden)
-    const response = await fetch(`./locales/${lang}.json`);
+    // Sadece tr.json yükle
+    const response = await fetch(`./locales/${targetLang}.json`);
     if (!response.ok) {
-      throw new Error(`Failed to load ${lang}.json`);
+      throw new Error(`Failed to load ${targetLang}.json`);
     }
     
     const translations = await response.json();
     
     // Cache'e kaydet
-    localStorage.setItem(`translations_${lang}`, JSON.stringify(translations));
+    localStorage.setItem(`translations_${targetLang}`, JSON.stringify(translations));
     
     return translations;
   } catch (error) {
-    console.error(`Failed to load translations for ${lang}:`, error);
-    // Hata durumunda İngilizce'ye fallback
-    if (lang !== 'en') {
-      return await loadTranslations('en');
-    }
-    // İngilizce de yüklenemezse boş obje döndür
-    return {};
+    console.error(`Failed to load translations for ${targetLang}:`, error);
+    return {}; // Boş obje döndür, uygulama çalışmaya devam etsin
   }
 }
 
 /**
- * Otomatik dil belirleme ve yükleme
- * @returns {Promise<string>} Seçilen dil kodu
+ * Otomatik dil belirleme (STUB - her zaman 'tr' döner)
+ * @returns {Promise<string>} Seçilen dil kodu (her zaman 'tr')
  */
 async function autoDetectLanguage() {
-  // 1. Öncelikle localStorage'dan kontrol et (kullanıcı tercihi)
-  const savedLanguage = localStorage.getItem('kitapmatik_language');
-  if (savedLanguage && SUPPORTED_LANGUAGES[savedLanguage]) {
-    currentLanguage = savedLanguage;
-    translations = await loadTranslations(currentLanguage);
-    return currentLanguage;
-  }
-
-  // 2. IP'den ülke belirle
-  try {
-    const countryCode = await detectCountryFromIP();
-    const detectedLanguage = getLanguageFromCountry(countryCode);
-    
-    currentLanguage = detectedLanguage;
-    translations = await loadTranslations(currentLanguage);
-    
-    // Tespit edilen dili localStorage'a kaydet (kullanıcı değiştirmediyse)
-    if (!localStorage.getItem('kitapmatik_language')) {
-      localStorage.setItem('kitapmatik_language', currentLanguage);
-    }
-    
-    return currentLanguage;
-  } catch (error) {
-    console.error('Auto-detect language error:', error);
-    // Hata durumunda varsayılan İngilizce
-    currentLanguage = 'en';
-    translations = await loadTranslations(currentLanguage);
-    return currentLanguage;
-  }
+  currentLanguage = 'tr'; // SABİT
+  currentCountry = 'TR'; // SABİT
+  translations = await loadTranslations('tr');
+  return 'tr';
 }
 
 /**
- * Dil değiştir
- * @param {string} lang - Yeni dil kodu
+ * Dil değiştir (STUB - her zaman 'tr' kalır)
+ * @param {string} lang - Yeni dil kodu (kullanılmıyor)
  * @returns {Promise<void>}
  */
 async function changeLanguage(lang) {
-  if (!SUPPORTED_LANGUAGES[lang]) {
-    console.warn(`Unsupported language: ${lang}`);
-    return;
-  }
-
-  currentLanguage = lang;
-  translations = await loadTranslations(lang);
-  
-  // localStorage'a kaydet
-  localStorage.setItem('kitapmatik_language', lang);
-  
-  // Event dispatch (UI güncellenmesi için)
-  window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang, translations: translations } }));
-  
-  // UI'ı güncelle
+  // Dil değiştirme devre dışı, her zaman 'tr' kalır
+  currentLanguage = 'tr';
+  translations = await loadTranslations('tr');
   updateUI();
 }
 
 /**
- * Çeviri al
- * @param {string} key - Çeviri anahtarı (örn: "title" veya "header.selectLanguage")
+ * Çeviri al (STUB - key döndürür veya tr.json'dan okur)
+ * @param {string} key - Çeviri anahtarı
  * @param {Object} params - Parametreler (opsiyonel)
  * @returns {string} Çevrilmiş metin
  */
 function t(key, params = {}) {
-  // Nested key desteği: "header.selectLanguage" -> translations.header.selectLanguage
   const keys = key.split('.');
   let translation = translations;
   
-  // Nested objeyi traverse et
   for (const k of keys) {
     if (translation && typeof translation === 'object' && k in translation) {
       translation = translation[k];
     } else {
-      // Key bulunamadı, orijinal key'i döndür
       translation = key;
       break;
     }
   }
   
-  // Eğer translation bir obje ise (son key bir obje döndürmüşse), key'i döndür
   if (typeof translation === 'object' && translation !== null) {
     return key;
   }
   
-  // String'e çevir
   translation = String(translation || key);
   
-  // Parametre değiştirme (örn: "Hello {name}" -> "Hello John")
   if (params && Object.keys(params).length > 0) {
     return Object.keys(params).reduce((str, paramKey) => {
       return str.replace(new RegExp(`{${paramKey}}`, 'g'), params[paramKey]);
@@ -251,31 +159,29 @@ function t(key, params = {}) {
 }
 
 /**
- * Mevcut dili al
- * @returns {string} Dil kodu
+ * Mevcut dili al (STUB - her zaman 'tr' döner)
+ * @returns {string} Dil kodu (her zaman 'tr')
  */
 function getCurrentLanguage() {
-  return currentLanguage;
+  return 'tr';
 }
 
 /**
- * Desteklenen dilleri al
- * @returns {Array<string>} Dil kodları dizisi
+ * Desteklenen dilleri al (STUB - sadece 'tr' döner)
+ * @returns {Array<string>} Dil kodları dizisi (sadece ['tr'])
  */
 function getSupportedLanguages() {
-  return Object.keys(SUPPORTED_LANGUAGES);
+  return ['tr'];
 }
 
 /**
- * UI'ı güncelle (çevirilerle) - Kapsamlı güncelleme
+ * UI'ı güncelle (çevirilerle) - Sadece TR çevirileri kullanılır
  */
 function updateUI() {
   if (!translations || typeof translations !== 'object') {
-    console.warn('Translations not loaded yet');
     return;
   }
 
-  // Helper function to get nested translation
   const getTranslation = (key) => {
     const keys = key.split('.');
     let value = translations;
@@ -295,7 +201,6 @@ function updateUI() {
     document.title = title;
   }
 
-  // Helper: Emoji koruyarak metin güncelle
   const updateTextWithEmoji = (element, newText, emoji = null) => {
     if (!element || !newText) return;
     if (element.tagName === 'BUTTON' || element.tagName === 'SPAN' || element.tagName === 'LABEL') {
@@ -307,7 +212,6 @@ function updateUI() {
     }
   };
 
-  // Helper: Aria-label güncelle
   const updateAriaLabel = (element, newLabel) => {
     if (!element || !newLabel) return;
     element.setAttribute('aria-label', newLabel);
@@ -370,7 +274,6 @@ function updateUI() {
   if (sortSelect) {
     updateAriaLabel(sortSelect, getTranslation('search.sortLabel') || 'Sıralama seçeneği');
     
-    // Option'ları güncelle
     const relevanceOption = sortSelect.querySelector('option[value="relevance"]');
     const newestOption = sortSelect.querySelector('option[value="newest"]');
     const popularOption = sortSelect.querySelector('option[value="popular"]');
@@ -454,7 +357,6 @@ function updateUI() {
       privacyTitle.textContent = getTranslation('privacy.title') || 'Gizlilik ve Veri Güvenliği:';
     }
     
-    // Description'ı güncelle
     const privacyText = privacyNotice.childNodes;
     privacyText.forEach(node => {
       if (node.nodeType === 3 && node.textContent.trim()) {
@@ -473,7 +375,7 @@ function updateUI() {
     }
   }
 
-  // Language menu options
+  // Language menu options (devre dışı ama yapı korundu)
   const langOptions = document.querySelectorAll('.lang-option');
   langOptions.forEach(option => {
     const lang = option.getAttribute('onclick')?.match(/'(\w+)'/)?.[1];
@@ -500,47 +402,117 @@ function updateUI() {
 }
 
 /**
- * i18n'i başlat
- * @returns {Promise<Object>} { language, translations }
+ * Ülke güncellendiğinde callback kaydet (STUB - kullanılmıyor)
+ */
+function onCountryUpdate(callback) {
+  if (typeof callback === 'function') {
+    countryUpdateCallbacks.push(callback);
+  }
+}
+
+/**
+ * i18n'i başlat (SPLASH'İ ASLA BLOKLAMAZ) - SADECE TR
+ * @returns {Promise<Object>} { language, translations, country }
  */
 async function initI18n() {
-  const language = await autoDetectLanguage();
-  translations = await loadTranslations(language);
-  
-  // UI'ı güncelle
-  updateUI();
-  
-  return {
-    language,
-    translations,
+  try {
+    // SABİT DEĞERLER - Algılama yok
+    currentLanguage = 'tr';
+    currentCountry = 'TR';
+    
+    // window.i18n'i hemen set et (diğer scriptler erişebilsin)
+    if (!window.i18n) {
+      window.i18n = {
+        getCurrentCountry: () => 'TR',
+        t: (key) => key,
+        getCurrentLanguage: () => 'tr',
+        ready: false
+      };
+    }
+    
+    // Sadece TR çevirilerini yükle
+    translations = await loadTranslations('tr');
+    updateUI();
+    
+    // window.i18n'i tam olarak güncelle
+    updateI18nExports();
+    
+    return {
+      language: 'tr',
+      translations,
+      country: 'TR',
+      t,
+      changeLanguage,
+      getCurrentLanguage,
+      getSupportedLanguages,
+      getCurrentCountry: () => 'TR',
+      onCountryUpdate
+    };
+  } catch (error) {
+    console.error('❌ i18n initialization failed:', error);
+    // Fallback: Varsayılan değerler (TR)
+    currentLanguage = 'tr';
+    currentCountry = 'TR';
+    translations = await loadTranslations('tr').catch(() => ({}));
+    updateUI();
+    updateI18nExports();
+    return {
+      language: 'tr',
+      translations,
+      country: 'TR',
+      t,
+      changeLanguage,
+      getCurrentLanguage,
+      getSupportedLanguages,
+      getCurrentCountry: () => 'TR',
+      onCountryUpdate
+    };
+  }
+}
+
+// initI18n tamamlandığında window.i18n'i güncelle
+function updateI18nExports() {
+  window.i18n = {
+    initI18n,
     t,
     changeLanguage,
     getCurrentLanguage,
-    getSupportedLanguages
+    getSupportedLanguages,
+    getLanguageFromCountry,
+    updateUI,
+    getCurrentCountry: () => 'TR',
+    onCountryUpdate,
+    ready: true
   };
 }
 
-// Export global functions
-window.i18n = {
-  initI18n,
-  t,
-  changeLanguage,
-  getCurrentLanguage,
-  getSupportedLanguages,
-  autoDetectLanguage,
-  detectCountryFromIP,
-  getLanguageFromCountry,
-  updateUI
-};
-
-// Otomatik başlat (DOM hazır olduğunda)
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    showFileProtocolWarning();
-    initI18n();
-  });
-} else {
-  showFileProtocolWarning();
-  initI18n();
+// Export global functions - initI18n tamamlandıktan sonra güncellenecek
+// Ama önce geçici bir obje set et (beyaz ekran önleme)
+if (!window.i18n) {
+  window.i18n = {
+    getCurrentCountry: () => 'TR',
+    t: (key) => key,
+    getCurrentLanguage: () => 'tr',
+    initI18n: null,
+    ready: false
+  };
 }
 
+// Otomatik başlat (DOM hazır olduğunda) - SPLASH'İ BLOKLAMAZ
+(function() {
+  function startI18n() {
+    showFileProtocolWarning();
+    // initI18n'i await etmeden başlat (splash'i bloklamaz)
+    initI18n().catch((error) => {
+      console.error('i18n start error:', error);
+      // Hata olsa bile sayfa çalışmaya devam etsin
+    });
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startI18n);
+  } else {
+    // DOM zaten hazır, hemen başlat
+    startI18n();
+  }
+})();

@@ -1054,222 +1054,6 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             }
         }
 
-        /* Fiyat Karşılaştırma Stilleri */
-        .price-compare-btn {
-            background: #1db954;
-            color: #fff;
-            padding: 7px 12px;
-            border-radius: 6px;
-            margin-top: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            border: none;
-            width: 100%;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .price-compare-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(29, 185, 84, 0.3);
-            background: #1ed760;
-        }
-
-        .go-buy-btn {
-            background: #ff6b35;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85em;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .go-buy-btn:hover {
-            background: #ff8659;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
-        }
-
-        /* Fiyat yükleme animasyonları */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .price-loading-container {
-            text-align: center;
-            padding: 30px 20px;
-        }
-
-        .price-loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(29, 185, 84, 0.2);
-            border-top-color: #1db954;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        .price-loading-text {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .price-loading-stores {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        .price-loading-store {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 12px;
-            background: rgba(29, 185, 84, 0.1);
-            border-radius: 6px;
-            font-size: 14px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .price-loading-store.active {
-            background: rgba(29, 185, 84, 0.2);
-        }
-
-        .price-loading-store .store-name {
-            font-weight: 500;
-        }
-
-        .price-loading-store .store-status {
-            font-size: 12px;
-            color: #1db954;
-        }
-
-        .price-loading-store .store-status::after {
-            content: '...';
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .price-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, .6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .price-content {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 300px;
-            animation: pop .25s ease;
-            color: var(--text-primary);
-        }
-
-        @keyframes pop {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .price-row:last-of-type {
-            border-bottom: none;
-        }
-
-        .go-buy-btn {
-            background: #ff6b35;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.85em;
-            transition: all 0.2s;
-            white-space: nowrap;
-            margin-left: 10px;
-        }
-
-        .go-buy-btn:hover {
-            background: #ff8659;
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
-        }
-
-        .price-row span {
-            flex: 1;
-        }
-
-        .price-row strong {
-            flex: 1;
-            text-align: center;
-            color: var(--text-primary);
-        }
-
-        .price-row a {
-            background: #1db954;
-            color: #fff;
-            padding: 4px 7px;
-            border-radius: 4px;
-            text-decoration: none;
-            margin-left: 10px;
-            font-size: 12px;
-        }
-
-        .price-row a:hover {
-            background: #1ed760;
-        }
-
-        .price-content h3 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            text-align: center;
-            color: var(--text-primary);
-        }
 
         .close-modal {
             margin-top: 15px;
@@ -2059,8 +1843,8 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 }
             }
 
-            // Optimize edilmiş zamanlama - 2.8 saniye
-            var SPLASH_DURATION = 2800;
+            // Splash ekranı süresi - 2.5 saniye
+            var SPLASH_DURATION = 2500;
             
             // DOM hazır olduğunda başlat
             if (document.readyState === 'complete' || document.readyState === 'interactive') {
@@ -2071,8 +1855,17 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 }, false);
             }
             
-            // Güvenlik: 4 saniye sonra kesinlikle kapat
-            setTimeout(hideSplash, 4000);
+            // Güvenlik: 3 saniye sonra kesinlikle kapat (hiçbir koşula bağlı değil)
+            setTimeout(hideSplash, 3000);
+            
+            // Ekstra güvenlik: 5 saniye sonra zorla kapat
+            setTimeout(function() {
+                var splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.style.display = 'none';
+                    splash.classList.add('splash-removed');
+                }
+            }, 5000);
         })();
         </script>
         <div id="splash-screen" class="splash-visible">
@@ -2159,7 +1952,6 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                                                                             <option value="popular">🔥 Popüler</option>
                                                                         </select>
                                                                                 <button class="filter-btn" id="trend-raft-btn" onclick="openTrendSection()" aria-pressed="false" aria-label="Trend Rafı" style="padding: 6px 12px; font-size: 12px; height: 28px; line-height: 1;">🔥 Trend Rafı</button>
-                                                                                <button class="filter-btn" onclick="openBlog()" aria-label="Blog" style="padding: 6px 12px; font-size: 12px; height: 28px; line-height: 1;">📚 Blog</button>
                                                                                 </div>
                                                                                 <div class="search-box">
                                                                                     <div class="search-input-wrapper">
@@ -3816,9 +3608,93 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
         }
 
 
+        // Ülkeye göre mağaza butonları oluştur
+        function createPurchaseLinksHTML(links, bookTitle, countryCode) {
+            let html = '';
+            const t = window.i18n?.t || ((key) => key);
+            const purchaseAria = t('book.purchaseAria') || 'Satın alma linkleri';
+            const escapedTitle = escapeHtml(bookTitle);
+            
+            if (countryCode === 'TR') {
+                if (links.drLink) {
+                    const drAria = t('book.drAria') ? t('book.drAria').replace('{title}', escapedTitle) : 'D&R\'da ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.drLink}" target="_blank" rel="noopener noreferrer" class="purchase-link dr-link" aria-label="${drAria}">D&R</a>`;
+                }
+                if (links.bkmLink) {
+                    const bkmAria = t('book.bkmAria') ? t('book.bkmAria').replace('{title}', escapedTitle) : 'BKM Kitap\'ta ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.bkmLink}" target="_blank" rel="noopener noreferrer" class="purchase-link bkm-link" aria-label="${bkmAria}">BKM</a>`;
+                }
+                if (links.kitapyurduLink) {
+                    const kyAria = t('book.kitapyurduAria') ? t('book.kitapyurduAria').replace('{title}', escapedTitle) : 'Kitapyurdu\'nda ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.kitapyurduLink}" target="_blank" rel="noopener noreferrer" class="purchase-link kitapyurdu-link" aria-label="${kyAria}">Kitapyurdu</a>`;
+                }
+                if (links.hepsiburadaLink) {
+                    const hbAria = t('book.hepsiburadaAria') ? t('book.hepsiburadaAria').replace('{title}', escapedTitle) : 'Hepsiburada\'da ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.hepsiburadaLink}" target="_blank" rel="noopener noreferrer" class="purchase-link hepsiburada-link" aria-label="${hbAria}">Hepsiburada</a>`;
+                }
+                if (links.trendyolLink) {
+                    const tyAria = t('book.trendyolAria') ? t('book.trendyolAria').replace('{title}', escapedTitle) : 'Trendyol\'da ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.trendyolLink}" target="_blank" rel="noopener noreferrer" class="purchase-link trendyol-link" aria-label="${tyAria}">Trendyol</a>`;
+                }
+                if (links.amazonLink) {
+                    const amzAria = t('book.amazonAria') ? t('book.amazonAria').replace('{title}', escapedTitle) : 'Amazon\'da ' + escapedTitle + ' kitabını satın al';
+                    html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="${amzAria}">Amazon</a>`;
+                }
+            } else if (countryCode === 'DE') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.thaliaLink) html += `<a href="${links.thaliaLink}" target="_blank" rel="noopener noreferrer" class="purchase-link thalia-link" aria-label="Buy ${escapedTitle} at Thalia">Thalia</a>`;
+                if (links.hugendubelLink) html += `<a href="${links.hugendubelLink}" target="_blank" rel="noopener noreferrer" class="purchase-link hugendubel-link" aria-label="Buy ${escapedTitle} at Hugendubel">Hugendubel</a>`;
+                if (links.weltbildLink) html += `<a href="${links.weltbildLink}" target="_blank" rel="noopener noreferrer" class="purchase-link weltbild-link" aria-label="Buy ${escapedTitle} at Weltbild">Weltbild</a>`;
+            } else if (countryCode === 'FR') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.fnacLink) html += `<a href="${links.fnacLink}" target="_blank" rel="noopener noreferrer" class="purchase-link fnac-link" aria-label="Buy ${escapedTitle} at FNAC">FNAC</a>`;
+                if (links.decitreLink) html += `<a href="${links.decitreLink}" target="_blank" rel="noopener noreferrer" class="purchase-link decitre-link" aria-label="Buy ${escapedTitle} at Decitre">Decitre</a>`;
+                if (links.culturaLink) html += `<a href="${links.culturaLink}" target="_blank" rel="noopener noreferrer" class="purchase-link cultura-link" aria-label="Buy ${escapedTitle} at Cultura">Cultura</a>`;
+            } else if (countryCode === 'ES') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.casaDelLibroLink) html += `<a href="${links.casaDelLibroLink}" target="_blank" rel="noopener noreferrer" class="purchase-link casadellibro-link" aria-label="Buy ${escapedTitle} at Casa del Libro">Casa del Libro</a>`;
+                if (links.elCorteInglesLink) html += `<a href="${links.elCorteInglesLink}" target="_blank" rel="noopener noreferrer" class="purchase-link elcorteingles-link" aria-label="Buy ${escapedTitle} at El Corte Inglés">El Corte Inglés</a>`;
+                if (links.fnacEsLink) html += `<a href="${links.fnacEsLink}" target="_blank" rel="noopener noreferrer" class="purchase-link fnac-es-link" aria-label="Buy ${escapedTitle} at FNAC">FNAC</a>`;
+            } else if (countryCode === 'US') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.barnesNobleLink) html += `<a href="${links.barnesNobleLink}" target="_blank" rel="noopener noreferrer" class="purchase-link barnesnoble-link" aria-label="Buy ${escapedTitle} at Barnes & Noble">Barnes & Noble</a>`;
+                if (links.booksAMillionLink) html += `<a href="${links.booksAMillionLink}" target="_blank" rel="noopener noreferrer" class="purchase-link booksamillion-link" aria-label="Buy ${escapedTitle} at Books-A-Million">Books-A-Million</a>`;
+                if (links.walmartLink) html += `<a href="${links.walmartLink}" target="_blank" rel="noopener noreferrer" class="purchase-link walmart-link" aria-label="Buy ${escapedTitle} at Walmart">Walmart</a>`;
+            } else if (countryCode === 'UK' || countryCode === 'GB') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.waterstonesLink) html += `<a href="${links.waterstonesLink}" target="_blank" rel="noopener noreferrer" class="purchase-link waterstones-link" aria-label="Buy ${escapedTitle} at Waterstones">Waterstones</a>`;
+                if (links.blackwellsLink) html += `<a href="${links.blackwellsLink}" target="_blank" rel="noopener noreferrer" class="purchase-link blackwells-link" aria-label="Buy ${escapedTitle} at Blackwell's">Blackwell's</a>`;
+                if (links.whsmithLink) html += `<a href="${links.whsmithLink}" target="_blank" rel="noopener noreferrer" class="purchase-link whsmith-link" aria-label="Buy ${escapedTitle} at WHSmith">WHSmith</a>`;
+            } else if (countryCode === 'IT') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.ibsLink) html += `<a href="${links.ibsLink}" target="_blank" rel="noopener noreferrer" class="purchase-link ibs-link" aria-label="Buy ${escapedTitle} at IBS">IBS</a>`;
+                if (links.feltrinelliLink) html += `<a href="${links.feltrinelliLink}" target="_blank" rel="noopener noreferrer" class="purchase-link feltrinelli-link" aria-label="Buy ${escapedTitle} at Feltrinelli">Feltrinelli</a>`;
+                if (links.mondadoriLink) html += `<a href="${links.mondadoriLink}" target="_blank" rel="noopener noreferrer" class="purchase-link mondadori-link" aria-label="Buy ${escapedTitle} at Mondadori">Mondadori</a>`;
+            } else if (countryCode === 'IN') {
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.flipkartLink) html += `<a href="${links.flipkartLink}" target="_blank" rel="noopener noreferrer" class="purchase-link flipkart-link" aria-label="Buy ${escapedTitle} at Flipkart">Flipkart</a>`;
+            } else {
+                // Default/Global
+                if (links.amazonLink) html += `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Buy ${escapedTitle} at Amazon">Amazon</a>`;
+                if (links.abebooksLink) html += `<a href="${links.abebooksLink}" target="_blank" rel="noopener noreferrer" class="purchase-link abebooks-link" aria-label="Buy ${escapedTitle} at AbeBooks">AbeBooks</a>`;
+            }
+            
+            return html ? `<div class="purchase-links" role="group" aria-label="${purchaseAria}">${html}</div>` : '';
+        }
+
         // displayResults için HTML oluşturma fonksiyonu
-        function displayResultsHTML(books, uniqueId = 'res') {
-            return books.map((book, index) => {
+        async function displayResultsHTML(books, uniqueId = 'res') {
+            // Ülke kodunu al (cache'den veya default)
+            let countryCode = 'TR';
+            try {
+                if (window.i18n && window.i18n.getCurrentCountry) {
+                    countryCode = window.i18n.getCurrentCountry() || 'TR';
+                }
+            } catch (error) {
+                console.error('Country get failed:', error);
+            }
+
+            const results = await Promise.all(books.map(async (book, index) => {
                 // displayResults içindeki aynı mantığı kullan
                 let coverImage = '';
                 const placeholderId = `placeholder-${uniqueId}-${index}`;
@@ -3828,7 +3704,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 const isFav = isFavorite(book);
                 const favoriteClass = isFav ? 'active' : '';
                 const favoriteIcon = isFav ? '⭐' : '☆';
-                const links = buildPurchaseLinks(book);
+                const links = await buildPurchaseLinks(book);
 
                 if (book.thumbnail) {
                     coverImage = `<img id="${imageId}"
@@ -3857,23 +3733,17 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                             <div class="book-author">${escapeHtml(book.author)}</div>
                             <div class="book-year">${escapeHtml(book.year || 'Bilinmiyor')}${book.publisher ? ` • ${escapeHtml(book.publisher)}` : ''}</div>
                             <div class="book-summary">${escapeHtml(book.summary || '')}</div>
-                            <div class="purchase-links" role="group" aria-label="Satın alma bağlantıları">
-                                ${links.drLink ? `<a href="${links.drLink}" target="_blank" rel="noopener noreferrer" class="purchase-link dr-link" aria-label="D&R'da ${escapeHtml(book.title)} kitabını satın al">D&R</a>` : ''}
-                                ${links.bkmLink ? `<a href="${links.bkmLink}" target="_blank" rel="noopener noreferrer" class="purchase-link bkm-link" aria-label="BKM Kitap'ta ${escapeHtml(book.title)} kitabını satın al">BKM</a>` : ''}
-                                ${links.kitapyurduLink ? `<a href="${links.kitapyurduLink}" target="_blank" rel="noopener noreferrer" class="purchase-link kitapyurdu-link" aria-label="Kitapyurdu'nda ${escapeHtml(book.title)} kitabını satın al">Kitapyurdu</a>` : ''}
-                                ${links.hepsiburadaLink ? `<a href="${links.hepsiburadaLink}" target="_blank" rel="noopener noreferrer" class="purchase-link hepsiburada-link" aria-label="Hepsiburada'da ${escapeHtml(book.title)} kitabını satın al">Hepsiburada</a>` : ''}
-                                ${links.trendyolLink ? `<a href="${links.trendyolLink}" target="_blank" rel="noopener noreferrer" class="purchase-link trendyol-link" aria-label="Trendyol'da ${escapeHtml(book.title)} kitabını satın al">Trendyol</a>` : ''}
-                                ${links.amazonLink ? `<a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Amazon'da ${escapeHtml(book.title)} kitabını satın al">Amazon</a>` : ''}
-                            </div>
-                            <button class="price-compare-btn" data-book-title="${escapeHtml(book.title)}" data-book-author="${escapeHtml(book.author)}">💰 Fiyat Karşılaştır</button>
+                            ${createPurchaseLinksHTML(links, book.title, countryCode)}
                         </div>
                     </div>
                 `;
-            }).join('');
+            }));
+
+            return results.join('');
         }
 
         // Keşfet / Önerilen Kitaplar fonksiyonu
-        function renderDiscoverBooks() {
+        async function renderDiscoverBooks() {
             const resultsNormal = document.getElementById('results-normal');
             if (!resultsNormal) return;
 
@@ -3887,7 +3757,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 
             // DISCOVER_BOOKS dizisindeki kitapları göster
             // displayResults fonksiyonunu kullanarak mevcut kart yapısını kullan
-            displayResults(DISCOVER_BOOKS);
+            await displayResults(DISCOVER_BOOKS);
             currentBooks = DISCOVER_BOOKS; // currentBooks'u güncelle (rastgele kitap için)
         }
 
@@ -4326,13 +4196,23 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             if (resultsTrend) resultsTrend.style.display = 'block';
 
             if (resultsTrend && trendData.books) {
+                // Ülke kodunu al
+                let countryCode = 'TR';
+                try {
+                    if (window.i18n && window.i18n.getCurrentCountry) {
+                        countryCode = window.i18n.getCurrentCountry() || 'TR';
+                    }
+                } catch (error) {
+                    console.error('Country get failed:', error);
+                }
+
                 // Trend kitaplarını results-trend container'ına yaz
-                const booksHtml = trendData.books.map((book, index) => {
+                const booksHtml = await Promise.all(trendData.books.map(async (book, index) => {
                     const bookId = book.isbn || `${book.title}_${book.author}`;
                     const isFav = isFavorite(book);
                     const favoriteClass = isFav ? 'active' : '';
                     const favoriteIcon = isFav ? '⭐' : '☆';
-                    const links = buildPurchaseLinks(book);
+                    const links = await buildPurchaseLinks(book);
 
                     let coverImage = '';
                     const placeholderId = `placeholder-trend-${index}`;
@@ -4366,19 +4246,13 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                             <div class="book-author">Yazar: ${escapeHtml(book.author)}</div>
                             <div class="book-year">Basım Yılı: ${escapeHtml(book.year)}${book.publisher ? ` • Yayınevi: ${escapeHtml(book.publisher)}` : ''}</div>
                             <div class="book-summary">${escapeHtml(book.summary)}</div>
-                            <div class="purchase-links" role="group" aria-label="Satın alma linkleri">
-                                <a href="${links.drLink}" target="_blank" rel="noopener noreferrer" class="purchase-link dr-link" aria-label="D&R'da ${escapeHtml(book.title)} kitabını satın al">D&R</a>
-                                <a href="${links.bkmLink}" target="_blank" rel="noopener noreferrer" class="purchase-link bkm-link" aria-label="BKM Kitap'ta ${escapeHtml(book.title)} kitabını satın al">BKM</a>
-                                <a href="${links.kitapyurduLink}" target="_blank" rel="noopener noreferrer" class="purchase-link kitapyurdu-link" aria-label="Kitapyurdu'nda ${escapeHtml(book.title)} kitabını satın al">Kitapyurdu</a>
-                                <a href="${links.hepsiburadaLink}" target="_blank" rel="noopener noreferrer" class="purchase-link hepsiburada-link" aria-label="Hepsiburada'da ${escapeHtml(book.title)} kitabını satın al">Hepsiburada</a>
-                                <a href="${links.trendyolLink}" target="_blank" rel="noopener noreferrer" class="purchase-link trendyol-link" aria-label="Trendyol'da ${escapeHtml(book.title)} kitabını satın al">Trendyol</a>
-                                <a href="${links.amazonLink}" target="_blank" rel="noopener noreferrer" class="purchase-link amazon-link" aria-label="Amazon'da ${escapeHtml(book.title)} kitabını satın al">Amazon</a>
-                            </div>
-                            <button class="price-compare-btn" data-book-title="${escapeHtml(book.title)}" data-book-author="${escapeHtml(book.author)}">💰 Fiyat Karşılaştır</button>
+                            ${createPurchaseLinksHTML(links, book.title, countryCode)}
                         </div>
                     </div>
                     `;
-                }).join('');
+                }));
+
+                resultsTrend.innerHTML = booksHtml.join('');
 
                 // Periyot bilgisini al (Sabah/Akşam)
                 const hour = new Date().getHours();
@@ -4393,26 +4267,9 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                     </div>
                 </div>`;
                 resultsTrend.innerHTML = trendHeader + booksHtml;
-                
-                // Trend Rafı fiyat karşılaştırma butonlarına event listener ekle
-                resultsTrend.querySelectorAll('.price-compare-btn').forEach(btn => {
-                    const title = btn.getAttribute('data-book-title');
-                    const author = btn.getAttribute('data-book-author');
-                    if (title && trendData.books) {
-                        const book = trendData.books.find(b => b.title === title && b.author === author);
-                        if (book) {
-                            const links = buildPurchaseLinks(book);
-                            btn.onclick = () => showPriceModal(book, links);
-                        }
-                    }
-                });
             }
         }
 
-        // Blog açma fonksiyonu - Android uygulamasının içinden
-        function openBlog() {
-            window.location.href = 'blog/index.html';
-        }
 
         async function openTrendSection() {
             // Yükleniyor göster
@@ -4527,7 +4384,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             document.getElementById('searchView').classList.add('active');
         }
 
-        function displayFavorites() {
+        async function displayFavorites() {
             const favorites = getFavorites();
             const favoritesContainer = document.getElementById('favoritesContainer');
 
@@ -4538,10 +4395,10 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             }
 
             currentBooks = favorites; // Favorileri sakla (toggleFavorite için)
-            displayResults(favorites, true);
+            await displayResults(favorites, true);
         }
 
-        function displayFavoritesInModal() {
+        async function displayFavoritesInModal() {
             const favorites = getFavorites();
             const favoritesContainer = document.getElementById('favoritesModalContainer');
 
@@ -4552,7 +4409,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             }
 
             currentBooks = favorites;
-            displayResultsWithPrices(favorites);
+            await displayResultsWithPrices(favorites);
         }
 
         function setFilter(filter, buttonElement) {
@@ -5400,7 +5257,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 
                 matchWithPopularBooks(booksToShow);
                 currentBooks = booksToShow;
-                displayResults(booksToShow);
+                await displayResults(booksToShow);
             } catch (error) {
                 console.error('Hata:', error);
                 if (resultsNormal) {
@@ -5417,108 +5274,47 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             }
         }
 
-        function buildPurchaseLinks(book) {
-            // Kitap adını temizle (gereksiz karakterleri kaldır)
-            function cleanBookTitle(title) {
-                if (!title) return '';
-                // Fazla boşlukları temizle, özel karakterleri koru
-                return title.trim().replace(/\s+/g, ' ');
-            }
-
-            // Yazar adını temizle
-            function cleanAuthorName(author) {
-                if (!author || author.toLowerCase().includes('yazar bilgisi yok')) return '';
-                // İlk yazarı al ve temizle
-                const firstAuthor = author.split(',')[0].trim();
-                // "Yazar:" gibi ön ekleri kaldır
-                return firstAuthor.replace(/^yazar:\s*/i, '').trim();
-            }
-
-            // Öncelik sırası: ISBN > Kitap Adı + Yazar > Sadece Kitap Adı
-            let searchQuery = '';
-            // cleanTitle'ı her durumda kullanmak için başta tanımla
-            const cleanTitle = cleanBookTitle(book.title);
-
-            if (book.isbn) {
-                // ISBN ile arama (en kesin sonuç)
-                searchQuery = book.isbn.replace(/[-\s]/g, ''); // ISBN'deki tire ve boşlukları kaldır
-            } else {
-                // Kitap adı ve yazar ile arama (daha spesifik)
-                const authorFirst = cleanAuthorName(book.author);
-                if (authorFirst) {
-                    searchQuery = `${cleanTitle} ${authorFirst}`;
-                } else {
-                    searchQuery = cleanTitle;
+        async function buildPurchaseLinks(book) {
+            // GÜVENLİ: try-catch ile sar, hata olursa default değerlerle devam et
+            try {
+                // Kitap adını temizle (gereksiz karakterleri kaldır)
+                function cleanBookTitle(title) {
+                    if (!title) return '';
+                    return title.trim().replace(/\s+/g, ' ');
                 }
-            }
 
-            // Android kontrolü (tüm linklerde kullanılacak)
+                // Yazar adını temizle
+                function cleanAuthorName(author) {
+                    if (!author || author.toLowerCase().includes('yazar bilgisi yok')) return '';
+                    const firstAuthor = author.split(',')[0].trim();
+                    return firstAuthor.replace(/^yazar:\s*/i, '').trim();
+                }
+
+                // SABİT: Her zaman TR (çoklu ülke desteği kaldırıldı)
+                const countryCode = 'TR';
+
+            const cleanTitle = cleanBookTitle(book.title);
+            const author = cleanAuthorName(book.author);
             const isAndroid = /Android/i.test(navigator.userAgent);
             
-            // D&R linki - ISBN yerine kitap adı + yazar kullan (D&R ISBN aramasında sorun var)
-            const drAuthor = cleanAuthorName(book.author);
-            let drSearchQuery = cleanTitle;
-            if (drAuthor && drAuthor.length > 0) {
-                drSearchQuery = `${cleanTitle} ${drAuthor}`;
-            }
-            const drLink = `https://www.dr.com.tr/search?q=${encodeURIComponent(drSearchQuery)}`;
-
-            // BKM Kitap linki - ISBN yerine kitap adı + yazar kullan (daha güvenilir sonuç)
-            const bkmAuthor = cleanAuthorName(book.author);
-            let bkmSearchQuery = cleanTitle;
-            if (bkmAuthor && bkmAuthor.length > 0) {
-                // Çok uzun başlıkları kısalt
-                let bkmTitle = cleanTitle;
-                if (cleanTitle.length > 50) {
-                    const titleWords = cleanTitle.split(' ');
-                    bkmTitle = titleWords.slice(0, 6).join(' ');
-                }
-                bkmSearchQuery = `${bkmTitle} ${bkmAuthor}`;
-            }
-            let bkmLink = `https://www.bkmkitap.com/arama?q=${encodeURIComponent(bkmSearchQuery.trim())}`;
-            
-            // BKM Kitap için Android deep linking
-            const bkmWebUrl = bkmLink;
-            if (isAndroid) {
-                // BKM için Intent ile web URL'i aç (app link sistemi kullanılacak)
-                bkmLink = bkmWebUrl; // Intent ile açılacak
-            }
-
-            // Kitapyurdu linki - ISBN yerine kitap adı + yazar kullan (daha güvenilir sonuç)
-            const kyAuthor = cleanAuthorName(book.author);
-            let kitapyurduLink = '';
-            if (kyAuthor && kyAuthor.length > 0) {
-                // Kitapyurdu'nda kitap adı ve yazar ayrı parametrelerle arama
-                kitapyurduLink = `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${encodeURIComponent(cleanTitle)}&filter_author=${encodeURIComponent(kyAuthor)}`;
-            } else {
-                kitapyurduLink = `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${encodeURIComponent(cleanTitle)}`;
-            }
-            
-            // Kitapyurdu linki - normal web URL (MainActivity'de özel işlem yapılacak)
-            // kitapyurduLink zaten web URL'i
-
-            // Ortak optimizasyon fonksiyonu - Trendyol ve Hepsi Burada için
-            // Sorun: "Portakal" gibi genel kelimeler başka ürünler getiriyor
-            // Çözüm: Kitap adı + yazar + "kitap" kelimesi ekle
-            function optimizeTitleForEcommerce(title, authorName) {
-                if (!title || title.trim().length === 0) return 'kitap';
+            // Optimize edilmiş başlık fonksiyonu - ülkeye göre "book" veya "kitap" ekler
+            function optimizeTitleForEcommerce(title, authorName, countryCode) {
+                if (!title || title.trim().length === 0) return countryCode === 'TR' ? 'kitap' : 'book';
                 
-                // Alt başlıkları kaldır: ":" veya " - " sonrası
                 let optimized = title.trim();
                 
-                // Önce ":" kontrolü (alt başlık ayracı)
+                // Alt başlıkları kaldır
                 const colonIndex = optimized.indexOf(':');
                 if (colonIndex > 0 && colonIndex < 50) {
                     optimized = optimized.substring(0, colonIndex).trim();
                 }
                 
-                // Sonra " - " kontrolü (boşluklu tire - alt başlık ayracı)
-                const dashWithSpaceIndex = optimized.indexOf(' - ');
-                if (dashWithSpaceIndex > 0 && dashWithSpaceIndex < 50) {
-                    optimized = optimized.substring(0, dashWithSpaceIndex).trim();
+                const dashIndex = optimized.indexOf(' - ');
+                if (dashIndex > 0 && dashIndex < 50) {
+                    optimized = optimized.substring(0, dashIndex).trim();
                 }
                 
-                // Çok uzun başlıkları kısalt (ilk 5 kelime veya 40 karakter)
+                // Çok uzun başlıkları kısalt
                 if (optimized.length > 40) {
                     const titleWords = optimized.split(' ').filter(word => word.length > 0);
                     if (titleWords.length > 5) {
@@ -5528,7 +5324,6 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                     }
                 }
                 
-                // Çok kısa kontrolleri (2 karakterden kısa ise orijinal başlığı kullan)
                 if (optimized.length < 2) {
                     const originalWords = title.trim().split(' ').filter(word => word.length > 0);
                     optimized = originalWords.slice(0, Math.min(3, originalWords.length)).join(' ');
@@ -5537,24 +5332,26 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 // Yazar adını temizle ve ekle
                 let author = '';
                 if (authorName && !authorName.toLowerCase().includes('yazar bilgisi yok')) {
-                    author = authorName.split(',')[0].trim(); // İlk yazarı al
+                    author = authorName.split(',')[0].trim();
                     if (author.length > 20) {
-                        // Çok uzun yazar adlarını kısalt (sadece soyad)
                         const nameParts = author.split(' ');
                         if (nameParts.length > 1) {
-                            author = nameParts[nameParts.length - 1]; // Son kelime (soyad)
+                            author = nameParts[nameParts.length - 1];
                         }
                     }
                 }
                 
-                // "kitap" kelimesi zaten başlıkta var mı kontrol et
-                const hasBookWord = optimized.toLowerCase().includes('kitap') || 
+                // "kitap" veya "book" kelimesi kontrolü
+                const bookWord = countryCode === 'TR' ? 'kitap' : 'book';
+                const hasBookWord = countryCode === 'TR' 
+                    ? (optimized.toLowerCase().includes('kitap') || 
                                     optimized.toLowerCase().includes('roman') ||
                                     optimized.toLowerCase().includes('soru bankası') ||
                                     optimized.toLowerCase().includes('hikaye') ||
-                                    optimized.toLowerCase().includes('öykü');
+                       optimized.toLowerCase().includes('öykü'))
+                    : (optimized.toLowerCase().includes('book') ||
+                       optimized.toLowerCase().includes('novel'));
                 
-                // Final arama sorgusu: "kitap adı" + "yazar" + "kitap"
                 let finalQuery = optimized;
                 
                 if (author && author.length > 0) {
@@ -5562,35 +5359,98 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 }
                 
                 if (!hasBookWord) {
-                    finalQuery = `${finalQuery} kitap`;
+                    finalQuery = `${finalQuery} ${bookWord}`;
                 }
                 
                 return finalQuery.trim();
             }
             
-            // Hepsi Burada linki - optimize edilmiş: kitap adı + yazar + "kitap"
-            const optimizedTitle = optimizeTitleForEcommerce(cleanTitle, book.author);
-            // Android'de HepsiBurada'nın gerçek app link formatı: hbapp://search?searchTerm=...
+            const optimizedTitle = optimizeTitleForEcommerce(cleanTitle, book.author, countryCode);
+            const links = {};
+
+            // SADECE TR MAĞAZALARI (çoklu ülke desteği kaldırıldı)
+            const drAuthor = cleanAuthorName(book.author);
+            let drSearchQuery = cleanTitle;
+            if (drAuthor && drAuthor.length > 0) {
+                drSearchQuery = `${cleanTitle} ${drAuthor}`;
+            }
+            links.drLink = `https://www.dr.com.tr/search?q=${encodeURIComponent(drSearchQuery)}`;
+
+            const bkmAuthor = cleanAuthorName(book.author);
+            let bkmSearchQuery = cleanTitle;
+            if (bkmAuthor && bkmAuthor.length > 0) {
+                let bkmTitle = cleanTitle;
+                if (cleanTitle.length > 50) {
+                    const titleWords = cleanTitle.split(' ');
+                    bkmTitle = titleWords.slice(0, 6).join(' ');
+                }
+                bkmSearchQuery = `${bkmTitle} ${bkmAuthor}`;
+            }
+            links.bkmLink = `https://www.bkmkitap.com/arama?q=${encodeURIComponent(bkmSearchQuery.trim())}`;
+
+            const kyAuthor = cleanAuthorName(book.author);
+            if (kyAuthor && kyAuthor.length > 0) {
+                links.kitapyurduLink = `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${encodeURIComponent(cleanTitle)}&filter_author=${encodeURIComponent(kyAuthor)}`;
+            } else {
+                links.kitapyurduLink = `https://www.kitapyurdu.com/index.php?route=product/search&filter_name=${encodeURIComponent(cleanTitle)}`;
+            }
+
             let hepsiburadaLink = `https://www.hepsiburada.com/ara?q=${encodeURIComponent(optimizedTitle)}`;
-            if (isAndroid) { // isAndroid zaten yukarıda tanımlı
+            if (isAndroid) {
                 const searchTerm = encodeURIComponent(optimizedTitle);
                 hepsiburadaLink = `hbapp://search?searchTerm=${searchTerm}`;
             }
+            links.hepsiburadaLink = hepsiburadaLink;
 
-            // Trendyol linki - optimize edilmiş: kitap adı + yazar + "kitap"
             const trendyolWebUrl = `https://www.trendyol.com/sr?q=${encodeURIComponent(optimizedTitle)}`;
-            // Android'de Trendyol'un gerçek app link formatı (HepsiBurada gibi)
             let trendyolLink = trendyolWebUrl;
             if (isAndroid) {
-                // Trendyol app link formatı: trendyol://sr?q=...
                 const searchTerm = encodeURIComponent(optimizedTitle);
                 trendyolLink = `trendyol://sr?q=${searchTerm}`;
             }
+            links.trendyolLink = trendyolLink;
 
-            // Amazon linki - kitap adı + yazar + "kitap"
-            const amazonLink = `https://www.amazon.com.tr/s?k=${encodeURIComponent(optimizedTitle)}`;
+            links.amazonLink = `https://www.amazon.com.tr/s?k=${encodeURIComponent(optimizedTitle)}`;
 
-            return { drLink, bkmLink, kitapyurduLink, hepsiburadaLink, trendyolLink, amazonLink };
+            return links;
+            } catch (error) {
+                // HATA DURUMU: Sadece Amazon + AbeBooks göster
+                console.warn('buildPurchaseLinks error, using fallback:', error);
+                const cleanTitle = book?.title || 'book';
+                const optimizedTitle = cleanTitle.trim().substring(0, 50);
+                return {
+                    amazonLink: `https://www.amazon.com/s?k=${encodeURIComponent(optimizedTitle)}`,
+                    abebooksLink: `https://www.abebooks.com/servlet/SearchResults?kn=${encodeURIComponent(optimizedTitle)}`
+                };
+            }
+        }
+
+        // Global handler for price compare button clicks
+        async function handlePriceCompareClick(btn) {
+            try {
+                const title = btn.getAttribute('data-book-title');
+                const author = btn.getAttribute('data-book-author') || '';
+                
+                if (!title) {
+                    console.error('Book title not found');
+                    return;
+                }
+
+                // Find book from currentBooks or create a minimal book object
+                let book = currentBooks?.find(b => b.title === title) || {
+                    title: title,
+                    author: author
+                };
+
+                // Get purchase links
+                const links = await buildPurchaseLinks(book);
+                
+                // Show price modal
+                await showPriceModal(book, links);
+            } catch (error) {
+                console.error('Error in handlePriceCompareClick:', error);
+                alert('Fiyat karşılaştırma başlatılamadı. Lütfen tekrar deneyin.');
+            }
         }
 
         // 📌 Fiyat Karşılaştırma Bileşeni
@@ -5598,8 +5458,9 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             const btn = document.createElement("button");
             btn.className = "price-compare-btn";
             btn.innerText = "💰 Fiyat Karşılaştır";
-
-            btn.onclick = () => showPriceModal(book, links);
+            btn.setAttribute('data-book-title', book.title);
+            btn.setAttribute('data-book-author', book.author || '');
+            btn.onclick = () => handlePriceCompareClick(btn);
 
             return btn;
         }
@@ -5608,8 +5469,20 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             const modal = document.createElement("div");
             modal.className = "price-modal";
 
-            // Dinamik yükleme durumu için mağaza listesi
-            const stores = [
+            // Ülke kodunu al (cache'den veya default)
+            let countryCode = 'TR';
+            try {
+                if (window.i18n && window.i18n.getCurrentCountry) {
+                    countryCode = window.i18n.getCurrentCountry() || 'TR';
+                }
+            } catch (error) {
+                console.error('Country get failed:', error);
+            }
+
+            // Ülkeye göre mağaza listesi
+            let stores = [];
+            if (countryCode === 'TR') {
+                stores = [
                 { name: "Amazon", key: "Amazon" },
                 { name: "Kitapyurdu", key: "Kitapyurdu" },
                 { name: "D&R", key: "DR" },
@@ -5617,6 +5490,59 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 { name: "Hepsiburada", key: "Hepsiburada" },
                 { name: "BKM", key: "BKM" }
             ];
+            } else if (countryCode === 'DE') {
+                stores = [
+                    { name: "Amazon DE", key: "Amazon" },
+                    { name: "Thalia", key: "Thalia" },
+                    { name: "Hugendubel", key: "Hugendubel" },
+                    { name: "Weltbild", key: "Weltbild" }
+                ];
+            } else if (countryCode === 'FR') {
+                stores = [
+                    { name: "Amazon FR", key: "Amazon" },
+                    { name: "FNAC", key: "FNAC" },
+                    { name: "Decitre", key: "Decitre" },
+                    { name: "Cultura", key: "Cultura" }
+                ];
+            } else if (countryCode === 'ES') {
+                stores = [
+                    { name: "Amazon ES", key: "Amazon" },
+                    { name: "Casa del Libro", key: "CasaDelLibro" },
+                    { name: "El Corte Inglés", key: "ElCorteIngles" },
+                    { name: "FNAC ES", key: "FNAC" }
+                ];
+            } else if (countryCode === 'US') {
+                stores = [
+                    { name: "Amazon US", key: "Amazon" },
+                    { name: "Barnes & Noble", key: "BarnesNoble" },
+                    { name: "Books-A-Million", key: "BooksAMillion" },
+                    { name: "Walmart", key: "Walmart" }
+                ];
+            } else if (countryCode === 'UK' || countryCode === 'GB') {
+                stores = [
+                    { name: "Amazon UK", key: "Amazon" },
+                    { name: "Waterstones", key: "Waterstones" },
+                    { name: "Blackwell's", key: "Blackwells" },
+                    { name: "WHSmith", key: "WHSmith" }
+                ];
+            } else if (countryCode === 'IT') {
+                stores = [
+                    { name: "Amazon IT", key: "Amazon" },
+                    { name: "IBS", key: "IBS" },
+                    { name: "Feltrinelli", key: "Feltrinelli" },
+                    { name: "Mondadori", key: "Mondadori" }
+                ];
+            } else if (countryCode === 'IN') {
+                stores = [
+                    { name: "Amazon IN", key: "Amazon" },
+                    { name: "Flipkart", key: "Flipkart" }
+                ];
+            } else {
+                stores = [
+                    { name: "Amazon", key: "Amazon" },
+                    { name: "AbeBooks", key: "AbeBooks" }
+                ];
+            }
 
             // Loading state - dinamik ve animasyonlu
             modal.innerHTML = `
@@ -5692,9 +5618,59 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             });
 
             try {
-                // API'den fiyatları çek (Port 3003 - Hybrid scraper)
-                const response = await fetch(`http://localhost:3003/api/price?name=${encodeURIComponent(book.title)}`);
-                const prices = await response.json();
+                // Tamamen client-side fiyat çekme (API'siz)
+                let prices = {};
+                
+                // TR için client-side fiyat çekme (mevcut fonksiyonlar)
+                if (countryCode === 'TR') {
+                    try {
+                        console.log('🔍 Client-side fiyat çekme başlatılıyor:', book.title);
+                        const clientSideResult = await fetchPricesClientSide(book.title, book.isbn || '');
+                        console.log('📦 Client-side sonuç:', clientSideResult);
+                        
+                        if (clientSideResult && clientSideResult.data) {
+                            // Client-side sonuçları API formatına çevir
+                            const clientPrices = clientSideResult.data.prices || {};
+                            console.log('💰 Çekilen fiyatlar:', clientPrices);
+                            
+                            Object.keys(clientPrices).forEach(key => {
+                                const storeName = {
+                                    'dr': 'D&R',
+                                    'bkm': 'BKM',
+                                    'kitapyurdu': 'Kitapyurdu',
+                                    'hepsiburada': 'Hepsiburada',
+                                    'trendyol': 'Trendyol',
+                                    'amazon': 'Amazon'
+                                }[key] || key;
+                                
+                                const priceValue = clientPrices[key];
+                                if (priceValue && priceValue > 0) {
+                                    prices[storeName] = { price: priceValue.toString() };
+                                    console.log(`✅ ${storeName}: ${priceValue} TL`);
+                                } else {
+                                    prices[storeName] = { price: "-" };
+                                    console.log(`❌ ${storeName}: Fiyat bulunamadı`);
+                                }
+                            });
+                        } else {
+                            console.warn('⚠️ Client-side sonuç başarısız veya boş');
+                        }
+                    } catch (clientError) {
+                        console.error('❌ Client-side price fetch failed:', clientError);
+                        console.error('Hata detayı:', clientError.stack);
+                    }
+                }
+                
+                // Diğer ülkeler için şimdilik fiyat çekme yok, sadece linkler gösterilecek
+                // Tüm mağazalar için fiyat objesi oluştur (bulunamayanlar için "-")
+                stores.forEach(store => {
+                    if (!prices[store.name]) {
+                        prices[store.name] = { price: "-" };
+                    }
+                });
+                
+                console.log('📊 Client-side fiyat çekme tamamlandı:', Object.keys(prices).length, 'mağaza');
+                console.log('📊 Fiyat özeti:', prices);
                 
                 // Yükleme mesajını durdur
                 if (textInterval) {
@@ -5714,15 +5690,64 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                     }, index * 150);
                 });
 
-                // Mağaza linklerini hazırla (6 mağaza)
-                const storeLinks = {
-                    "Amazon": links.amazonLink || "#",
-                    "Kitapyurdu": links.kitapyurduLink || "#",
-                    "DR": links.drLink || "#",
-                    "Trendyol": links.trendyolLink || "#",
-                    "Hepsiburada": links.hepsiburadaLink || "#",
-                    "BKM": links.bkmLink || "#"
-                };
+                // Mağaza linklerini hazırla (ülkeye göre)
+                const storeLinks = {};
+                stores.forEach(store => {
+                    const storeName = store.name;
+                    if (storeName.includes('Amazon')) {
+                        storeLinks[storeName] = links.amazonLink || "#";
+                    } else if (storeName.includes('Kitapyurdu')) {
+                        storeLinks[storeName] = links.kitapyurduLink || "#";
+                    } else if (storeName.includes('D&R') || storeName.includes('DR')) {
+                        storeLinks[storeName] = links.drLink || "#";
+                    } else if (storeName.includes('Trendyol')) {
+                        storeLinks[storeName] = links.trendyolLink || "#";
+                    } else if (storeName.includes('Hepsiburada')) {
+                        storeLinks[storeName] = links.hepsiburadaLink || "#";
+                    } else if (storeName.includes('BKM')) {
+                        storeLinks[storeName] = links.bkmLink || "#";
+                    } else if (storeName.includes('Thalia')) {
+                        storeLinks[storeName] = links.thaliaLink || "#";
+                    } else if (storeName.includes('Hugendubel')) {
+                        storeLinks[storeName] = links.hugendubelLink || "#";
+                    } else if (storeName.includes('Weltbild')) {
+                        storeLinks[storeName] = links.weltbildLink || "#";
+                    } else if (storeName.includes('FNAC')) {
+                        storeLinks[storeName] = links.fnacLink || links.fnacEsLink || "#";
+                    } else if (storeName.includes('Decitre')) {
+                        storeLinks[storeName] = links.decitreLink || "#";
+                    } else if (storeName.includes('Cultura')) {
+                        storeLinks[storeName] = links.culturaLink || "#";
+                    } else if (storeName.includes('Casa del Libro')) {
+                        storeLinks[storeName] = links.casaDelLibroLink || "#";
+                    } else if (storeName.includes('El Corte Inglés')) {
+                        storeLinks[storeName] = links.elCorteInglesLink || "#";
+                    } else if (storeName.includes('Barnes')) {
+                        storeLinks[storeName] = links.barnesNobleLink || "#";
+                    } else if (storeName.includes('Books-A-Million')) {
+                        storeLinks[storeName] = links.booksAMillionLink || "#";
+                    } else if (storeName.includes('Walmart')) {
+                        storeLinks[storeName] = links.walmartLink || "#";
+                    } else if (storeName.includes('Waterstones')) {
+                        storeLinks[storeName] = links.waterstonesLink || "#";
+                    } else if (storeName.includes('Blackwell')) {
+                        storeLinks[storeName] = links.blackwellsLink || "#";
+                    } else if (storeName.includes('WHSmith')) {
+                        storeLinks[storeName] = links.whsmithLink || "#";
+                    } else if (storeName.includes('IBS')) {
+                        storeLinks[storeName] = links.ibsLink || "#";
+                    } else if (storeName.includes('Feltrinelli')) {
+                        storeLinks[storeName] = links.feltrinelliLink || "#";
+                    } else if (storeName.includes('Mondadori')) {
+                        storeLinks[storeName] = links.mondadoriLink || "#";
+                    } else if (storeName.includes('Flipkart')) {
+                        storeLinks[storeName] = links.flipkartLink || "#";
+                    } else if (storeName.includes('AbeBooks')) {
+                        storeLinks[storeName] = links.abebooksLink || "#";
+                    } else {
+                        storeLinks[storeName] = "#";
+                    }
+                });
 
                 // Kısa bir gecikme sonra sonuçları göster (animasyon için)
                 setTimeout(() => {
@@ -5823,12 +5848,22 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             return `<div class="book-cover-placeholder ${showClass}" ${idAttr}>${escapeHtml(initials)}</div>`;
         }
 
-        function displayResults(books, isFavoritesView = false) {
+        async function displayResults(books, isFavoritesView = false) {
             const containerId = isFavoritesView ? 'favoritesContainer' : 'results-normal';
             const resultsContainer = document.getElementById(containerId);
             const uniqueId = isFavoritesView ? 'fav' : 'res';
 
-            resultsContainer.innerHTML = books.map((book, index) => {
+            // Ülke kodunu al (cache'den veya default)
+            let countryCode = 'TR';
+            try {
+                if (window.i18n && window.i18n.getCurrentCountry) {
+                    countryCode = window.i18n.getCurrentCountry() || 'TR';
+                }
+            } catch (error) {
+                console.error('Country get failed:', error);
+            }
+
+            const results = await Promise.all(books.map(async (book, index) => {
                 // Görsel yükleme için daha iyi bir mekanizma
                 let coverImage = '';
                 const placeholderId = `placeholder-${uniqueId}-${index}`;
@@ -5901,7 +5936,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                     }
                 }
 
-                const links = buildPurchaseLinks(book);
+                const links = await buildPurchaseLinks(book);
                 const favoriteClass = isFav ? 'active' : '';
                 const favoriteIcon = isFav ? '⭐' : '☆';
 
@@ -5933,57 +5968,13 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                         <div class="book-author">Yazar: ${escapeHtml(book.author)}</div>
                         <div class="book-year">Basım Yılı: ${escapeHtml(book.year)}${book.publisher ? ` • Yayınevi: ${escapeHtml(book.publisher)}` : ''}</div>
                         <div class="book-summary">${escapeHtml(book.summary)}</div>
-                        <div class="purchase-links" role="group" aria-label="Satın alma linkleri">
-                            <a href="${links.drLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link dr-link"
-                               aria-label="D&R'da ${escapeHtml(book.title)} kitabını satın al">D&R</a>
-                            <a href="${links.bkmLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link bkm-link"
-                               aria-label="BKM Kitap'ta ${escapeHtml(book.title)} kitabını satın al">BKM</a>
-                            <a href="${links.kitapyurduLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link kitapyurdu-link"
-                               aria-label="Kitapyurdu'nda ${escapeHtml(book.title)} kitabını satın al">Kitapyurdu</a>
-                            <a href="${links.hepsiburadaLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link hepsiburada-link"
-                               aria-label="Hepsiburada'da ${escapeHtml(book.title)} kitabını satın al">Hepsiburada</a>
-                            <a href="${links.trendyolLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link trendyol-link"
-                               aria-label="Trendyol'da ${escapeHtml(book.title)} kitabını satın al">Trendyol</a>
-                            <a href="${links.amazonLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link amazon-link"
-                               aria-label="Amazon'da ${escapeHtml(book.title)} kitabını satın al">Amazon</a>
-                        </div>
-                        <button class="price-compare-btn" data-book-index="${index}" data-unique-id="${uniqueId}">💰 Fiyat Karşılaştır</button>
+                        ${createPurchaseLinksHTML(links, book.title, countryCode)}
                     </div>
                 </div>
             `;
-            }).join('');
+            }));
 
-            // Fiyat karşılaştırma butonlarına event listener ekle
-            setTimeout(() => {
-                const priceButtons = resultsContainer.querySelectorAll('.price-compare-btn[data-book-index]');
-                priceButtons.forEach(btn => {
-                    const bookIndex = parseInt(btn.getAttribute('data-book-index'));
-                    const uniqueIdAttr = btn.getAttribute('data-unique-id');
-                    if (bookIndex >= 0 && bookIndex < books.length) {
-                        const book = books[bookIndex];
-                        const links = buildPurchaseLinks(book);
-                        btn.onclick = () => showPriceModal(book, links);
-                    }
-                });
-            }, 100);
+            resultsContainer.innerHTML = results.join('');
 
             // Görsel yükleme hatalarını kontrol et (fallback - 2 saniye sonra)
             setTimeout(() => {
@@ -6179,11 +6170,21 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             savePrices(prices);
         }
 
-        function displayResultsWithPrices(books) {
+        async function displayResultsWithPrices(books) {
             const container = document.getElementById('favoritesModalContainer');
             const prices = getPrices();
 
-            container.innerHTML = books.map((book, index) => {
+            // Ülke kodunu al (cache'den veya default)
+            let countryCode = 'TR';
+            try {
+                if (window.i18n && window.i18n.getCurrentCountry) {
+                    countryCode = window.i18n.getCurrentCountry() || 'TR';
+                }
+            } catch (error) {
+                console.error('Country get failed:', error);
+            }
+
+            const results = await Promise.all(books.map(async (book, index) => {
                 const bookKey = getBookPriceKey(book);
                 const bookPrices = prices[bookKey] || {};
                 const isFav = isFavorite(book);
@@ -6209,7 +6210,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                     coverImage = createPlaceholderImage(book.title, true, placeholderId);
                 }
 
-                const links = buildPurchaseLinks(book);
+                const links = await buildPurchaseLinks(book);
 
                 return `
                 <div class="book-card" data-book-id="${escapeHtml(bookKey)}">
@@ -6236,50 +6237,13 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                             </div>
                         </div>
 
-                        <div class="purchase-links">
-                            <a href="${links.drLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link dr-link">D&R</a>
-                            <a href="${links.bkmLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link bkm-link">BKM</a>
-                            <a href="${links.kitapyurduLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link kitapyurdu-link">Kitapyurdu</a>
-                            <a href="${links.hepsiburadaLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link hepsiburada-link">Hepsiburada</a>
-                            <a href="${links.trendyolLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link trendyol-link">Trendyol</a>
-                            <a href="${links.amazonLink}"
-                               target="_blank"
-                               rel="noopener noreferrer"
-                               class="purchase-link amazon-link">Amazon</a>
-                        </div>
-                        <button class="price-compare-btn" data-book-title="${escapeHtml(book.title)}" data-book-author="${escapeHtml(book.author)}">💰 Fiyat Karşılaştır</button>
+                        ${createPurchaseLinksHTML(links, book.title, countryCode)}
                     </div>
                 </div>
             `;
-            }).join('');
-            
-            // Favorilerim fiyat karşılaştırma butonlarına event listener ekle
-            container.querySelectorAll('.price-compare-btn').forEach(btn => {
-                const title = btn.getAttribute('data-book-title');
-                const author = btn.getAttribute('data-book-author');
-                if (title) {
-                    const book = books.find(b => b.title === title && (b.author === author || !author));
-                    if (book) {
-                        const links = buildPurchaseLinks(book);
-                        btn.onclick = () => showPriceModal(book, links);
-                    }
-                }
-            });
+            }));
+
+            container.innerHTML = results.join('');
         }
 
         function generatePriceComparisonTable(bookPrices) {
@@ -6432,7 +6396,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
         }
 
         // Tekil kitap fiyat karşılaştırma modal fonksiyonları
-        function openPriceComparisonModal(index, isFavoritesView) {
+        async function openPriceComparisonModal(index, isFavoritesView) {
             if (index >= currentBooks.length) return;
 
             const book = currentBooks[index];
@@ -6440,6 +6404,16 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             const content = document.getElementById('singleBookPriceContent');
             const bookKey = getBookPriceKey(book);
             const bookPrices = getBookPrices(book);
+
+            // Ülke kodunu al (cache'den veya default)
+            let countryCode = 'TR';
+            try {
+                if (window.i18n && window.i18n.getCurrentCountry) {
+                    countryCode = window.i18n.getCurrentCountry() || 'TR';
+                }
+            } catch (error) {
+                console.error('Country get failed:', error);
+            }
 
             let coverImage = '';
             if (book.thumbnail) {
@@ -6449,7 +6423,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 coverImage = `<div class="book-cover-placeholder show" style="max-width: 200px; margin: 0 auto 20px;">${escapeHtml(initials)}</div>`;
             }
 
-            const links = buildPurchaseLinks(book);
+            const links = await buildPurchaseLinks(book);
 
             content.innerHTML = `
                 <div style="text-align: center; margin-bottom: 30px;">
@@ -6469,32 +6443,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 
                 <div style="margin-top: 30px;">
                     <h4 style="color: #333; margin-bottom: 15px;">🛒 Satın Al</h4>
-                    <div class="purchase-links">
-                        <a href="${links.drLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link dr-link">D&R</a>
-                        <a href="${links.bkmLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link bkm-link">BKM</a>
-                        <a href="${links.kitapyurduLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link kitapyurdu-link">Kitapyurdu</a>
-                        <a href="${links.hepsiburadaLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link hepsiburada-link">Hepsiburada</a>
-                        <a href="${links.trendyolLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link trendyol-link">Trendyol</a>
-                        <a href="${links.amazonLink}"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="purchase-link amazon-link">Amazon</a>
-                    </div>
+                    ${createPurchaseLinksHTML(links, book.title, countryCode)}
                 </div>
             `;
 
@@ -6871,6 +6820,8 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
         // API kodları kaldırıldı, direkt client-side kullanılıyor
         // Client-side fiyat çekme (API olmadan, fallback)
         async function fetchPricesClientSide(bookTitle, isbn) {
+            console.log('🚀 fetchPricesClientSide başlatıldı:', { bookTitle, isbn });
+            
             const sites = [
                 { key: 'dr', name: 'D&R', fetchFn: fetchDRPrice },
                 { key: 'bkm', name: 'BKM Kitap', fetchFn: fetchBKMPrice },
@@ -6886,8 +6837,11 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             // Paralel olarak tüm sitelerden fiyat çek
             const fetchPromises = sites.map(async (site) => {
                 try {
+                    console.log(`🔍 ${site.name} fiyat çekiliyor...`);
                     const price = await site.fetchFn(bookTitle, isbn);
-                    if (price && price > 0) {
+                    console.log(`💰 ${site.name} sonuç:`, price);
+                    
+                    if (price && price > 0 && !isNaN(price)) {
                         prices[site.key] = price;
                         results.push({
                             site: site.key,
@@ -6895,7 +6849,9 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                             price: price,
                             success: true
                         });
+                        console.log(`✅ ${site.name}: ${price} TL bulundu`);
                     } else {
+                        console.log(`❌ ${site.name}: Fiyat bulunamadı veya geçersiz (${price})`);
                         results.push({
                             site: site.key,
                             siteName: site.name,
@@ -6904,7 +6860,8 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                         });
                     }
                 } catch (error) {
-                    console.warn(`${site.name} fiyat çekilemedi:`, error.message);
+                    console.error(`❌ ${site.name} fiyat çekilemedi:`, error);
+                    console.error('Hata detayı:', error.message, error.stack);
                     results.push({
                         site: site.key,
                         siteName: site.name,
@@ -6932,6 +6889,8 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             }
 
             console.log(`📊 Client-side fiyat çekme tamamlandı: ${validPrices.length} fiyat bulundu`);
+            console.log('📊 Bulunan fiyatlar:', prices);
+            console.log('📊 Sonuçlar:', results);
 
             return {
                 success: validPrices.length > 0,
@@ -7354,11 +7313,18 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
 
         // D&R fiyat çekme
         async function fetchDRPrice(bookTitle, isbn) {
+            console.log('🔍 D&R fiyat çekme başlatıldı:', { bookTitle, isbn });
             // Retry mekanizması - 2 kez dene
             for (let attempt = 0; attempt < 2; attempt++) {
                 try {
                     const searchUrl = `https://www.dr.com.tr/search?q=${encodeURIComponent(isbn || bookTitle)}`;
+                    console.log('📡 D&R URL:', searchUrl);
                     const html = await fetchWithProxy(searchUrl);
+                    console.log('📄 D&R HTML alındı, uzunluk:', html?.length || 0);
+                    
+                    if (!html || typeof html !== 'string' || html.length < 100) {
+                        throw new Error('HTML içeriği alınamadı veya yetersiz');
+                    }
 
                 if (!html || html.length < 100) {
                     throw new Error('HTML içeriği yetersiz');
@@ -7690,7 +7656,7 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
             if (!localStorage.getItem("searchCount")) localStorage.setItem("searchCount", 0);
             if (!localStorage.getItem("ownedBadges")) localStorage.setItem("ownedBadges", "[]");
 
-            // Splash screen'i kapat (yumuşak geçiş)
+            // Splash screen'i kapat - HİÇBİR ASYNC İŞE BAĞLI DEĞİL (2.5 saniye)
             setTimeout(function() {
                 try {
                     const splashScreen = document.getElementById('splash-screen');
@@ -7707,7 +7673,20 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 } catch (e) {
                     // Sessizce devam et
                 }
-            }, 2800); // 2.8 saniye
+            }, 2500); // 2.5 saniye - SPLASH ASLA BLOKLANMAZ
+            
+            // Ekstra güvenlik: 3 saniye sonra zorla kapat
+            setTimeout(function() {
+                try {
+                    const splashScreen = document.getElementById('splash-screen');
+                    if (splashScreen) {
+                        splashScreen.style.display = 'none';
+                        splashScreen.classList.add('splash-removed');
+                    }
+                } catch (e) {
+                    // Sessizce devam et
+                }
+            }, 3000);
 
             // Tema tercihini yükle
             const savedTheme = getThemePreference();
@@ -8150,6 +8129,57 @@ Bu header'lar XSS, clickjacking ve diğer güvenlik açıklarını önlemeye yar
                 console.error('AdSense error:', e);
             }
         }
+        
+        // Ülke güncellendiğinde purchase links'leri yenile
+        window.addEventListener('countryUpdated', async (event) => {
+            const newCountry = event.detail?.country;
+            if (!newCountry) return;
+            
+            console.log(`🔄 Country updated to ${newCountry}, refreshing purchase links...`);
+            
+            // Tüm kitap kartlarındaki purchase links'leri yenile
+            const bookCards = document.querySelectorAll('.book-card');
+            if (bookCards.length === 0) return;
+            
+            // Microtask ile UI freeze'i önle
+            setTimeout(async () => {
+                for (const card of bookCards) {
+                    try {
+                        // Kitap bilgisini al (data attribute veya DOM'dan)
+                        const bookTitle = card.querySelector('.book-title')?.textContent?.trim();
+                        const bookAuthor = card.querySelector('.book-author')?.textContent?.trim();
+                        
+                        if (!bookTitle) continue;
+                        
+                        // Mevcut kitap objesini bul (currentBooks array'inden)
+                        const book = currentBooks?.find(b => 
+                            b.title === bookTitle || 
+                            (b.title && b.title.includes(bookTitle)) ||
+                            (bookTitle && bookTitle.includes(b.title))
+                        );
+                        
+                        if (!book) continue;
+                        
+                        // Purchase links container'ını bul
+                        const linksContainer = card.querySelector('.purchase-links');
+                        if (!linksContainer) continue;
+                        
+                        // Yeni links'leri oluştur
+                        const links = await buildPurchaseLinks(book);
+                        const countryCode = window.i18n?.getCurrentCountry?.() || 'TR';
+                        const newLinksHTML = createPurchaseLinksHTML(links, book.title || bookTitle, countryCode);
+                        
+                        // Container'ı güncelle
+                        if (newLinksHTML) {
+                            linksContainer.outerHTML = newLinksHTML;
+                        }
+                    } catch (error) {
+                        console.warn('Failed to refresh purchase links for card:', error);
+                    }
+                }
+                console.log(`✅ Purchase links refreshed for ${bookCards.length} books`);
+            }, 0);
+        });
         
         // Sayfa yüklendiğinde görünür reklamları gözlemle
         document.addEventListener('DOMContentLoaded', () => {

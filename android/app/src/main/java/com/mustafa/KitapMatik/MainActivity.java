@@ -514,8 +514,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 
-                // Amazon için - Intent ile web URL'ini aç (app link sistemi)
-                if (url != null && url.contains("amazon.com.tr") &&
+                // Amazon için - Tüm Amazon domain'lerini destekle (app link sistemi)
+                if (url != null && (url.contains("amazon.com.tr") || 
+                                    url.contains("amazon.de") ||
+                                    url.contains("amazon.com") ||
+                                    url.contains("amazon.co.uk") ||
+                                    url.contains("amazon.fr") ||
+                                    url.contains("amazon.es") ||
+                                    url.contains("amazon.it") ||
+                                    url.contains("amazon.in")) &&
                                     (url.startsWith("https://") || url.startsWith("http://"))) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
@@ -544,11 +551,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // WebChromeClient ekle
+        // WebChromeClient ekle - Console log'ları için
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
+            }
+            
+            @Override
+            public boolean onConsoleMessage(android.webkit.ConsoleMessage consoleMessage) {
+                String message = consoleMessage.message();
+                String sourceId = consoleMessage.sourceId();
+                int lineNumber = consoleMessage.lineNumber();
+                
+                // Logcat'e yaz
+                Log.d("WebView", String.format("[%s:%d] %s", sourceId, lineNumber, message));
+                
+                // Özellikle fiyat çekme ile ilgili log'ları daha belirgin göster
+                if (message.contains("🔍") || message.contains("💰") || message.contains("📊") || 
+                    message.contains("✅") || message.contains("❌") || message.contains("📡") ||
+                    message.contains("fiyat") || message.contains("price") || message.contains("Price")) {
+                    Log.i("PriceFetch", message);
+                }
+                
+                return true;
             }
         });
 
